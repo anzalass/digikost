@@ -198,17 +198,27 @@ export default function DetailBarangRuangan({ userSession }) {
       minWidth: 100,
       flex: 0.7,
       renderCell: (params) => {
-        return (
-          <div
-            className=""
-            onClick={() => {
-              updateData.id = params.id;
-              setChangeStatus(!changeStatus);
-            }}
-          >
-            {params.row.status}
-          </div>
-        );
+        if (params.row.status != 'pending') {
+          return (
+            <div
+              className=""
+              onClick={() => {
+                updateData.id = params.id;
+                setChangeStatus(!changeStatus);
+              }}
+            >
+              {params.row.status}
+            </div>
+          );
+        } else {
+          return (
+            <div
+              className=""
+            >
+              {params.row.status}
+            </div>
+          );
+        }
       },
     },
     {
@@ -289,7 +299,7 @@ export default function DetailBarangRuangan({ userSession }) {
               autoHeight
               className="bg-white"
               columns={columnsRuanganPemeliharaan}
-              rows={rowBarangRuanganPemeliharaan}
+              rows={rowBarangRuanganPemeliharaan.filter(item => item.status != 'selesai')}
             />
           </div>
         </div>

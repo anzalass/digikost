@@ -5,6 +5,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
   const [pengadaan, setPengadaan] = useState([]);
   const [ruang, setRuang] = useState([]);
   const [barang, setBarang] = useState([]);
+  const [kategori, setKategori] = useState([]);
 
   const [data, setData] = useState({
     namaBarang: "",
@@ -20,6 +21,24 @@ export default function EditBarang({ close, setClose, idBarang }) {
     hargaBarang: 0,
     totalHargaBarang: 0,
   });
+
+  const [errPengadaan, setErrorPengadaan] = useState({
+    namaBarang: "",
+    kodeBarang: "",
+    kodeRuang: "",
+    merek: "",
+    hargaBarang: "",
+    quantity: "",
+    spesifikasi: "",
+    ruang: "",
+    supplier: "",
+    buktiNota: "",
+  });
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  console.log(kategori);
 
   const changePengadaanHandler = (e) => {
     setData({
@@ -52,12 +71,13 @@ export default function EditBarang({ close, setClose, idBarang }) {
   const fetchData = async () => {
     const getRuang = await axios.get("http://127.0.0.1:8000/api/getRuang");
     const getBarang = await axios.get("http://127.0.0.1:8000/api/getKategori");
+    const getKategori = await axios.get("http://127.0.0.1:8000/api/getKategori");
 
-    if (getRuang) {
-      setRuang(getRuang.data.results);
-      setBarang(getBarang.data.results);
-    }
+    setKategori(getKategori.data.results);
+    setRuang(getRuang.data.results);
+    setBarang(getBarang.data.results);
   }
+
 
   const getDataByID = async () => {
     const result = await axios.get(
@@ -67,6 +87,8 @@ export default function EditBarang({ close, setClose, idBarang }) {
     setData((prevData) => ({
       ...prevData,
       merek: result.data.results.merek,
+      kodeBarang: result.data.results.kodeBarang,
+      kodeRuang: result.data.results.kodeRuang,
       buktiNota: result.data.results.buktiNota,
       spesifikasi: result.data.results.spesifikasi,
       tanggalPembelian: result.data.results.tanggalPembelian,
@@ -101,21 +123,37 @@ export default function EditBarang({ close, setClose, idBarang }) {
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2 ">Kategori</h1>
                 <select
-                  name="namaBarang"
+                  name="kodeBarang"
+                  onChange={(e) => {
+                    const selectedBarang = kategori.find(
+                      (item) => item.kodeBarang === e.target.value
+                    );
+
+                    setData({
+                      ...data,
+                      kodeBarang: selectedBarang.kodeBarang,
+                      namaBarang: `${selectedBarang.namaBarang}`,
+                      merek: selectedBarang.kategori,
+                    });
+                    console.log(data);
+                  }}
                   id=""
-                  value={data.namaBarang}
-                  onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
-                  {barang.map((item, index) => {
-                    if (item.namaBarang == data.namaBarang) {
+                  {kategori.map((item, index) => {
+                    if (item.kodeBarang == data.kodeBarang) {
+                      console.log("item : ", item.kodeBarang, "&& data : ", data.kodeBarang)
                       return (
-                        <option value="kodeBarang" selected>{item.namaBarang}</option>
-                      )
+                        <option key={index} value={`${item.kodeBarang}`} selected>
+                          {item.namaBarang}:{item.kategori}
+                        </option>
+                      );
                     } else {
                       return (
-                        <option value="kodeBarang">{item.namaBarang}</option>
-                      )
+                        <option key={index} value={`${item.kodeBarang}`}>
+                          {item.namaBarang}:{item.kategori}
+                        </option>
+                      );
                     }
                   })}
                 </select>
@@ -165,6 +203,18 @@ export default function EditBarang({ close, setClose, idBarang }) {
                 <select
                   id="cars"
                   name="ruang"
+                  onChange={(e) => {
+                    const selectedRuang = ruang.find(
+                      (item) => item.kodeRuang === e.target.value
+                    );
+
+                    setData({
+                      ...data,
+                      kodeRuang: selectedRuang.kodeRuang,
+                      ruang: selectedRuang.ruang,
+                    });
+                    console.log(data);
+                  }}
                   className="w-full border-2 border-slate-500"
                 >
                   {ruang.map((item, index) => {

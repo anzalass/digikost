@@ -13,7 +13,7 @@ export default function ModalChangeStatus({ open, setOpen, id }) {
         console.log("res status : ", res.data.message);
         console.log("id : ", id);
         console.log("status : ", data.status);
-        // window.location.reload();
+        window.location.reload();
       }
     } catch (err) {
       alert(err);

@@ -28,7 +28,7 @@ export default function TambahBarangPage({ userSession }) {
     e.preventDefault();
     try {
       const findKategori = await axios.get(
-        `${BACKEND_BASE_URL}` +
+        `${BACKEND_BASE_URL}/api/findKategori/` +
         kategori.kodeBarang +
         "/" +
         kategori.namaBarang
@@ -84,7 +84,7 @@ export default function TambahBarangPage({ userSession }) {
 
   const UpdateKategori = async (id) => {
     const result = await axios.put(
-      `${BACKEND_BASE_URL}/api/updateKategori` + id,
+      `${BACKEND_BASE_URL}/api/updateKategori/` + id,
       kategori
     );
     if (result) {

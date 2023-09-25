@@ -1,12 +1,112 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SidebarOwner from "../../../components/layoutowner/SidebarOwner";
 import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../../../config/base_url";
 
 export default function TambahBarangOwner() {
   const [open, setOpen] = useState(false);
   const [img, setImg] = useState();
+  const [kategori, setKategori] = useState([]);
+  const [ruang, setRuang] = useState([]);
   const nav = useNavigate();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  console.log(kategori);
+
+  const fetchData = async () => {
+    const getKategori = await axios.get(
+      "http://127.0.0.1:8000/api/getKategori"
+    );
+    const getRuang = await axios.get("http://127.0.0.1:8000/api/getRuang");
+
+    // if (getRuang && getKategori) {
+    setKategori(getKategori.data.results);
+    setRuang(getRuang.data.results);
+    // }
+  };
+
+  const TambahPengadaan = async (e) => {
+    try {
+      const data = new FormData();
+      data.append("file", img);
+      data.append("upload_preset", "digikostDemoApp");
+      data.append("cloud_name", "dkt6ysk5c");
+
+      const res = await axios.post(
+        "https://api.cloudinary.com/v1_1/dkt6ysk5c/image/upload",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      pengadaan.buktiNota = res.data.secure_url;
+
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/tambahPengadaan",
+        pengadaan
+      );
+
+      if (response.status === 200) {
+        window.location.href = `${BASE_URL}owner/pengadaan-barang`;
+      }
+    } catch (err) {
+      console.log(err);
+      setErrorPengadaan({
+        namaBarang: err.response.data.errors.namaBarang,
+        kodeBarang: err.response.data.errors.kodeBarang,
+        kodeRuang: err.response.data.errors.kodeRuang,
+        merek: err.response.data.errors.merek,
+        hargaBarang: err.response.data.errors.hargaBarang,
+        quantity: err.response.data.errors.quantity,
+        spesifikasi: err.response.data.errors.spesifikasi,
+        ruang: err.response.data.errors.ruang,
+        supplier: err.response.data.errors.supplier,
+        buktiNota: err.response.data.errors.buktiNota,
+      });
+    }
+  };
+
+  const [pengadaan, setPengadaan] = useState({
+    namaBarang: "",
+    kodeBarang: "",
+    kodeRuang: "",
+    merek: "",
+    hargaBarang: "",
+    quantity: "",
+    spesifikasi: "",
+    ruang: "",
+    supplier: "",
+    buktiNota: "",
+  });
+
+  const [errPengadaan, setErrorPengadaan] = useState({
+    namaBarang: "",
+    kodeBarang: "",
+    kodeRuang: "",
+    merek: "",
+    hargaBarang: "",
+    quantity: "",
+    spesifikasi: "",
+    ruang: "",
+    supplier: "",
+    buktiNota: "",
+  });
+
+  const changePengadaanHandler = (e) => {
+    setPengadaan({
+      ...pengadaan,
+      [e.target.name]: e.target.value,
+    });
+    console.log(pengadaan);
+  };
+
   return (
     <div className="w-full h-[160vh] flex">
       <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
@@ -22,44 +122,44 @@ export default function TambahBarangOwner() {
               <input
                 type="date"
                 name="tanggalPembelian"
-                // onChange={(e) => changePengadaanHandler(e)}
+                onChange={(e) => changePengadaanHandler(e)}
                 className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
               />
             </div>
             <div className="w-full mt-4">
               <h1 className="font-abc pb-2 ">Kategori</h1>
               <select
-                name="namaBarang"
-                // onChange={(e) => changePengadaanHandler(e)}
+                name="kodeBarang"
+                onChange={(e) => {
+                  const selectedBarang = kategori.find(
+                    (item) => item.kodeBarang === e.target.value
+                  );
+
+                  setPengadaan({
+                    ...pengadaan,
+                    kodeBarang: selectedBarang.kodeBarang,
+                    namaBarang: `${selectedBarang.namaBarang}`,
+                    merek: selectedBarang.kategori,
+                  });
+                  console.log(pengadaan);
+                }}
                 id=""
                 className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
               >
-                <option value="kulkas">Pilih Categori</option>
-                {/* {kategori.map((item, index) => {
+                <option value="">Pilih Category</option>
+
+                {kategori.map((item, index) => {
                   return (
                     <option key={index} value={`${item.kodeBarang}`}>
                       {item.namaBarang}:{item.kategori}
                     </option>
                   );
-                })} */}
+                })}
               </select>
+              {errPengadaan.kodeBarang ? (
+                <p>{errPengadaan.kodeBarang}</p>
+              ) : null}
             </div>
-            <div className="w-full mt-4">
-              <h1 className="font-abc pb-2">Merek Barang</h1>
-              <input
-                type="text"
-                name="merek"
-                // onChange={(e) => changePengadaanHandler(e)}
-                className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-              />
-            </div>
-            {/* <div className="w-full mt-4">
-                <h1 className="font-abc pb-2">Resi Barang</h1>
-                <input
-                  type="text"
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                />
-              </div> */}
 
             <div className="w-full mt-4">
               <h1 className="font-abc pb-2">Foto Nota Pembelian</h1>
@@ -77,6 +177,9 @@ export default function TambahBarangOwner() {
                 className="hidden border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
               />
             </div>
+            {errPengadaan.buktiNota ? (
+              <p>{errPengadaan.buktiNota}</p>
+            ) : null}
             <div className="w-full mt-4">
               {img ? (
                 <div className="w-full ">
@@ -94,52 +197,72 @@ export default function TambahBarangOwner() {
               <input
                 type="text"
                 name="spesifikasi"
-                // onChange={(e) => changePengadaanHandler(e)}
+                onChange={(e) => changePengadaanHandler(e)}
                 className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
               />
+              {errPengadaan.spesifikasi ? (
+                <p>{errPengadaan.spesifikasi}</p>
+              ) : null}
             </div>
             <div className="w-full mt-4">
               <h1 className="font-abc pb-2">Supplier</h1>
               <input
                 type="text"
                 name="supplier"
-                // onChange={(e) => changePengadaanHandler(e)}
+                onChange={(e) => changePengadaanHandler(e)}
                 className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
               />
+              {errPengadaan.supplier ? (
+                <p>{errPengadaan.supplier}</p>
+              ) : null}
             </div>
             <div className="w-full mt-4">
               <h1 className="font-abc pb-2">Lokasi Barang</h1>
-              <input
-                type="text"
-                name="ruang"
-                // onChange={(e) => changePengadaanHandler(e)}
-                list="cars"
+              <select
+                id="cars"
+                name="kodeRuang"
+                onChange={(e) => {
+                  const selectedRuang = ruang.find(
+                    (item) => item.kodeRuang === e.target.value
+                  );
+
+                  setPengadaan({
+                    ...pengadaan,
+                    kodeRuang: selectedRuang.kodeRuang,
+                    ruang: selectedRuang.ruang,
+                  });
+                  console.log(pengadaan);
+                }}
                 className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-              />
-              <datalist id="cars">
-                <option value="101">101</option>
-                <option value="102">102</option>
-                <option value="103">103</option>
-                <option value="104">104</option>
-              </datalist>
+              >
+                <option value="">Pilih Ruang</option>
+                {ruang.map((item) => {
+                  return <option value={item.kodeRuang}>{item.ruang}</option>;
+                })}
+              </select>
+              {errPengadaan.ruang ? <p>{errPengadaan.ruang}</p> : null}
             </div>
             <div className="w-full mt-4">
               <h1 className="font-abc pb-2">Quantitas Barang</h1>
               <input
                 type="number"
                 name="quantity"
-                // onChange={(e) => changePengadaanHandler(e)}
+                onChange={(e) => changePengadaanHandler(e)}
                 className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
               />
+              {errPengadaan.quantity ? <p>{errPengadaan.quantity}</p> : null}
             </div>
             <div className="w-full mt-4">
               <h1 className="font-abc pb-2">Harga</h1>
               <input
                 type="number"
                 name="hargaBarang"
-                // onChange={(e) => changePengadaanHandler(e)}
+                onChange={(e) => changePengadaanHandler(e)}
                 className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
               />
+              {errPengadaan.hargaBarang ? (
+                <p>{errPengadaan.hargaBarang}</p>
+              ) : null}
             </div>
             <div className="w-full mt-4">
               <h1 className="font-abc pb-2">Total Harga</h1>

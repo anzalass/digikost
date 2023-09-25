@@ -213,6 +213,11 @@ export default function PengadaanBarangOwner() {
     },
   ];
 
+  const DeletePengadaan = async (id) => {
+    await axios.delete("http://127.0.0.1:8000/api/pengadaanDelete/" + id);
+    window.location.reload();
+  };
+
   const row = [];
 
   const showBarang = () => {
@@ -327,9 +332,11 @@ export default function PengadaanBarangOwner() {
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
                     <option value="">Tahun</option>
-                    <option value="">2023</option>
-                    <option value="">2022</option>
-                    <option value="">2021</option>
+                    {tahun.map((item) => {
+                      return (
+                        <option value={item}>{item}</option>
+                      )
+                    })}
                   </select>
                 </div>
                 <div className="">

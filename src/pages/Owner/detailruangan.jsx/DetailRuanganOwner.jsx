@@ -3,6 +3,7 @@ import { useState } from "react";
 import SidebarOwner from "../../../components/layoutowner/SidebarOwner";
 import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
 
+
 import { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { GiAutoRepair } from "react-icons/gi";
@@ -10,8 +11,11 @@ import { BsTrash3 } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import ModalMaintenenceOwner from "./ModalMaintenenceOwner";
-import ModalChangeStatusOwner from "./ModalChangeStatusOwner";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
+// import ModalMaintenenceOwner from "./ModalMaintenenceOwner";
+// import ModalChangeStatusOwner from "./ModalChangeStatusOwner";
+import ModalChangeStatus from "../../../components/admin/detailbarangruangan/ModalChangeStatus";
+import ModalMaintenence from "../../../components/admin/detailbarangruangan/ModalMaintenence";
 
 export default function DetailRuanganOwner() {
   const [loading, setLoading] = useState(true);
@@ -23,6 +27,12 @@ export default function DetailRuanganOwner() {
   const [barang, setBarang] = useState([]);
 
   const [pemeliharaanBarang, setPemeliharaanBarang] = useState([]);
+
+  const [updateData, setUpdateData] = useState({
+    keterangan: null,
+    id: null,
+  });
+
   const { id } = useParams();
   useEffect(() => {
     console.log("loading : ", loading);
@@ -47,6 +57,20 @@ export default function DetailRuanganOwner() {
       setBarang(getBarang.data.results);
       setPengadaan(getPengadaan.data.results);
       setPemeliharaanBarang(getPemeliharan.data.results);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const hapusPemeliharaan = async (id) => {
+    try {
+      const response = await axios.delete(
+        `${BACKEND_BASE_URL}/api/deletePemeliharaan/${id}`
+      );
+
+      if (response) {
+        window.location.reload();
+      }
     } catch (err) {
       alert(err);
     }
@@ -146,7 +170,7 @@ export default function DetailRuanganOwner() {
           <div
             className=""
             onClick={() => {
-              // updateData.id = params.id;
+              updateData.id = params.id;
               setChangeStatus(!changeStatus);
             }}
           >
@@ -206,7 +230,7 @@ export default function DetailRuanganOwner() {
         item.is_active == 1
     );
     const filterPemeliharaan = pemeliharaanBarang.filter(
-      (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id
+      (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id && item.status != 'selesai'
     );
 
     filterPengadaan.forEach((bi) => {
@@ -228,10 +252,10 @@ export default function DetailRuanganOwner() {
   return (
     <>
       {maintenence ? (
-        <ModalMaintenenceOwner open={maintenence} setOpen={setMaintenence} />
+        <ModalMaintenence open={maintenence} setOpen={setMaintenence} data={data} ruang={id} />
       ) : null}
       {changeStatus ? (
-        <ModalChangeStatusOwner open={changeStatus} setOpen={setChangeStatus} />
+        <ModalChangeStatus id={updateData.id} open={changeStatus} setOpen={setChangeStatus} />
       ) : null}
       <div className="w-full h-[160vh] flex">
         <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
@@ -246,7 +270,7 @@ export default function DetailRuanganOwner() {
             <div className="w-[96%] mx-auto mt-12">
               <DataGrid
                 columns={columnsRuanganPemeliharaan}
-                rows={rowBarangRuanganPemeliharaan}
+                rows={rowBarangRuanganPemeliharaan.filter(item => item.status != 'selesai')}
               />
             </div>
           </div>
