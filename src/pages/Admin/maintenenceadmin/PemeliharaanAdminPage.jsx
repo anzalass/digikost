@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import Sidebar from "../../components/layout/Sidebar";
-import TopBar from "../../components/layout/TopBar";
-import TabelPemeliharaan from "../../components/admin/pemeliharaan/TablePemeliharaan";
 
-export default function PengeluaranPage() {
+import Sidebar from "../../../components/layout/Sidebar";
+import TopBar from "../../../components/layout/TopBar";
+import TabelPemeliharaanAdminPage from "./TabelPemeliharaanAdminPage";
+
+export default function PemeliharaanAdminPage({ userSession }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -12,8 +13,8 @@ export default function PengeluaranPage() {
         <Sidebar setSidebar={3} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-        <TopBar>{"Pemeliharaan "}</TopBar>
-        <TabelPemeliharaan />
+        <TopBar userSession={userSession}>{"Pemeliharaan "}</TopBar>
+        <TabelPemeliharaanAdminPage />
       </div>
     </div>
   );

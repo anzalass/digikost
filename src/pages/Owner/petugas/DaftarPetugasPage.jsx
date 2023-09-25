@@ -15,21 +15,21 @@ export default function DaftarPetugasPage() {
 
   useEffect(() => {
     fetchUser();
-  }, [])
+  }, []);
 
   const fetchUser = async () => {
     const res = await axios.get(`${BACKEND_BASE_URL}/api/getUser`);
     setAllUser(res.data.results);
     await new Promise((resolve) => setTimeout(resolve, 1000));
-  }
+  };
 
   const deletePetugas = async (id) => {
-    const res = await axios.delete(`${BACKEND_BASE_URL}/api/deleteUser/${id}`,);
+    const res = await axios.delete(`${BACKEND_BASE_URL}/api/deleteUser/${id}`);
 
     if (res.status === 200) {
       window.location.reload();
     }
-  }
+  };
 
   const columns = [
     { field: "id", headerName: "ID", minWidth: 50, flex: 0.2 },
@@ -71,7 +71,10 @@ export default function DaftarPetugasPage() {
             <button onClick={() => deletePetugas(params.id)} className="mr-4">
               <BsTrash3 color="red" size={20} />
             </button>
-            <button className="">
+            <button
+              className=""
+              onClick={() => nav(`/owner/edit-petugas/${params.id}`)}
+            >
               <BiEditAlt color="blue" size={20} />
             </button>
           </div>
@@ -87,7 +90,7 @@ export default function DaftarPetugasPage() {
       nama: a.name,
       email: a.email,
       role: a.role,
-      nohp: a.noHP
+      nohp: a.noHP,
       // qtybarang: a.qtybarang,
     });
   });

@@ -1,49 +1,53 @@
-import React, { useEffect, useState } from "react";
-import Sidebar from "../../../components/layout/Sidebar";
-import TopBar from "../../../components/layout/TopBar";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import SidebarOwner from "../../../components/layoutowner/SidebarOwner";
+import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { BACKEND_BASE_URL } from "../../../config/base_url";
-import { useSelector } from "react-redux";
+import { BACKEND_BASE_URL, BASE_URL } from "../../../config/base_url";
 
-export default function EditProfileAdminPage({ children }) {
+export default function EditPetugasOwnerPage() {
   const nav = useNavigate();
+  const { id } = useParams();
+  const [userSelected, setUserSelected] = useState({
+    id: "",
+    name: "",
+    email: "",
+    noHP: ""
+  });
   const [open, setOpen] = useState(false);
-  const { user } = useSelector((state) => state.user);
-  const [dataUser, setDataUser] = useState({
-    name: "",
-    email: "",
-    noHP: ""
-  })
-
-  const [err, setErr] = useState({
-    name: "",
-    email: "",
-    noHP: ""
-  })
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setDataUser({
-      name: user?.name,
-      email: user?.email,
-      noHP: user?.noHP
-    })
-    console.log();
-  }, [user])
+    GetUserById();
+  }, [id])
+
+  const GetUserById = async () => {
+    try {
+      const res = await axios.get(`${BACKEND_BASE_URL}/api/getUserById/${id}`);
+      setUserSelected({
+        id: res.data.results.id,
+        name: res.data.results.name,
+        email: res.data.results.email,
+        noHP: res.data.results.noHP
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   const changeDataHandler = (e) => {
-    setDataUser({
-      ...dataUser,
-      [e.target.name]: e.target.value,
+    setUserSelected({
+      ...userSelected,
+      [e.target.name]: e.target.value
     })
-    console.log(dataUser);
+    console.log(userSelected);
   }
 
   const UpdateUser = async () => {
     try {
-      const res = await axios.put(`${BACKEND_BASE_URL}/api/updateDataUser/` + user?.id, dataUser);
+      const res = await axios.put(`${BACKEND_BASE_URL}/api/updateDataUser/` + userSelected.id, userSelected);
       if (res.status === 200) {
-        window.location.href = "/profile";
+        window.location.href = `${BASE_URL}owner/petugas`;
       }
     } catch (e) {
       console.log("wkwk error :", e);
@@ -59,30 +63,28 @@ export default function EditProfileAdminPage({ children }) {
       <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
         {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
         {/* {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
-        <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
+        <SidebarOwner setSidebar={5} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-        {children}
-        <TopBar>{"Edit Profile Admin"}</TopBar>
+        <TopBarOwner>{"Edit Petugas Owner"}</TopBarOwner>
         <div className="w-[94%] mx-auto">
           <div className="w-full mt-6">
             <h1 className="font-abc font-[500]">Nama</h1>
             <input
               type="text"
               name="name"
-              onChange={(e) => changeDataHandler(e)}
-              value={dataUser.name}
+              onChange={e => changeDataHandler(e)}
+              value={userSelected.name}
               className="w-full h-[35px] border-2 pl-2 border-slate-500 rounded-md"
             />
-            {err.name ?
-              <p>{err.name}</p> : null
-            }
           </div>
           <div className="w-full mt-6">
             <h1 className="font-abc font-[500]">Email</h1>
             <input
               type="text"
-              value={dataUser.email}
+              name="email"
+              onChange={e => changeDataHandler(e)}
+              value={userSelected.email}
               disabled={true}
               className="w-full h-[35px] border-2 pl-2 border-slate-500 rounded-md"
             />
@@ -92,13 +94,10 @@ export default function EditProfileAdminPage({ children }) {
             <input
               type="number"
               name="noHP"
-              onChange={(e) => changeDataHandler(e)}
-              value={dataUser.noHP}
+              onChange={e => changeDataHandler(e)}
+              value={userSelected.noHP}
               className="w-full h-[35px] border-2 pl-2 border-slate-500 rounded-md"
             />
-            {err.noHP ?
-              <p>{err.noHP}</p> : null
-            }
           </div>
           <div className="w-full mt-6">
             <button className="bg-[#7B2CBF] px-3 py-1 w-[240px] rounded-md text-[#E5D5F2] font-abc">
@@ -110,7 +109,7 @@ export default function EditProfileAdminPage({ children }) {
               Simpan
             </button>
             <button
-              onClick={() => nav("/")}
+              onClick={() => nav("/owner/petugas")}
               className="bg-[#E5D5F2] px-3 py-1 w-[140px] rounded-md ml-2  text-[#7B2CBF] font-abc"
             >
               Batal

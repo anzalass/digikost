@@ -6,11 +6,12 @@ import Tagihan from "../../components/admin/pengadaanbarang/TabelBarang";
 import Aktivitas from "../../components/admin/home/Aktivitas";
 import AdminDetailCard from "../../components/admin/home/AdminDetailCard";
 import { ClipLoader } from "react-spinners";
+import { useSelector } from "react-redux";
 
-export default function HomePage({ userSession }) {
+export default function HomePage() {
   const [open, setOpen] = useState(false);
-  let [loading, setLoading] = useState(true);
-  let [color, setColor] = useState("#ffffff");
+
+  const { user } = useSelector((state) => state.user);
 
   // useEffect(() => {
   //   console.log("loading : ", loading);
@@ -23,7 +24,7 @@ export default function HomePage({ userSession }) {
           <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
         </div>
         <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-          <TopBar userSession={userSession}>{"Dashboard Admin"}</TopBar>
+          <TopBar>{"Dashboard Admin"}</TopBar>
           <div className="w-full mt-2 h-[50px] mx-auto ">
             <h1 className="text-[20px] font-abc ml-6">
               Selamat datang <span className="font-[500]">, Admin</span>
@@ -36,7 +37,7 @@ export default function HomePage({ userSession }) {
               <Aktivitas />
             </div>
             <div className=" w-[44%] ">
-              <AdminDetailCard userSession={userSession} />
+              <AdminDetailCard />
             </div>
           </div>
         </div>

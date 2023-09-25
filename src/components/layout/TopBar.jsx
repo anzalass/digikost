@@ -2,25 +2,26 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { BsFillBellFill } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function TopBar({ userSession, children }) {
-  console.log("user session name : ", userSession);
+export default function TopBar({ children }) {
   const nav = useNavigate();
+  const { user } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    // Add a delay of 1000 milliseconds (1 second) before checking userSession
-    const delay = 3000;
+  // useEffect(() => {
+  //   // Add a delay of 1000 milliseconds (1 second) before checking userSession
+  //   const delay = 3000;
 
-    const timer = setTimeout(() => {
-      if (userSession.id == undefined) {
-        window.location.href = "/login";
-      }
-    }, delay);
+  //   const timer = setTimeout(() => {
+  //     if (userSession.id == undefined) {
+  //       window.location.href = "/login";
+  //     }
+  //   }, delay);
 
-    // Clear the timer if the component unmounts or userSession changes
-    return () => clearTimeout(timer);
-  }, [userSession]);
+  //   // Clear the timer if the component unmounts or userSession changes
+  //   return () => clearTimeout(timer);
+  // }, [userSession]);
 
   return (
     <div>
@@ -38,7 +39,7 @@ export default function TopBar({ userSession, children }) {
               onClick={() => nav("/profile")}
               className="ml-2 font-abc font-[500] cursor-pointer"
             >
-              {userSession.name}
+              {user?.name}
             </h1>
           </div>
         </div>

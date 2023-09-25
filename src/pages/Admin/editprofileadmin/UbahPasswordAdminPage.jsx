@@ -4,7 +4,7 @@ import TopBar from "../../../components/layout/TopBar";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye } from "react-icons/ai";
 
-export default function UbahPasswordAdminPage({ userSession }) {
+export default function UbahPasswordAdminPage() {
   const nav = useNavigate();
   // const [open, setOpen] = useState(false);
   const [hiddenPass1, setHiddenPass1] = useState(false);

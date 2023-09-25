@@ -10,7 +10,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { data } from "autoprefixer";
 import { BASE_URL, BACKEND_BASE_URL } from "../../config/base_url.jsx";
 
-export default function TambahBarangPage({ userSession }) {
+export default function TambahBarangPage() {
   const [barang, setBarang] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [allKategori, setallKategori] = useState([]);
@@ -21,7 +21,7 @@ export default function TambahBarangPage({ userSession }) {
 
   const [kategoriErrors, setKategoriErrors] = useState({
     kodeBarang: "",
-    namaBarang: ""
+    namaBarang: "",
   });
 
   const TambahKategori = async (e) => {
@@ -32,6 +32,7 @@ export default function TambahBarangPage({ userSession }) {
         kategori.kodeBarang +
         "/" +
         kategori.namaBarang
+
       );
 
       if (findKategori.status === 200) {
@@ -52,9 +53,9 @@ export default function TambahBarangPage({ userSession }) {
           setKategoriErrors(err.response.data.errors);
           setKategoriErrors({
             kodeBarang: err.response.data.errors.kodeBarang,
-            namaBarang: err.response.data.errors.namaBarang
-          })
-          console.log(err.response.data.errors)
+            namaBarang: err.response.data.errors.namaBarang,
+          });
+          console.log(err.response.data.errors);
         }
       } else {
         console.error("Error while searching:", error);
@@ -122,7 +123,9 @@ export default function TambahBarangPage({ userSession }) {
       const result = await axios.get(`${BACKEND_BASE_URL}/api/pengadaan`);
       setBarang(result.data.results);
 
-      const resultKategori = await axios.get(`${BACKEND_BASE_URL}/api/getKategori`);
+      const resultKategori = await axios.get(
+        `${BACKEND_BASE_URL}/api/getKategori`
+      );
       setallKategori(resultKategori.data.results);
 
       // Add a delay before making the next request
@@ -186,7 +189,7 @@ export default function TambahBarangPage({ userSession }) {
         <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-        <TopBar userSession={userSession}>{"Pengadaan Barang"}</TopBar>
+        <TopBar>{"Pengadaan Barang"}</TopBar>
         <div className="w-[95%] h-[80px] justify-between flex mx-auto">
           <div className="">
             <button
@@ -262,11 +265,9 @@ export default function TambahBarangPage({ userSession }) {
                     onChange={(e) => changeKategoriHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
-                  {kategoriErrors.kodeBarang ?
+                  {kategoriErrors.kodeBarang ? (
                     <p>{kategoriErrors.kodeBarang}</p>
-                    :
-                    null
-                  }
+                  ) : null}
                 </div>
                 <div className="w-full mt-4">
                   <h1 className="font-abc pb-2">Nama Barang</h1>
@@ -277,11 +278,9 @@ export default function TambahBarangPage({ userSession }) {
                     onChange={(e) => changeKategoriHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
-                  {kategoriErrors.namaBarang ?
+                  {kategoriErrors.namaBarang ? (
                     <p>{kategoriErrors.namaBarang}</p>
-                    :
-                    null
-                  }
+                  ) : null}
                 </div>
 
                 <div className="w-full justify-center mt-12 flex items-center">

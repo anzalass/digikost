@@ -13,7 +13,7 @@ import axios from "axios";
 import { BACKEND_BASE_URL } from "../../config/base_url";
 import EditPemeliharaanModal from "../../components/admin/pemeliharaan/EditPemeliharaanModal";
 
-export default function DetailBarangRuangan({ userSession }) {
+export default function DetailBarangRuangan() {
   const [open, setOpen] = useState(false);
   const [maintenence, setMaintenence] = useState(false);
   const [changeStatus, setChangeStatus] = useState(false);
@@ -31,8 +31,6 @@ export default function DetailBarangRuangan({ userSession }) {
 
   const { id } = useParams();
 
-  const updateStatus = () => { };
-  // # curl "https://randomuser.me/api/?results=10" | jq '.results[].name.first' >> "$1 at $date_time/my_friends/list_of_my_friends.txt"
   useEffect(() => {
     fetchData();
   }, [id]);
@@ -300,7 +298,7 @@ export default function DetailBarangRuangan({ userSession }) {
           <Sidebar width={open} setWidth={setOpen} setSidebar={4} />
         </div>
         <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-          <TopBar userSession={userSession}>{`Detail Ruangan ${id} `}</TopBar>
+          <TopBar>{`Detail Ruangan ${id} `}</TopBar>
           <div className="w-full mt-2 h-[50px] mx-auto "></div>
           <div className="w-[95%] mx-auto">
             <DataGrid

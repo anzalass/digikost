@@ -1,8 +1,10 @@
 import React from "react";
 import { BsFillBellFill } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function TopBarOwner({ children }) {
+  const nav = useNavigate();
   return (
     <div>
       <div className="w-full h-[80px] flex p-6 justify-between">
@@ -15,7 +17,12 @@ export default function TopBarOwner({ children }) {
           </div>
           <div className="flex">
             <FaUserCircle size={25} />
-            <h1 className="ml-2 font-abc font-[500]">Owner</h1>
+            <h1
+              className="ml-2 font-abc font-[500]"
+              onClick={() => nav("/owner/profile")}
+            >
+              Owner
+            </h1>
           </div>
         </div>
       </div>

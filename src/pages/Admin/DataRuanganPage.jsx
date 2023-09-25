@@ -5,7 +5,7 @@ import TopBar from "../../components/layout/TopBar";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../config/base_url";
 
-export default function DataRuanganPage({ userSession }) {
+export default function DataRuanganPage() {
   const [addRuangan, setaddRuangan] = useState(0);
   const [editRuangan, setEditRuangan] = useState(0);
   const [open, setOpen] = useState(false);
@@ -16,8 +16,8 @@ export default function DataRuanganPage({ userSession }) {
   });
   const [valueEdit, setValueEdit] = useState({
     kodeRuang: "",
-    ruang: ""
-  })
+    ruang: "",
+  });
 
   useEffect(() => {
     getAllRuangan();
@@ -74,7 +74,10 @@ export default function DataRuanganPage({ userSession }) {
 
   const editRuang = async () => {
     try {
-      const res = await axios.put(`${BACKEND_BASE_URL}/api/updateRuang`, valueEdit);
+      const res = await axios.put(
+        `${BACKEND_BASE_URL}/api/updateRuang`,
+        valueEdit
+      );
 
       if (res.status === 200) {
         window.location.reload();
@@ -86,7 +89,7 @@ export default function DataRuanganPage({ userSession }) {
         ruang: err.response.data.errors.ruang,
       });
     }
-  }
+  };
 
   return (
     <div className="w-full h-[160vh] flex">
@@ -94,7 +97,7 @@ export default function DataRuanganPage({ userSession }) {
         <Sidebar setSidebar={4} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-        <TopBar userSession={userSession}>{"Data Ruangan"}</TopBar>
+        <TopBar>{"Data Ruangan"}</TopBar>
         <div className="w-full mt-2 h-[50px] mx-auto ">
           <div className="w-[95%] h-[80px] justify-between flex mx-auto">
             <div className="">
@@ -182,7 +185,10 @@ export default function DataRuanganPage({ userSession }) {
                   {errRuangan.ruang ? <p>{errRuangan.ruang}</p> : null}
                 </div>
                 <div className="w-full justify-center mt-12 flex items-center">
-                  <button onClick={editRuang} className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc">
+                  <button
+                    onClick={editRuang}
+                    className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc"
+                  >
                     Simpan
                   </button>
                   <button

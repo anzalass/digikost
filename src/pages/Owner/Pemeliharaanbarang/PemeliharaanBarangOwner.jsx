@@ -14,7 +14,9 @@ export default function PemeliharaanBarangOwner({ userSession }) {
         <SidebarOwner setSidebar={3} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-        <TopBarOwner userSession={userSession}>{"Pemeliharaan "}</TopBarOwner>
+        <TopBarOwner userSession={userSession}>
+          {"Pemeliharaan Owner"}
+        </TopBarOwner>
 
         <TabelPemeliharaanOwner />
       </div>

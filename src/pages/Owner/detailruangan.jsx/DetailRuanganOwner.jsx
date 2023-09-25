@@ -16,6 +16,7 @@ import { BACKEND_BASE_URL } from "../../../config/base_url";
 // import ModalChangeStatusOwner from "./ModalChangeStatusOwner";
 import ModalChangeStatus from "../../../components/admin/detailbarangruangan/ModalChangeStatus";
 import ModalMaintenence from "../../../components/admin/detailbarangruangan/ModalMaintenence";
+import EditPemeliharaanModal from "../../../components/admin/pemeliharaan/EditPemeliharaanModal";
 
 export default function DetailRuanganOwner() {
   const [loading, setLoading] = useState(true);
@@ -25,6 +26,7 @@ export default function DetailRuanganOwner() {
   const [data, setData] = useState([]);
   const [pengadaan, setPengadaan] = useState([]);
   const [barang, setBarang] = useState([]);
+  const [editMaintenence, setEditMaintenence] = useState(false);
 
   const [pemeliharaanBarang, setPemeliharaanBarang] = useState([]);
 
@@ -195,6 +197,13 @@ export default function DetailRuanganOwner() {
             >
               <BsTrash3 color="red" size={20} />
             </button>
+            <button className="" onClick={() => {
+              updateData.id = params.id;
+              setData(params.row);
+              setEditMaintenence(true)
+            }}>
+              <BiEditAlt color="blue" size={20} />
+            </button>
           </div>
         );
       },
@@ -257,6 +266,14 @@ export default function DetailRuanganOwner() {
       {changeStatus ? (
         <ModalChangeStatus id={updateData.id} open={changeStatus} setOpen={setChangeStatus} />
       ) : null}
+      {editMaintenence ? (
+        <EditPemeliharaanModal
+          open={editMaintenence}
+          setOpen={setEditMaintenence}
+          id={updateData.id}
+          row={data}
+        />
+      ) : null}
       <div className="w-full h-[160vh] flex">
         <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
           <SidebarOwner setSidebar={4} width={open} setWidth={setOpen} />
@@ -265,12 +282,19 @@ export default function DetailRuanganOwner() {
           <TopBarOwner>{"Detail Ruangan Owner"}</TopBarOwner>
           <div className="w-full">
             <div className="w-[96%] mx-auto mt-10">
-              <DataGrid columns={columnsRuangan} rows={rowBarangRuangan.filter((item) => item.qtybarang)} />
+              <DataGrid
+                columns={columnsRuangan}
+                rows={rowBarangRuangan.filter((item) => item.qtybarang)}
+                disableRowSelectionOnClick
+                autoHeight
+              />
             </div>
             <div className="w-[96%] mx-auto mt-12">
               <DataGrid
                 columns={columnsRuanganPemeliharaan}
                 rows={rowBarangRuanganPemeliharaan.filter(item => item.status != 'selesai')}
+                disableRowSelectionOnClick
+                autoHeight
               />
             </div>
           </div>

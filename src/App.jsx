@@ -13,8 +13,6 @@ import TambahBarangOwner from "./pages/Owner/pengadaanbarang/TambahBarangOwner";
 import TambahKategoriOwner from "./pages/Owner/pengadaanbarang/TambahKategoriOwner";
 import EditBarangOwner from "./pages/Owner/pengadaanbarang/EditBarangOwner";
 import AccPengadaanBarangOwner from "./pages/Owner/pengadaanbarang/AccPengadaanBarangOwner";
-
-import axios from "axios";
 import PemeliharaanBarangOwner from "./pages/Owner/Pemeliharaanbarang/PemeliharaanBarangOwner";
 import DataRuanganOwnerPage from "./pages/Owner/dataruangan/DataRuanganOwnerPage";
 import TambahRuanganOwner from "./pages/Owner/dataruangan/TambahRuanganOwner";
@@ -26,74 +24,34 @@ import EditUserPage from "./pages/Admin/editprofileadmin/EditProfileAdminPage";
 import EditProfileAdminPage from "./pages/Admin/editprofileadmin/EditProfileAdminPage";
 import UbahPasswordAdminPage from "./pages/Admin/editprofileadmin/UbahPasswordAdminPage";
 import PengadaanBarangAdminPage from "./pages/Admin/pengadaanbarang/PengadaanBarangAdminPage";
+import EditPengadaanAdminPage from "./pages/Admin/pengadaanbarang/EditPengadaanAdminPage";
+import KategoriAdminPage from "./pages/Admin/pengadaanbarang/KategoriAdminPage";
+import EditPetugasOwnerPage from "./pages/Owner/petugas/EditPetugasOwnerPage";
+import EditProfileOwnerPage from "./pages/Owner/profile/EditProfileOwnerPage";
+import PemeliharaanAdminPage from "./pages/Admin/maintenenceadmin/PemeliharaanAdminPage";
+import { store } from "./redux/store";
+import { loadUser } from "./redux/actions/user";
+import { useSelector } from "react-redux";
 
 function App() {
   const [dataCookie, setDataCookie] = useState([]);
-  let [loading, setLoading] = useState(true);
-  let [color, setColor] = useState("#ffffff");
-  const token = localStorage.getItem("token");
-
+  const { isLogin } = useSelector((state) => state.user);
   useEffect(() => {
-    getSession();
-    console.log(token);
-  }, []);
-
-  // Set the authorization header with the token
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-
-  const getSession = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/api/user", {
-        headers,
-      });
-
-      console.log("response : ", response.data);
-      setDataCookie(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    store.dispatch(loadUser());
+  }, [isLogin === true]);
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/login"
-            element={
-              <LoginPage userSession={dataCookie} loadingValue={loading} />
-            }
-          />
-          <Route
-            path="/"
-            Component={() => <HomePage userSession={dataCookie} />}
-          />
-          <Route
-            path="/tambah-barang"
-            Component={() => <PengadaanBarang userSession={dataCookie} />}
-          />
-          <Route
-            path="/detail-ruangan/:id"
-            Component={() => <DetailBarangRuangan userSession={dataCookie} />}
-          />
-          <Route
-            path="/data-ruangan"
-            element={<DataRuanganPage userSession={dataCookie} />}
-          />
-          <Route
-            path="/pengeluaran"
-            element={<PengeluaranPage userSession={dataCookie} />}
-          />
-          <Route
-            path="/profile"
-            element={<EditProfileAdminPage userSession={dataCookie} />}
-          />
-          <Route
-            path="/reset-password"
-            element={<UbahPasswordAdminPage userSession={dataCookie} />}
-          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/tambah-barang" element={<PengadaanBarang />} />
+          <Route path="/detail-ruangan/:id" element={<DetailBarangRuangan />} />
+          <Route path="/data-ruangan" element={<DataRuanganPage />} />
+          <Route path="/pengeluaran" element={<PengeluaranPage />} />
+          <Route path="/profile" element={<EditProfileAdminPage />} />
+          <Route path="/reset-password" element={<UbahPasswordAdminPage />} />
           {/* Owner Routes */}
           <Route
             path="/owner/"
@@ -135,11 +93,28 @@ function App() {
             element={<PendaftaranPetugas />}
           />
           <Route path="/owner/petugas" element={<DaftarPetugasPage />} />
+          <Route
+            path="/owner/edit-petugas/:id"
+            element={<EditPetugasOwnerPage />}
+          />
+          <Route path="/owner/profile" element={<EditProfileOwnerPage />} />
 
           {/*  REVOLUSI*/}
           <Route
             path="/admin/pengadaan"
             element={<PengadaanBarangAdminPage userSession={dataCookie} />}
+          />
+          <Route
+            path="/admin/edit-pengadaan/:id"
+            element={<EditPengadaanAdminPage userSession={dataCookie} />}
+          />
+          <Route
+            path="/admin/kategori"
+            element={<KategoriAdminPage userSession={dataCookie} />}
+          />
+          <Route
+            path="/admin/pemeliharaan"
+            element={<PemeliharaanAdminPage userSession={dataCookie} />}
           />
           {/*  REVOLUSI*/}
         </Routes>

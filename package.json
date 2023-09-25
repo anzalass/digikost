@@ -20,7 +20,11 @@
     "react-qr-code": "^2.0.12",
     "react-router-dom": "^6.15.0",
     "react-spinners": "^0.13.8",
-    "sweetalert2": "^11.7.27"
+    "sweetalert2": "^11.7.27",
+    "@reduxjs/toolkit": "^1.9.5",
+    "redux": "^4.2.1",
+    "redux-thunk": "^2.4.2",
+    "react-redux": "^8.0.5"
   },
   "devDependencies": {
     "@emotion/react": "^11.11.0",

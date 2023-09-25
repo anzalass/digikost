@@ -1,22 +1,17 @@
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-
 import { BiEditAlt, BiPrinter } from "react-icons/bi";
 import { BsTrash3 } from "react-icons/bs";
 import Swal from "sweetalert2";
 import axios from "axios";
-import ModalAccPemeliharaan from "./ModalAccPemeliharaanOwner";
-import ModalAccPemeliharaanOwner from "./ModalAccPemeliharaanOwner";
-import { useNavigate } from "react-router-dom";
 
 // import "sweetalert2/src/sweetalert2.scss";
 
-export default function TabelPemeliharaanOwner() {
+export default function TabelPemeliharaanAdminPage() {
   const [addPemeliharaan, setAddPemeliharaan] = useState(false);
   const [dataPemeliharaan, setDataPemeliharaan] = useState([]);
   const [filterBulan, setFilterBulan] = useState("");
   const [filterTahun, setFilterTahun] = useState("");
-  const [accPemeliharaan, setAccPemeliharaan] = useState(false);
   const bulan = [
     "Januari",
     "Febuari",
@@ -31,7 +26,6 @@ export default function TabelPemeliharaanOwner() {
     "November",
     "Desember",
   ];
-  const nav = useNavigate();
   let tahunSekarang = new Date().getFullYear() + 1;
   const tahun = [];
 
@@ -102,10 +96,13 @@ export default function TabelPemeliharaanOwner() {
       renderCell: (params) => {
         return (
           <div
-            onClick={() => {
-              setAccPemeliharaan(!accPemeliharaan);
-            }}
-            className=""
+            className={`${
+              params.row.status === "dalam perbaikan"
+                ? "bg-yellow-400"
+                : params.row.status === "selesai"
+                ? "bg-green-500"
+                : "bg-red-600"
+            } h-full text-center pt-3 text-white font-abc w-full `}
           >
             {params.row.status}
           </div>
@@ -126,9 +123,6 @@ export default function TabelPemeliharaanOwner() {
             </button>
             <button className="mr-4" onClick={() => deleteBarang()}>
               <BsTrash3 color="red" size={20} />
-            </button>
-            <button className="">
-              <BiEditAlt color="blue" size={20} />
             </button>
           </div>
         );
@@ -160,7 +154,7 @@ export default function TabelPemeliharaanOwner() {
     });
 
   return (
-    <div className="bg-white w-[95%] mt-1 mx-auto">
+    <div className="bg-white w-[95%] mt-3 mx-auto">
       <div className="flex justify-between w-full p-3">
         <div className="flex">
           <select
@@ -185,30 +179,7 @@ export default function TabelPemeliharaanOwner() {
               return <option value={item}>{item}</option>;
             })}
           </select>
-          <select
-            name=""
-            id=""
-            // onChange={(e) => setFilterTahun(e.target.value)}
-            className="border h-[34px] rounded-xl w-[100px] pl-2 "
-          >
-            <option value="">All</option>
-            <option value="">Pending</option>
-            <option value="">Dalam Perbaikan</option>
-            <option value="">Selesai</option>
-            {/* {tahun.map((item) => {
-              return <option value={item}>{item}</option>;
-            })} */}
-          </select>
         </div>
-        <button
-          onClick={() => nav("/owner/menunggu-acc/")}
-          className="bg-[#7B2CBF] relative mt-1 mb-3 h-[40px] px-3 text-center py-1 w-[300px] rounded-md text-[#E5D5F2] font-abc"
-        >
-          <div className="absolute h-[20px] text-sm w-[20px] text-white bg-red-500 -right-2 -top-2 rounded-full">
-            5
-          </div>
-          Menunggu Persetujuan
-        </button>
       </div>
       <DataGrid
         className="w-[98%] mx-auto"
@@ -217,12 +188,6 @@ export default function TabelPemeliharaanOwner() {
         columns={columns}
         rows={row}
       />
-      {accPemeliharaan ? (
-        <ModalAccPemeliharaanOwner
-          open={accPemeliharaan}
-          setOpen={setAccPemeliharaan}
-        />
-      ) : null}
     </div>
   );
 }
