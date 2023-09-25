@@ -33,8 +33,24 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
       url: "/data-ruangan",
       icon: <HiMiniClipboardDocumentList className="my-auto" />,
     },
-
   ];
+
+  const logout = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/logout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (res) {
+        localStorage.removeItem("token");
+        window.location.reload();
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
 
   const navigate = useNavigate();
   let [menuClick, setMenuClick] = useState(1);
@@ -116,6 +132,21 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
                 </h1>
               </Link>
             ))}
+          <div
+            onClick={logout}
+            className={`flex mt-2 bg-white text-black cursor-pointer h-[30px] rounded-md p-1 pl-3`}
+          >
+            <HiMiniClipboardDocumentList className="my-auto" />,
+            <h1
+              className={`${
+                !width
+                  ? "hidden  md:hidden lg:block xl:block "
+                  : "hidden  md:hidden lg:hidden xl:hidden "
+              } ml-2 font-abc my-auto text-[14px]`}
+            >
+              Logout
+            </h1>
+          </div>
         </div>
       </div>
     </div>

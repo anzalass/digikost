@@ -22,6 +22,10 @@ import EditDataRuanganOwner from "./pages/Owner/dataruangan/EditDataRuanganOwner
 import DetailRuanganOwner from "./pages/Owner/detailruangan.jsx/DetailRuanganOwner";
 import DaftarPetugasPage from "./pages/Owner/petugas/DaftarPetugasPage";
 import PendaftaranPetugas from "./pages/Owner/petugas/PendaftaranPetugas";
+import EditUserPage from "./pages/Admin/editprofileadmin/EditProfileAdminPage";
+import EditProfileAdminPage from "./pages/Admin/editprofileadmin/EditProfileAdminPage";
+import UbahPasswordAdminPage from "./pages/Admin/editprofileadmin/UbahPasswordAdminPage";
+import PengadaanBarangAdminPage from "./pages/Admin/pengadaanbarang/PengadaanBarangAdminPage";
 
 function App() {
   const [dataCookie, setDataCookie] = useState([]);
@@ -82,6 +86,14 @@ function App() {
             path="/pengeluaran"
             element={<PengeluaranPage userSession={dataCookie} />}
           />
+          <Route
+            path="/profile"
+            element={<EditProfileAdminPage userSession={dataCookie} />}
+          />
+          <Route
+            path="/reset-password"
+            element={<UbahPasswordAdminPage userSession={dataCookie} />}
+          />
           {/* Owner Routes */}
           <Route
             path="/owner/"
@@ -123,6 +135,13 @@ function App() {
             element={<PendaftaranPetugas />}
           />
           <Route path="/owner/petugas" element={<DaftarPetugasPage />} />
+
+          {/*  REVOLUSI*/}
+          <Route
+            path="/admin/pengadaan"
+            element={<PengadaanBarangAdminPage userSession={dataCookie} />}
+          />
+          {/*  REVOLUSI*/}
         </Routes>
       </BrowserRouter>
     </>

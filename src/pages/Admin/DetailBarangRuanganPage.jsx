@@ -11,6 +11,7 @@ import ModalChangeStatus from "../../components/admin/detailbarangruangan/ModalC
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../config/base_url";
+import EditPemeliharaanModal from "../../components/admin/pemeliharaan/EditPemeliharaanModal";
 
 export default function DetailBarangRuangan({ userSession }) {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,7 @@ export default function DetailBarangRuangan({ userSession }) {
   const [pengadaan, setPengadaan] = useState([]);
   const [barang, setBarang] = useState([]);
   const [pemeliharaanBarang, setPemeliharaanBarang] = useState([]);
+  const [editMaintenence, setEditMaintenence] = useState(false);
   const rowBarangRuangan = [];
 
   const [updateData, setUpdateData] = useState({
@@ -46,7 +48,10 @@ export default function DetailBarangRuangan({ userSession }) {
         item.is_active == 1
     );
     const filterPemeliharaan = pemeliharaanBarang.filter(
-      (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id && item.status != 'selesai'
+      (item) =>
+        item.kodeBarang == a.kodeBarang &&
+        item.kodeRuang == id &&
+        item.status != "selesai"
     );
 
     filterPengadaan.forEach((bi) => {
@@ -130,12 +135,6 @@ export default function DetailBarangRuangan({ userSession }) {
             >
               <GiAutoRepair size={20} />
             </button>
-            <button className="mr-4">
-              <BsTrash3 color="red" size={20} />
-            </button>
-            <button className="" onClick={() => edit(1)}>
-              <BiEditAlt color="blue" size={20} />
-            </button>
           </div>
         );
       },
@@ -198,14 +197,10 @@ export default function DetailBarangRuangan({ userSession }) {
       minWidth: 100,
       flex: 0.7,
       renderCell: (params) => {
-        if (params.row.status != 'pending') {
+        if (params.row.status == 'pending') {
           return (
             <div
               className=""
-              onClick={() => {
-                updateData.id = params.id;
-                setChangeStatus(!changeStatus);
-              }}
             >
               {params.row.status}
             </div>
@@ -214,6 +209,10 @@ export default function DetailBarangRuangan({ userSession }) {
           return (
             <div
               className=""
+              onClick={() => {
+                updateData.id = params.id;
+                setChangeStatus(!changeStatus);
+              }}
             >
               {params.row.status}
             </div>
@@ -236,6 +235,18 @@ export default function DetailBarangRuangan({ userSession }) {
               className="mr-4"
             >
               <BsTrash3 color="red" size={20} />
+            </button>
+            <button className="">
+              <BiEditAlt
+                color="blue"
+                size={20}
+                onClick={() => {
+                  updateData.id = params.id;
+                  setData(params.row);
+                  setEditMaintenence(true)
+                }
+                }
+              />
             </button>
           </div>
         );
@@ -274,6 +285,14 @@ export default function DetailBarangRuangan({ userSession }) {
           setOpen={setMaintenence}
           data={data}
           ruang={id}
+        />
+      ) : null}
+      {editMaintenence ? (
+        <EditPemeliharaanModal
+          open={editMaintenence}
+          setOpen={setEditMaintenence}
+          id={updateData.id}
+          row={data}
         />
       ) : null}
       <div className="w-full h-[160vh] flex">

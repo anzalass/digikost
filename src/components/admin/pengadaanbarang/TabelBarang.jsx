@@ -179,6 +179,7 @@ export default function TabelBarang({ data }) {
           tgl: a.tanggalPembelian,
           harga: a.hargaBarang,
           lokasi_barang: a.ruang,
+          linkBarcode: a.linkBarcode,
           foto: a.buktiNota,
           qty_barang: a.quantity,
           total_harga: a.hargaBarang * a.quantity,
@@ -300,8 +301,8 @@ export default function TabelBarang({ data }) {
             <button
               className="mr-4"
               onClick={() => {
-                setValuePengadaan(params.row.foto);
-                console.log(params.row.foto, "Adasdasdasdas");
+                setValuePengadaan(params.row.linkBarcode);
+                console.log(params.row.linkBarcodeR, "Adasdasdasdas");
                 setDetailPengadaan(true);
               }}
             >
@@ -397,7 +398,13 @@ export default function TabelBarang({ data }) {
                   type="file"
                   name="buktiNota"
                   id="buktiNota"
-                  onChange={(e) => { setPengadaan({ ...pengadaan, buktiNota: e.target.files[0] }); setImg(e.target.files[0]) }}
+                  onChange={(e) => {
+                    setPengadaan({
+                      ...pengadaan,
+                      buktiNota: e.target.files[0],
+                    });
+                    setImg(e.target.files[0]);
+                  }}
                   className="hidden border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
                 {errPengadaan.buktiNota ? (
@@ -486,13 +493,7 @@ export default function TabelBarang({ data }) {
                   <p>{errPengadaan.hargaBarang}</p>
                 ) : null}
               </div>
-              <div className="w-full mt-4">
-                <h1 className="font-abc pb-2">Total Harga</h1>
-                <input
-                  type="text"
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                />
-              </div>
+
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
                 <button
                   onClick={(e) => TambahPengadaan(e)}

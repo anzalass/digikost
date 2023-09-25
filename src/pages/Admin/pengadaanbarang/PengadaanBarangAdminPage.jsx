@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from "react";
-import SidebarOwner from "../../../components/layoutowner/SidebarOwner";
-import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
+import Sidebar from "../../../components/layout/Sidebar";
+import TopBar from "../../../components/layout/TopBar";
 import { BsEye, BsTrash3 } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
-import { AiOutlineArrowRight } from "react-icons/ai";
 import { DataGrid } from "@mui/x-data-grid";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
 import { useNavigate } from "react-router-dom";
-import testgambar from "../../../assets/img_car.png";
 import axios from "axios";
-import DetailPengadaan from "../../../components/admin/pengadaanbarang/DetailPengadaan";
-import FotoDetail from "../../../components/admin/pengadaanbarang/FotoDetail";
-import ModalPengadaanOwner from "./ModalPengadaanOwner";
 
-export default function PengadaanBarangOwner() {
+export default function PengadaanBarangAdminPage({ userSession }) {
   const [open, setOpen] = useState(false);
-  const nav = useNavigate();
+  const [gridKey, setGridKey] = useState(0);
   const [barang, setBarang] = useState([]);
+  const [allKategori, setallKategori] = useState([]);
   const [editBarang, setEditBarang] = useState(false);
   const [valuePengadaan, setValuePengadaan] = useState();
   const [detailPengadaan, setDetailPengadaan] = useState(false);
   const [pengadaanBarang, setPengadaanBarang] = useState(false);
-  const [detailFoto, setDetailFoto] = useState(false);
   const [foto, setFoto] = useState("");
+  const nav = useNavigate();
   const [img, setImg] = useState();
   const [idBarang, setIdBarang] = useState("");
   const [kategori, setKategori] = useState([]);
@@ -29,7 +26,7 @@ export default function PengadaanBarangOwner() {
   const [filterBulan, setFilterBulan] = useState("");
   const [filterTahun, setFilterTahun] = useState("");
   const [status, setStatus] = useState("");
-  const [modalAccPengadaan, setModalAccPengadaan] = useState(false);
+  const [filter, setFilter] = useState("");
   const bulan = [
     "Januari",
     "Febuari",
@@ -46,27 +43,24 @@ export default function PengadaanBarangOwner() {
   ];
   let tahunSekarang = new Date().getFullYear() + 1;
   const tahun = [];
-  const [gridKey, setGridKey] = useState(0);
-  const [filter, setFilter] = useState("");
 
   for (let i = 0; i < 10; i++) {
     tahun.push(tahunSekarang - 1);
     tahunSekarang = tahunSekarang - 1;
   }
-  const editBarangFunc = (id) => {
-    nav(`/owner/edit-barang/${id}`);
-  };
 
   const fetchData = async () => {
     try {
       const queryParams = {
         quantity: 1,
       };
-      const result = await axios.get(`http://localhost:8000/api/pengadaan`);
+      const result = await axios.get(`${BACKEND_BASE_URL}/api/pengadaan`);
       setBarang(result.data.results);
 
-      const resultRuang = await axios.get(`http://localhost:8000/api/getRuang`);
-      setRuang(resultRuang.data.results);
+      const resultKategori = await axios.get(
+        `${BACKEND_BASE_URL}/api/getKategori`
+      );
+      setallKategori(resultKategori.data.results);
 
       // Add a delay before making the next request
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
@@ -159,7 +153,6 @@ export default function PengadaanBarangOwner() {
       renderCell: (params) => {
         return (
           <div
-            onClick={() => setModalAccPengadaan(true)}
             className={`${
               params.row.status === "pending"
                 ? "bg-yellow-400"
@@ -193,8 +186,8 @@ export default function PengadaanBarangOwner() {
               className="mr-4"
               onClick={() => {
                 setValuePengadaan(params.row.foto);
+                console.log(params.row.foto, "Adasdasdasdas");
                 setDetailPengadaan(true);
-                console.log(params, "kom");
               }}
             >
               <BsEye size={20} />
@@ -215,12 +208,7 @@ export default function PengadaanBarangOwner() {
     },
   ];
 
-  const DeletePengadaan = async (id) => {
-    await axios.delete("http://127.0.0.1:8000/api/pengadaanDelete/" + id);
-    window.location.reload();
-  };
-
-  const row = [];
+  let row = [];
 
   const showBarang = () => {
     barang
@@ -251,64 +239,50 @@ export default function PengadaanBarangOwner() {
   showBarang();
 
   return (
-    <>
-      {modalAccPengadaan ? (
-        <ModalPengadaanOwner
-          open={modalAccPengadaan}
-          setOpen={setModalAccPengadaan}
-        />
-      ) : null}
-      {detailPengadaan ? (
-        <DetailPengadaan
-          open={detailPengadaan}
-          setOpen={setDetailPengadaan}
-          value={valuePengadaan}
-        />
-      ) : null}
-      {detailFoto ? (
-        <FotoDetail open={detailFoto} setOpen={setDetailFoto} foto={foto} />
-      ) : null}
+    <div>
       <div className="w-full h-[160vh] flex">
         <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
-          <SidebarOwner setSidebar={2} width={open} setWidth={setOpen} />
+          <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
         </div>
         <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-          <TopBarOwner>{"Dashboard Owner"}</TopBarOwner>
-          <div className=" min-h-screen bg-white  w-[95%] mx-auto mt-[10px] ">
-            {/* section 1  */}
-            <div className="w-full h-[100px] bg-white flex p-3  justify-between">
+          <TopBar userSession={userSession}>{"Dashboard Admin"}</TopBar>
+
+          <div className="w-[95%] mx-auto">
+            <div className="w-[100%] h-[80px] justify-between flex mx-auto">
               <div className="">
                 <button
-                  onClick={() => nav("/owner/tambah-barang")}
-                  className="bg-[#7B2CBF] h-[40px] mt-1 mr-2 mb-3 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
-                >
-                  Tambah Barang +
-                </button>
-                <button
-                  onClick={() => nav("/owner/kategori")}
-                  className="bg-[#7B2CBF] h-[40px] mt-1 mb-3 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
+                  // onClick={() => setAddBarang(!addBarang)}
+                  className="bg-[#7B2CBF] mt-5 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
                 >
                   Kategori Barang
                 </button>
               </div>
-              <button
-                onClick={() => nav("/owner/menunggu-acc/")}
-                className="bg-[#7B2CBF] relative mt-1 mb-3 h-[40px] px-3 text-center py-1 w-[300px] rounded-md text-[#E5D5F2] font-abc"
-              >
-                <div className="absolute h-[20px] text-sm w-[20px] text-white bg-red-500 -right-2 -top-2 rounded-full">
-                  {barang.filter((item) => item.status == "pending").length}
-                </div>
-                Menunggu Persetujuan
-              </button>
+              {/* {addBarang ? null : ( */}
+              <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
+                <input
+                  type="text"
+                  className="w-full h-full pl-2 rounded-lg"
+                  placeholder="Search"
+                />
+              </div>
+              {/* )} */}
             </div>
-            {/* section 1  */}
-            {/* section 2 */}
-            <div className="w-full  bg-white flex p-3  justify-start">
+            <div className="w-[100%] opacity-25 mx-auto mt-0 h-[1px] bg-slate-600"></div>
+            <div className="flex justify-between">
+              <div className="">
+                <button
+                  onClick={() => setPengadaanBarang(!pengadaanBarang)}
+                  className="bg-[#7B2CBF] mt-1 mb-3 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
+                >
+                  Tambah Barang +
+                </button>
+              </div>
               <form className="flex ">
                 <div className="">
                   <select
                     name=""
                     id="ruang"
+                    onChange={(e) => setFilter(e.target.value)}
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
                     <option value="" selected>
@@ -323,13 +297,12 @@ export default function PengadaanBarangOwner() {
                   <select
                     name=""
                     id="bulan"
+                    onChange={(e) => setFilterBulan(e.target.value)}
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
-                    <option value="" selected>
-                      Bulan
-                    </option>
-                    {bulan.map((item) => {
-                      return <option value={item}>{item}</option>;
+                    <option value="">Bulan</option>
+                    {bulan.map((item, index) => {
+                      return <option value={index}>{item}</option>;
                     })}
                   </select>
                 </div>
@@ -337,13 +310,12 @@ export default function PengadaanBarangOwner() {
                   <select
                     name=""
                     id="tahun"
+                    onChange={(e) => setFilterTahun(e.target.value)}
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
                     <option value="">Tahun</option>
-                    {tahun.map((item) => {
-                      return (
-                        <option value={item}>{item}</option>
-                      )
+                    {tahun.map((item, index) => {
+                      return <option value={item}>{item}</option>;
                     })}
                   </select>
                 </div>
@@ -351,32 +323,31 @@ export default function PengadaanBarangOwner() {
                   <select
                     name=""
                     id="statuss"
+                    onChange={(e) => setStatus(e.target.value)}
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
                     <option value="">Status</option>
-                    <option value="">Pending</option>
-                    <option value="">Acc</option>
+                    <option value="pending">Pending</option>
+                    <option value="accept">Acc</option>
                     <option value="">All</option>
                   </select>
                 </div>
-                <button className="bg-[#7B2CBF]  mb-4 px-3 text-center py-1 w-[100px] rounded-xl text-[#E5D5F2] font-abc">
-                  Filter
-                </button>
+                {/* <button className="bg-[#7B2CBF]  mb-4 px-3 text-center py-1 w-[100px] rounded-xl text-[#E5D5F2] font-abc">
+                      Filter
+                    </button> */}
               </form>
             </div>
-            {/* section 2 */}
-            {/* section 3 */}
             <DataGrid
-              className="w-[98%] mx-auto"
+              key={gridKey}
               disableRowSelectionOnClick
               autoHeight
               columns={columns}
               rows={row}
+              data={row}
             />
-            {/* section 3 */}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

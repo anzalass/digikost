@@ -20,8 +20,8 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
   const [errResponse, setErrResponse] = useState({
     jumlah: "",
     harga: "",
-    keterangan: ""
-  })
+    keterangan: "",
+  });
 
   useEffect(() => {
     setDataBarang((prevData) => ({
@@ -72,14 +72,14 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
       setErrResponse({
         jumlah: err.response.data.error.jumlah,
         harga: err.response.data.error.harga,
-        keterangan: err.response.data.error.keterangan
-      })
+        keterangan: err.response.data.error.keterangan,
+      });
     }
   };
 
   return (
     <div className="w-full h-screen  flex items-center left-0 top-0 fixed z-40 bg-[#00000030]">
-      <div className="w-[400px]  h-[250px]  mx-auto bg-white p-3 rounded-lg">
+      <div className="w-[400px]  h-[300px]  mx-auto bg-white p-3 rounded-lg">
         <div className="w-[90%] mx-auto mt-3 my-auto">
           <div className="w-full">
             <h1>Set Quantity Kipas yang Ingin di Maintenence</h1>
@@ -90,9 +90,7 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
               onChange={(e) => handleChange(e)}
               className="w-full mt-2 h-[30px] border-2 border-slate-500 rounded-md"
             />
-            {errResponse.jumlah ?
-              <p>{errResponse.jumlah}</p> : null
-            }
+            {errResponse.jumlah ? <p>{errResponse.jumlah}</p> : null}
             <h1>Masukkan Harga Maintenance Barang</h1>
             <input
               type="number"
@@ -100,9 +98,7 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
               onChange={(e) => handleChange(e)}
               className="w-full mt-2 h-[30px] border-2 border-slate-500 rounded-md"
             />
-            {errResponse.harga ?
-              <p>{errResponse.harga}</p> : null
-            }
+            {errResponse.harga ? <p>{errResponse.harga}</p> : null}
             <h1>Keterangan Barang</h1>
             <input
               type="text"
@@ -110,9 +106,7 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
               onChange={(e) => handleChange(e)}
               className="w-full mt-2 h-[30px] border-2 border-slate-500 rounded-md"
             />
-            {errResponse.keterangan ?
-              <p>{errResponse.keterangan}</p> : null
-            }
+            {errResponse.keterangan ? <p>{errResponse.keterangan}</p> : null}
             <div className="mx-auto flex justify-center items-center w-full mt-2">
               <button
                 onClick={tambahPemeliharaan}

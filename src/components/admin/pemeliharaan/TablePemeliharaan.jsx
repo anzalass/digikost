@@ -124,9 +124,6 @@ export default function TablePengeluaran() {
             <button className="mr-4" onClick={() => deleteBarang()}>
               <BsTrash3 color="red" size={20} />
             </button>
-            <button className="">
-              <BiEditAlt color="blue" size={20} />
-            </button>
           </div>
         );
       },
@@ -182,11 +179,6 @@ export default function TablePengeluaran() {
               return <option value={item}>{item}</option>;
             })}
           </select>
-          <div className="">
-            <button className="bg-[#7B2CBF] mb-3 px-3 text-center py-1 w-[130px] rounded-3xl text-[#E5D5F2] font-abc">
-              Tampilkan
-            </button>
-          </div>
         </div>
       </div>
       <DataGrid
@@ -196,12 +188,6 @@ export default function TablePengeluaran() {
         columns={columns}
         rows={row}
       />
-      {addPemeliharaan ? (
-        <TambahPemeliharaan
-          setClose={setAddPemeliharaan}
-          close={!addPemeliharaan}
-        />
-      ) : null}
     </div>
   );
 }

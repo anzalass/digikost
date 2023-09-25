@@ -73,10 +73,17 @@ export default function EditBarang({ close, setClose, idBarang }) {
     const getBarang = await axios.get("http://127.0.0.1:8000/api/getKategori");
     const getKategori = await axios.get("http://127.0.0.1:8000/api/getKategori");
 
+
     setKategori(getKategori.data.results);
     setRuang(getRuang.data.results);
     setBarang(getBarang.data.results);
-  }
+
+    if (getRuang) {
+      setRuang(getRuang.data.results);
+      setBarang(getBarang.data.results);
+    }
+  };
+
 
 
   const getDataByID = async () => {
@@ -221,12 +228,20 @@ export default function EditBarang({ close, setClose, idBarang }) {
                     if (item.ruang == data.ruang) {
                       console.log("item : ", item.kodeRuang);
                       return (
-                        <option key={item.kodeBarang} value={item.kodeRuang} selected>{item.ruang}</option>
-                      )
+                        <option
+                          key={item.kodeBarang}
+                          value={item.kodeRuang}
+                          selected
+                        >
+                          {item.ruang}
+                        </option>
+                      );
                     } else {
                       return (
-                        <option key={item.kodeBarang} value={item.kodeRuang}>{item.ruang}</option>
-                      )
+                        <option key={item.kodeBarang} value={item.kodeRuang}>
+                          {item.ruang}
+                        </option>
+                      );
                     }
                   })}
                 </select>
@@ -251,15 +266,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
-              <div className="w-full mt-4">
-                <h1 className="font-abc pb-2">Total Harga</h1>
-                <input
-                  type="text"
-                  value={data.totalHargaBarang}
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                  disabled
-                />
-              </div>
+
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
                 <button
                   onClick={() => UpdatePengadaan()}
