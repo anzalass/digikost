@@ -4,24 +4,23 @@ import { BsFillBellFill } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../config/base_url";
 
 export default function TopBar({ children }) {
   const nav = useNavigate();
   const { user } = useSelector((state) => state.user);
 
-  // useEffect(() => {
-  //   // Add a delay of 1000 milliseconds (1 second) before checking userSession
-  //   const delay = 3000;
+  useEffect(() => {
+    const delay = 2000;
 
-  //   const timer = setTimeout(() => {
-  //     if (userSession.id == undefined) {
-  //       window.location.href = "/login";
-  //     }
-  //   }, delay);
+    const timer = setTimeout(() => {
+      if (user == undefined) {
+        window.location.href = `${BASE_URL}`;
+      }
+    }, delay);
 
-  //   // Clear the timer if the component unmounts or userSession changes
-  //   return () => clearTimeout(timer);
-  // }, [userSession]);
+    return () => clearTimeout(timer);
+  }, [user]);
 
   return (
     <div>

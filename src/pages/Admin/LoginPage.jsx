@@ -3,10 +3,13 @@ import loginBanner from "../../assets/BACKGROUND.png";
 import digiKosLogo from "../../assets/Digikos.svg";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { BASE_URL } from "../../config/base_url";
 
-export default function LoginPage({ userSession }) {
+export default function LoginPage({ children }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user } = useSelector((state) => state.user);
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -51,17 +54,24 @@ export default function LoginPage({ userSession }) {
     }
   };
 
-  if (userSession.name != undefined) {
-    window.location.href = "/";
-  }
+  useEffect(() => {
+    if (user?.role !== undefined) {
+      window.location.href = `${BASE_URL}`;
+    }
+  }, [user]);
 
-  if (redirect) {
-    window.location.href = "/";
-  }
+  // if (user.name != undefined) {
+  //   window.location.href = "/";
+  // }
+
+  // if (redirect) {
+  //   window.location.href = "/";
+  // }
 
   return (
     <div className="w-full h-[100vh] bg-[#fff] flex">
       <div className="w-[50%] relative h-full justify-center p-5 items-center ">
+        {children}
         <img
           src={digiKosLogo}
           className="h-[50px] z-40 mx-auto mt-12  w-[150px] invisible"

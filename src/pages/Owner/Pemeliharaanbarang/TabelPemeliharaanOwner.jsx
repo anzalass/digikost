@@ -16,6 +16,7 @@ export default function TabelPemeliharaanOwner() {
   const [dataPemeliharaan, setDataPemeliharaan] = useState([]);
   const [filterBulan, setFilterBulan] = useState("");
   const [filterTahun, setFilterTahun] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
   const [accPemeliharaan, setAccPemeliharaan] = useState(false);
   const bulan = [
     "Januari",
@@ -144,7 +145,8 @@ export default function TabelPemeliharaanOwner() {
         (filterBulan === "" ||
           new Date(item.created_at).getMonth() === Number(filterBulan)) &&
         (filterTahun === "" ||
-          new Date(item.created_at).getFullYear() === Number(filterTahun))
+          new Date(item.created_at).getFullYear() === Number(filterTahun)) &&
+        (filterStatus === "" || item.status === filterStatus)
     )
     .forEach((a) => {
       row.push({
@@ -188,20 +190,20 @@ export default function TabelPemeliharaanOwner() {
           <select
             name=""
             id=""
-            // onChange={(e) => setFilterTahun(e.target.value)}
+            onChange={(e) => setFilterStatus(e.target.value)}
             className="border h-[34px] rounded-xl w-[100px] pl-2 "
           >
             <option value="">All</option>
-            <option value="">Pending</option>
-            <option value="">Dalam Perbaikan</option>
-            <option value="">Selesai</option>
+            <option value="pending">Pending</option>
+            <option value="dalam perbaikan">Dalam Perbaikan</option>
+            <option value="selesai">Selesai</option>
             {/* {tahun.map((item) => {
               return <option value={item}>{item}</option>;
             })} */}
           </select>
         </div>
         <button
-          onClick={() => nav("/owner/menunggu-acc/")}
+          onClick={() => window.print()}
           className="bg-[#7B2CBF] relative mt-1 mb-3 h-[40px] px-3 text-center py-1 w-[300px] rounded-md text-[#E5D5F2] font-abc"
         >
           <div className="absolute h-[20px] text-sm w-[20px] text-white bg-red-500 -right-2 -top-2 rounded-full">

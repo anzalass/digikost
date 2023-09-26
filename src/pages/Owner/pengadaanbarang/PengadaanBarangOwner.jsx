@@ -160,13 +160,12 @@ export default function PengadaanBarangOwner() {
         return (
           <div
             onClick={() => setModalAccPengadaan(true)}
-            className={`${
-              params.row.status === "pending"
-                ? "bg-yellow-400"
-                : params.row.status === "acc"
+            className={`${params.row.status === "pending"
+              ? "bg-yellow-400"
+              : params.row.status === "acc"
                 ? "bg-green-500"
                 : "bg-red-600"
-            } h-full text-center pt-3 text-white font-abc w-full `}
+              } h-full text-center pt-3 text-white font-abc w-full `}
           >
             {params.row.status}
           </div>
@@ -308,6 +307,7 @@ export default function PengadaanBarangOwner() {
                 <div className="">
                   <select
                     name=""
+                    onChange={e => setFilter(e.target.value)}
                     id="ruang"
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
@@ -322,20 +322,22 @@ export default function PengadaanBarangOwner() {
                 <div className="">
                   <select
                     name=""
+                    onChange={e => { setFilterBulan(e.target.value); console.log(e.target.value); }}
                     id="bulan"
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
                     <option value="" selected>
                       Bulan
                     </option>
-                    {bulan.map((item) => {
-                      return <option value={item}>{item}</option>;
+                    {bulan.map((item, index) => {
+                      return <option value={index}>{item}</option>;
                     })}
                   </select>
                 </div>
                 <div className="">
                   <select
                     name=""
+                    onChange={e => { setFilterTahun(e.target.value); console.log(e.target.value); }}
                     id="tahun"
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
@@ -350,12 +352,13 @@ export default function PengadaanBarangOwner() {
                 <div className="">
                   <select
                     name=""
-                    id="statuss"
+                    onChange={e => setStatus(e.target.value)}
+                    id="status"
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
                     <option value="">Status</option>
-                    <option value="">Pending</option>
-                    <option value="">Acc</option>
+                    <option value="pending">Pending</option>
+                    <option value="selesai">Acc</option>
                     <option value="">All</option>
                   </select>
                 </div>

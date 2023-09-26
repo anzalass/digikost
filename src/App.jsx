@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import LoginPage from "./pages/Admin/LoginPage";
 import HomePage from "./pages/Admin/HomePage";
 import PengadaanBarang from "./pages/Admin/PengadaanBarangPage";
@@ -35,7 +35,7 @@ import { useSelector } from "react-redux";
 
 function App() {
   const [dataCookie, setDataCookie] = useState([]);
-  const { isLogin } = useSelector((state) => state.user);
+  const { isLogin, user } = useSelector((state) => state.user);
   useEffect(() => {
     store.dispatch(loadUser());
   }, [isLogin === true]);
@@ -43,81 +43,90 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="/tambah-barang" element={<PengadaanBarang />} />
-          <Route path="/detail-ruangan/:id" element={<DetailBarangRuangan />} />
-          <Route path="/data-ruangan" element={<DataRuanganPage />} />
-          <Route path="/pengeluaran" element={<PengeluaranPage />} />
-          <Route path="/profile" element={<EditProfileAdminPage />} />
-          <Route path="/reset-password" element={<UbahPasswordAdminPage />} />
-          {/* Owner Routes */}
-          <Route
-            path="/owner/"
-            element={<HomePageOwner userSession={dataCookie} />}
-          />
-          <Route
-            path="/owner/pengadaan-barang"
-            element={<PengadaanBarangOwner />}
-          />
-          <Route path="/owner/tambah-barang" element={<TambahBarangOwner />} />
-          <Route path="/owner/kategori" element={<TambahKategoriOwner />} />
-          <Route path="/owner/edit-barang/:id" element={<EditBarangOwner />} />
-          <Route
-            path="/owner/pemeliharaan"
-            element={<PemeliharaanBarangOwner />}
-          />
-          <Route
-            path="/owner/menunggu-acc"
-            element={<AccPengadaanBarangOwner />}
-          />
-          <Route
-            path="/owner/data-ruangan"
-            element={<DataRuanganOwnerPage />}
-          />
-          <Route
-            path="/owner/tambah-ruangan"
-            element={<TambahRuanganOwner />}
-          />
-          <Route
-            path="/owner/edit-ruangan"
-            element={<EditDataRuanganOwner />}
-          />
-          <Route
-            path="/owner/detail-ruangan/:id"
-            element={<DetailRuanganOwner />}
-          />
-          <Route
-            path="/owner/daftar-petugas"
-            element={<PendaftaranPetugas />}
-          />
-          <Route path="/owner/petugas" element={<DaftarPetugasPage />} />
-          <Route
-            path="/owner/edit-petugas/:id"
-            element={<EditPetugasOwnerPage />}
-          />
-          <Route path="/owner/profile" element={<EditProfileOwnerPage />} />
+        {user === undefined ? (
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+          </Routes>
+        )
+          :
+          user.role === 2 ? (
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/tambah-barang" element={<PengadaanBarang />} />
+              <Route path="/detail-ruangan/:id" element={<DetailBarangRuangan />} />
+              <Route path="/data-ruangan" element={<DataRuanganPage />} />
+              <Route path="/pengeluaran" element={<PengeluaranPage />} />
+              <Route path="/profile" element={<EditProfileAdminPage />} />
+              <Route path="/reset-password" element={<UbahPasswordAdminPage />} />
+            </Routes>
+          ) : (
+            <Routes>
+              <Route
+                path="/"
+                element={<HomePageOwner userSession={dataCookie} />}
+              />
+              <Route
+                path="/owner/pengadaan-barang"
+                element={<PengadaanBarangOwner />}
+              />
+              <Route path="/owner/tambah-barang" element={<TambahBarangOwner />} />
+              <Route path="/owner/kategori" element={<TambahKategoriOwner />} />
+              <Route path="/owner/edit-barang/:id" element={<EditBarangOwner />} />
+              <Route
+                path="/owner/pemeliharaan"
+                element={<PemeliharaanBarangOwner />}
+              />
+              <Route
+                path="/owner/menunggu-acc"
+                element={<AccPengadaanBarangOwner />}
+              />
+              <Route
+                path="/owner/data-ruangan"
+                element={<DataRuanganOwnerPage />}
+              />
+              <Route
+                path="/owner/tambah-ruangan"
+                element={<TambahRuanganOwner />}
+              />
+              <Route
+                path="/owner/edit-ruangan"
+                element={<EditDataRuanganOwner />}
+              />
+              <Route
+                path="/owner/detail-ruangan/:id"
+                element={<DetailRuanganOwner />}
+              />
+              <Route
+                path="/owner/daftar-petugas"
+                element={<PendaftaranPetugas />}
+              />
+              <Route path="/owner/petugas" element={<DaftarPetugasPage />} />
+              <Route
+                path="/owner/edit-petugas/:id"
+                element={<EditPetugasOwnerPage />}
+              />
+              <Route path="/owner/profile" element={<EditProfileOwnerPage />} />
 
-          {/*  REVOLUSI*/}
-          <Route
-            path="/admin/pengadaan"
-            element={<PengadaanBarangAdminPage userSession={dataCookie} />}
-          />
-          <Route
-            path="/admin/edit-pengadaan/:id"
-            element={<EditPengadaanAdminPage userSession={dataCookie} />}
-          />
-          <Route
-            path="/admin/kategori"
-            element={<KategoriAdminPage userSession={dataCookie} />}
-          />
-          <Route
-            path="/admin/pemeliharaan"
-            element={<PemeliharaanAdminPage userSession={dataCookie} />}
-          />
-          {/*  REVOLUSI*/}
-        </Routes>
+              {/*  REVOLUSI*/}
+              <Route
+                path="/admin/pengadaan"
+                element={<PengadaanBarangAdminPage userSession={dataCookie} />}
+              />
+              <Route
+                path="/admin/edit-pengadaan/:id"
+                element={<EditPengadaanAdminPage userSession={dataCookie} />}
+              />
+              <Route
+                path="/admin/kategori"
+                element={<KategoriAdminPage userSession={dataCookie} />}
+              />
+              <Route
+                path="/admin/pemeliharaan"
+                element={<PemeliharaanAdminPage userSession={dataCookie} />}
+              />
+            </Routes>
+          )}
+
       </BrowserRouter>
     </>
   );

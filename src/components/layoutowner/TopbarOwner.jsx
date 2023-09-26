@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BsFillBellFill } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../config/base_url";
 
 export default function TopBarOwner({ children }) {
   const nav = useNavigate();
+  const { user } = useSelector((state) => state.user);
+  useEffect(() => {
+    const delay = 2000;
+
+    const timer = setTimeout(() => {
+      if (user == undefined) {
+        window.location.href = `${BASE_URL}`;
+      }
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [user]);
   return (
     <div>
       <div className="w-full h-[80px] flex p-6 justify-between">
@@ -21,7 +35,7 @@ export default function TopBarOwner({ children }) {
               className="ml-2 font-abc font-[500]"
               onClick={() => nav("/owner/profile")}
             >
-              Owner
+              {user?.name}
             </h1>
           </div>
         </div>
