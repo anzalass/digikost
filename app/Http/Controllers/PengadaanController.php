@@ -46,20 +46,39 @@ class PengadaanController extends BaseController
             ],422);
         }else{
             try{
-                Pengadaan::create([
-                    'namaBarang' => $request->namaBarang,
-                    'kodeBarang' => $request->kodeBarang,
-                    'kodeRuang' => $request->kodeRuang,
-                    'merek' => $request->merek,
-                    'hargaBarang'=> $request->hargaBarang,
-                    'quantity' => $request->quantity,
-                    'spesifikasi' => $request->spesifikasi,
-                    'keterangan' => $request->keterangan,
-                    'ruang' => $request->ruang,
-                    'supplier' => $request->supplier,
-                    'buktiNota' => $request->buktiNota,
-                    'linkBarcode' => env('FRONTEND_URL') . '/api/' . $request->ruang,
-                ]);
+                if($request->idAdmin != null){
+                    Pengadaan::create([
+                        'namaBarang' => $request->namaBarang,
+                        'idAdmin'=> $request->idAdmin,
+                        'kodeBarang' => $request->kodeBarang,
+                        'kodeRuang' => $request->kodeRuang,
+                        'merek' => $request->merek,
+                        'hargaBarang'=> $request->hargaBarang,
+                        'quantity' => $request->quantity,
+                        'spesifikasi' => $request->spesifikasi,
+                        'keterangan' => $request->keterangan,
+                        'ruang' => $request->ruang,
+                        'supplier' => $request->supplier,
+                        'buktiNota' => $request->buktiNota,
+                        'linkBarcode' => env('FRONTEND_URL') . '/api/' . $request->ruang,
+                    ]);
+                }else if($request->idOwner != null){
+                    Pengadaan::create([
+                        'namaBarang' => $request->namaBarang,
+                        'idOwner' => $request->idOwner,
+                        'kodeBarang' => $request->kodeBarang,
+                        'kodeRuang' => $request->kodeRuang,
+                        'merek' => $request->merek,
+                        'hargaBarang'=> $request->hargaBarang,
+                        'quantity' => $request->quantity,
+                        'spesifikasi' => $request->spesifikasi,
+                        'keterangan' => $request->keterangan,
+                        'ruang' => $request->ruang,
+                        'supplier' => $request->supplier,
+                        'buktiNota' => $request->buktiNota,
+                        'linkBarcode' => env('FRONTEND_URL') . '/api/' . $request->ruang,
+                    ]);
+                }
                 return response()->json([
                     'message' => "Pengadaan Successfully Created"
                 ],200);
