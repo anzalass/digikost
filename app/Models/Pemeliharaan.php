@@ -14,9 +14,10 @@ class Pemeliharaan extends Model
     protected $primaryKey = 'kodePemeliharaan';
     protected $fillable = [
         'kodePemeliharaan',
+        'idAdmin',
+        'idOwner',
         'kodeBarang',
         'kodeRuang',
-        'idUser',
         'keterangan',
         'jumlah',
         'buktiPembayaran',

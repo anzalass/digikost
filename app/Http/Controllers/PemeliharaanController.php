@@ -25,7 +25,6 @@ class PemeliharaanController extends Controller
             $validator = Validator::make($request->all(),[
                 'kodeBarang'=> 'required',
                 'kodeRuang'=> 'required',
-                'idUser' => 'required',
                 'jumlah'=> 'required',
                 'keterangan'=> 'required',
                 'buktiPembayaran'=> 'required',
@@ -37,16 +36,29 @@ class PemeliharaanController extends Controller
                     'error' => $validator->errors()
                 ],422);
             }else{
-                $pemeliharaan = Pemeliharaan::create([
-                    'kodeBarang'=> $request->kodeBarang,
-                    'kodeRuang'=> $request->kodeRuang,
-                    'idUser' => $request->idUser,
-                    'jumlah'=> $request->jumlah,
-                    'keterangan'=>$request->keterangan,
-                    'buktiPembayaran'=> $request->buktiPembayaran,
-                    'status'=> $request->status,
-                    'harga'=> $request->harga
-                ]);
+                if($request->idAdmin != null){
+                    $pemeliharaan = Pemeliharaan::create([
+                        'idAdmin' => $request->idAdmin,
+                        'kodeBarang'=> $request->kodeBarang,
+                        'kodeRuang'=> $request->kodeRuang,
+                        'jumlah'=> $request->jumlah,
+                        'keterangan'=>$request->keterangan,
+                        'buktiPembayaran'=> $request->buktiPembayaran,
+                        'status'=> $request->status,
+                        'harga'=> $request->harga
+                    ]);
+                }else if($request->idOwner != null){
+                    $pemeliharaan = Pemeliharaan::create([
+                        'idOwner' => $request->idOwner,
+                        'kodeBarang'=> $request->kodeBarang,
+                        'kodeRuang'=> $request->kodeRuang,
+                        'jumlah'=> $request->jumlah,
+                        'keterangan'=>$request->keterangan,
+                        'buktiPembayaran'=> $request->buktiPembayaran,
+                        'status'=> $request->status,
+                        'harga'=> $request->harga
+                    ]);
+                }
                 
                 if($pemeliharaan){
                     return response()->json([

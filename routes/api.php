@@ -47,6 +47,8 @@ Route::post('tambahPengadaan',[PengadaanController::class, 'TambahPengadaan']);
 Route::put('updatePengadaan/{id}', [PengadaanController::class, 'UpdatePengadaan']);
 Route::delete('pengadaanDelete/{id}',[PengadaanController::class, 'DeletePengadaan']);
 
+Route::put('aksiOwnerPengadaan/{kodeBarang}',[PengadaanController::class, 'AksiOwnerPengadaan']);
+
 //Database User
 Route::get('getUser',[UserController::class, 'getUser']);
 Route::get('getUserById/{id}',[UserController::class,'getUserById']);

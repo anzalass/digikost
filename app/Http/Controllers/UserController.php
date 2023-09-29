@@ -60,7 +60,8 @@ class UserController extends BaseController
                     
                     return response()->json([
                         'status'=>500,
-                        'message' => "could not send email verification, please try again"
+                        'message' => "could not send email verification, please try again",
+                        'error' => $e
                     ],500);
                 }
             }

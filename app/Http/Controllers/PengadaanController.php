@@ -25,6 +25,31 @@ class PengadaanController extends BaseController
         ],200);
     }
 
+    public function AksiOwnerPengadaan(PengadaanRequest $request, $kodeBarang){
+        try{
+            $findPengadaan = Pengadaan::where('id', $kodeBarang)->first();
+
+            if(!$findPengadaan){
+                return response()->json([
+                    'message'=> 'Gabisa'
+                ],404);
+            } 
+
+            $findPengadaan->status = $request->status;
+            $findPengadaan->is_active = $request->is_active;
+            $findPengadaan->save();
+
+            return response()->json([
+                'message'=> 'bisa',
+                'res'=> $findPengadaan
+            ],200);
+        }catch(\Exception $e){
+            return response()->json([
+                'message' => $request->status
+            ],500);
+        }
+    }
+
     public function TambahPengadaan(PengadaanRequest $request){
         $validator = Validator::make($request->all(),[
             'namaBarang' => 'required|string|max:255',
@@ -47,6 +72,7 @@ class PengadaanController extends BaseController
         }else{
             try{
                 if($request->idAdmin != null){
+                    $test = "admin";
                     Pengadaan::create([
                         'namaBarang' => $request->namaBarang,
                         'idAdmin'=> $request->idAdmin,
@@ -63,6 +89,7 @@ class PengadaanController extends BaseController
                         'linkBarcode' => env('FRONTEND_URL') . '/api/' . $request->ruang,
                     ]);
                 }else if($request->idOwner != null){
+                    $test = "owner";
                     Pengadaan::create([
                         'namaBarang' => $request->namaBarang,
                         'idOwner' => $request->idOwner,
@@ -74,13 +101,17 @@ class PengadaanController extends BaseController
                         'spesifikasi' => $request->spesifikasi,
                         'keterangan' => $request->keterangan,
                         'ruang' => $request->ruang,
+                        'status' => "selesai",
+                        'is_active' => 1,
                         'supplier' => $request->supplier,
                         'buktiNota' => $request->buktiNota,
                         'linkBarcode' => env('FRONTEND_URL') . '/api/' . $request->ruang,
                     ]);
                 }
                 return response()->json([
-                    'message' => "Pengadaan Successfully Created"
+                    'message' => "Pengadaan Successfully Created",
+                    'admin' =>$test,
+                    'hasil' => $request->idOwner
                 ],200);
             }catch(\Exception $e){
                 return response()->json([

@@ -20,6 +20,8 @@ class Pengadaan extends Model
      */
     protected $fillable = [
         'id',
+        'idAdmin',
+        'idOwner',
         'kodeBarang',
         'kodeRuang',
         'namaBarang',
@@ -31,6 +33,8 @@ class Pengadaan extends Model
         'ruang',
         'supplier',
         'buktiNota',
+        'status',
+        'is_active',
         'linkBarcode'
     ];
 
