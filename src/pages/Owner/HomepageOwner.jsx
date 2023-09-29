@@ -9,7 +9,7 @@ import TopBarOwner from "../../components/layoutowner/TopbarOwner";
 import AdminDetailCardOwner from "../../components/owner/AdminDetailCardOwner";
 import { useEffect } from "react";
 
-export default function HomePageOwner(userSession) {
+export default function HomePageOwner() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function HomePageOwner(userSession) {
             <Aktivitas />
           </div>
           <div className=" w-[44%] ">
-            <AdminDetailCardOwner userSession={userSession} />
+            <AdminDetailCardOwner />
           </div>
         </div>
       </div>

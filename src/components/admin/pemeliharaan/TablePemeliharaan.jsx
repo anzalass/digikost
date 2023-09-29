@@ -96,13 +96,12 @@ export default function TablePengeluaran() {
       renderCell: (params) => {
         return (
           <div
-            className={`${
-              params.row.status === "dalam perbaikan"
-                ? "bg-yellow-400"
-                : params.row.status === "selesai"
+            className={`${params.row.status === "dalam perbaikan"
+              ? "bg-yellow-400"
+              : params.row.status === "selesai"
                 ? "bg-green-500"
                 : "bg-red-600"
-            } h-full text-center pt-3 text-white font-abc w-full `}
+              } h-full text-center pt-3 text-white font-abc w-full `}
           >
             {params.row.status}
           </div>
@@ -121,9 +120,11 @@ export default function TablePengeluaran() {
             <button className="mr-4">
               <BiPrinter size={20} />
             </button>
-            <button className="mr-4" onClick={() => deleteBarang()}>
-              <BsTrash3 color="red" size={20} />
-            </button>
+            {params.row.status == 'pending' ?
+              <button className="mr-4" onClick={() => deleteBarang()}>
+                <BsTrash3 color="red" size={20} />
+              </button> : <></>
+            }
           </div>
         );
       },

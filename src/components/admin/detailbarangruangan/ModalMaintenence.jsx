@@ -1,21 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BACKEND_BASE_URL } from "../../../config/base_url";
+import { useSelector } from "react-redux";
 
-export default function ModalMaintenence({ open, setOpen, data, ruang }) {
+export default function ModalMaintenence({ open, setOpen, data, ruang, children }) {
+  const { user } = useSelector((state) => state.user);
   const [dataConst, setDataConst] = useState({
     jumlah: 1,
   });
-  const [dataBarang, setDataBarang] = useState({
-    kodeBarang: "",
-    kodeRuang: "",
-    keterangan: "",
-    idUser: 1,
-    jumlah: 1,
-    buktiPembayaran: "",
-    status: "pending",
-    harga: "",
-  });
+
+  const [dataBarang, setDataBarang] = useState({});
 
   const [errResponse, setErrResponse] = useState({
     jumlah: "",
@@ -24,16 +18,29 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
   });
 
   useEffect(() => {
-    setDataBarang((prevData) => ({
-      ...prevData,
-      kodeBarang: data.id,
-      kodeRuang: ruang,
-      keterangan: "",
-      jumlah: 1,
-      buktiPembayaran: "test.jpg",
-      status: "pending",
-      harga: "",
-    }));
+    if (user?.role === 1) {
+      setDataBarang({
+        idOwner: user?.id,
+        kodeBarang: data.id,
+        kodeRuang: ruang,
+        keterangan: "",
+        jumlah: 1,
+        buktiPembayaran: "test.jpg",
+        status: "pending",
+        harga: "",
+      });
+    } else if (user?.role === 2) {
+      setDataBarang({
+        idAdmin: user?.id,
+        kodeBarang: data.id,
+        kodeRuang: ruang,
+        keterangan: "",
+        jumlah: 1,
+        buktiPembayaran: "test.jpg",
+        status: "pending",
+        harga: "",
+      });
+    }
     setDataConst((prevData) => ({
       ...prevData,
       jumlah: data.qtybarang,
@@ -80,6 +87,7 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
   return (
     <div className="w-full h-screen  flex items-center left-0 top-0 fixed z-40 bg-[#00000030]">
       <div className="w-[400px]  h-[300px]  mx-auto bg-white p-3 rounded-lg">
+        {children}
         <div className="w-[90%] mx-auto mt-3 my-auto">
           <div className="w-full">
             <h1>Set Quantity Kipas yang Ingin di Maintenence</h1>

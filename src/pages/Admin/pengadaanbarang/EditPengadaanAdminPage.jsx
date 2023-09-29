@@ -5,7 +5,7 @@ import TopBar from "../../../components/layout/TopBar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-export default function EditPengadaanAdminPage({ userSession }) {
+export default function EditPengadaanAdminPage() {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
   const [pengadaan, setPengadaan] = useState([]);
@@ -97,7 +97,7 @@ export default function EditPengadaanAdminPage({ userSession }) {
           <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
         </div>
         <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-          <TopBar userSession={userSession}>{"Dashboard Admin"}</TopBar>
+          <TopBar>{"Dashboard Admin"}</TopBar>
           <div className="w-full">
             <div className="bg-white w-[96%] mt-3  mb-[200px]  mx-auto p-3 rounded-lg">
               {pengadaan.length !== 0 ? (

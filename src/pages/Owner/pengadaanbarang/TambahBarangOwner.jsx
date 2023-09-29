@@ -4,10 +4,12 @@ import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../../config/base_url";
+import { useSelector } from "react-redux";
 
-export default function TambahBarangOwner() {
+export default function TambahBarangOwner({ children }) {
   const [open, setOpen] = useState(false);
   const [img, setImg] = useState();
+  const { user } = useSelector((state) => state.user);
   const [kategori, setKategori] = useState([]);
   const [ruang, setRuang] = useState([]);
   const nav = useNavigate();
@@ -54,7 +56,8 @@ export default function TambahBarangOwner() {
       );
 
       if (response.status === 200) {
-        window.location.href = `${BASE_URL}owner/pengadaan-barang`;
+        console.log("res : ", response);
+        // window.location.href = `${BASE_URL}owner/pengadaan-barang`;
       }
     } catch (err) {
       console.log(err);
@@ -75,6 +78,7 @@ export default function TambahBarangOwner() {
 
   const [pengadaan, setPengadaan] = useState({
     namaBarang: "",
+    idOwner: user?.id,
     kodeBarang: "",
     kodeRuang: "",
     merek: "",
@@ -109,6 +113,7 @@ export default function TambahBarangOwner() {
 
   return (
     <div className="w-full h-[160vh] flex">
+      {children}
       <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
         <SidebarOwner setSidebar={2} width={open} setWidth={setOpen} />
       </div>

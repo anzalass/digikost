@@ -12,7 +12,7 @@ import FotoDetail from "../../../components/admin/pengadaanbarang/FotoDetail";
 import QrCodeModal from "./QrCodeModal";
 import DetailFotoModal from "./DetailFotoModal";
 
-export default function PengadaanBarangAdminPage({ userSession }) {
+export default function PengadaanBarangAdminPage() {
   const [open, setOpen] = useState(false);
   const [gridKey, setGridKey] = useState(0);
   const [barang, setBarang] = useState([]);
@@ -163,13 +163,12 @@ export default function PengadaanBarangAdminPage({ userSession }) {
       renderCell: (params) => {
         return (
           <div
-            className={`${
-              params.row.status === "pending"
+            className={`${params.row.status === "pending"
                 ? "bg-yellow-400"
                 : params.row.status === "acc"
-                ? "bg-green-500"
-                : "bg-red-600"
-            } h-full text-center pt-3 text-white font-abc w-full `}
+                  ? "bg-green-500"
+                  : "bg-red-600"
+              } h-full text-center pt-3 text-white font-abc w-full `}
           >
             {params.row.status}
           </div>
@@ -270,7 +269,7 @@ export default function PengadaanBarangAdminPage({ userSession }) {
             <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
           </div>
           <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-            <TopBar userSession={userSession}>{"Dashboard Admin"}</TopBar>
+            <TopBar>{"Dashboard Admin"}</TopBar>
 
             <div className="w-[95%] mx-auto">
               <div className="w-[100%] h-[80px] justify-between flex mx-auto">

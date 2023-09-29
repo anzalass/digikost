@@ -4,10 +4,13 @@ import { BiEditAlt, BiPrinter } from "react-icons/bi";
 import { BsTrash3 } from "react-icons/bs";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 // import "sweetalert2/src/sweetalert2.scss";
 
-export default function TabelPemeliharaanAdminPage() {
+export default function TabelPemeliharaanAdminPage({ children }) {
+  const { user } = useSelector((state) => state.user);
+
   const [addPemeliharaan, setAddPemeliharaan] = useState(false);
   const [dataPemeliharaan, setDataPemeliharaan] = useState([]);
   const [filterBulan, setFilterBulan] = useState("");
@@ -96,13 +99,12 @@ export default function TabelPemeliharaanAdminPage() {
       renderCell: (params) => {
         return (
           <div
-            className={`${
-              params.row.status === "dalam perbaikan"
-                ? "bg-yellow-400"
-                : params.row.status === "selesai"
+            className={`${params.row.status === "dalam perbaikan"
+              ? "bg-yellow-400"
+              : params.row.status === "selesai"
                 ? "bg-green-500"
                 : "bg-red-600"
-            } h-full text-center pt-3 text-white font-abc w-full `}
+              } h-full text-center pt-3 text-white font-abc w-full `}
           >
             {params.row.status}
           </div>
@@ -116,16 +118,20 @@ export default function TabelPemeliharaanAdminPage() {
       flex: 0.7,
       sortable: false,
       renderCell: (params) => {
-        return (
-          <div className="flex">
-            <button className="mr-4">
-              <BiPrinter size={20} />
-            </button>
-            <button className="mr-4" onClick={() => deleteBarang()}>
-              <BsTrash3 color="red" size={20} />
-            </button>
-          </div>
-        );
+        if (params.row.idAdmin != user?.id) {
+          return (
+            <div className="flex">
+              <button className="mr-4">
+                <BiPrinter size={20} />
+              </button>
+              {params.row.status != 'selesai' ?
+                <button className="mr-4" onClick={() => deleteBarang()}>
+                  <BsTrash3 color="red" size={20} />
+                </button> : <></>
+              }
+            </div>
+          );
+        }
       },
     },
   ];
@@ -143,6 +149,7 @@ export default function TabelPemeliharaanAdminPage() {
     .forEach((a) => {
       row.push({
         id: a.kodePemeliharaan,
+        idAdmin: a.idAdmin,
         tgl: a.created_at,
         nama_barang: a.kodeBarang,
         jumlah: a.jumlah,

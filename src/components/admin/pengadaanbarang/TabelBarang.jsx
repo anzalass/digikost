@@ -9,8 +9,11 @@ import axios from "axios";
 import FotoDetail from "./FotoDetail";
 import EditBarang from "./EditBarang";
 import DetailPengadaan from "./DetailPengadaan";
+import { useSelector } from "react-redux";
 
-export default function TabelBarang({ data }) {
+export default function TabelBarang({ data, children }) {
+  const { user } = useSelector((state) => state.user);
+
   const [allBarang, setAllBarang] = useState([data]);
   const [editBarang, setEditBarang] = useState(false);
   const [valuePengadaan, setValuePengadaan] = useState();
@@ -56,6 +59,7 @@ export default function TabelBarang({ data }) {
   let row = [];
 
   const [pengadaan, setPengadaan] = useState({
+    idAdmin: user.id,
     namaBarang: "",
     kodeBarang: "",
     kodeRuang: "",
@@ -175,6 +179,7 @@ export default function TabelBarang({ data }) {
       .forEach((a) => {
         row.push({
           id: a.id,
+          idAdmin: a.idAdmin,
           nama_barang: `${a.namaBarang}:${a.merek}`,
           tgl: a.tanggalPembelian,
           harga: a.hargaBarang,
@@ -294,30 +299,36 @@ export default function TabelBarang({ data }) {
       renderCell: (params) => {
         return (
           <div className="flex">
-            <button className="mr-4" onClick={() => DeletePengadaan(params.id)}>
-              <BsTrash3 color="red" size={20} />
-            </button>
-
-            <button
-              className="mr-4"
-              onClick={() => {
-                setValuePengadaan(params.row.linkBarcode);
-                console.log(params.row.linkBarcodeR, "Adasdasdasdas");
-                setDetailPengadaan(true);
-              }}
-            >
-              <BsEye size={20} />
-            </button>
-
-            <button
-              className=""
-              onClick={() => {
-                editBarangFunc(params.id);
-                setIdBarang(params.id);
-              }}
-            >
-              <BiEditAlt color="blue" size={20} />
-            </button>
+            {
+              params.row.status == 'pending' ?
+                params.row.idAdmin == user?.id ?
+                  <>
+                    <button className="mr-4" onClick={() => DeletePengadaan(params.id)}>
+                      <BsTrash3 color="red" size={20} />
+                    </button>
+                    <button
+                      className=""
+                      onClick={() => {
+                        editBarangFunc(params.id);
+                        setIdBarang(params.id);
+                      }}
+                    >
+                      <BiEditAlt color="blue" size={20} />
+                    </button>
+                  </>
+                  :
+                  <></>
+                : <button
+                  className="mr-4"
+                  onClick={() => {
+                    setValuePengadaan(params.row.linkBarcode);
+                    console.log(params.row.linkBarcodeR, "Adasdasdasdas");
+                    setDetailPengadaan(true);
+                  }}
+                >
+                  <BsEye size={20} />
+                </button>
+            }
           </div>
         );
       },

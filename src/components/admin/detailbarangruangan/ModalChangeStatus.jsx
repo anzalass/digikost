@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-export default function ModalChangeStatus({ open, setOpen, id }) {
+export default function ModalChangeStatus({ open, setOpen, id, children }) {
+  const { user } = useSelector((state) => state.user);
   const [data, setData] = useState({
-    status: null
+    status: null,
+    idAdmin: user?.name
   });
 
   const updateStatus = async () => {

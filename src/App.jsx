@@ -34,7 +34,6 @@ import { loadUser } from "./redux/actions/user";
 import { useSelector } from "react-redux";
 
 function App() {
-  const [dataCookie, setDataCookie] = useState([]);
   const { isLogin, user } = useSelector((state) => state.user);
   useEffect(() => {
     store.dispatch(loadUser());
@@ -63,7 +62,7 @@ function App() {
             <Routes>
               <Route
                 path="/"
-                element={<HomePageOwner userSession={dataCookie} />}
+                element={<HomePageOwner />}
               />
               <Route
                 path="/owner/pengadaan-barang"
@@ -110,19 +109,19 @@ function App() {
               {/*  REVOLUSI*/}
               <Route
                 path="/admin/pengadaan"
-                element={<PengadaanBarangAdminPage userSession={dataCookie} />}
+                element={<PengadaanBarangAdminPage />}
               />
               <Route
                 path="/admin/edit-pengadaan/:id"
-                element={<EditPengadaanAdminPage userSession={dataCookie} />}
+                element={<EditPengadaanAdminPage />}
               />
               <Route
                 path="/admin/kategori"
-                element={<KategoriAdminPage userSession={dataCookie} />}
+                element={<KategoriAdminPage />}
               />
               <Route
                 path="/admin/pemeliharaan"
-                element={<PemeliharaanAdminPage userSession={dataCookie} />}
+                element={<PemeliharaanAdminPage />}
               />
             </Routes>
           )}

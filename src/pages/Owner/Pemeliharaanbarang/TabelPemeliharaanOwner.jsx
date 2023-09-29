@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function TabelPemeliharaanOwner() {
   const [addPemeliharaan, setAddPemeliharaan] = useState(false);
+  const [idSelected, setIdSelected] = useState("");
   const [dataPemeliharaan, setDataPemeliharaan] = useState([]);
   const [filterBulan, setFilterBulan] = useState("");
   const [filterTahun, setFilterTahun] = useState("");
@@ -105,6 +106,7 @@ export default function TabelPemeliharaanOwner() {
           <div
             onClick={() => {
               setAccPemeliharaan(!accPemeliharaan);
+              setIdSelected(params.id);
             }}
             className=""
           >
@@ -127,9 +129,6 @@ export default function TabelPemeliharaanOwner() {
             </button>
             <button className="mr-4" onClick={() => deleteBarang()}>
               <BsTrash3 color="red" size={20} />
-            </button>
-            <button className="">
-              <BiEditAlt color="blue" size={20} />
             </button>
           </div>
         );
@@ -207,7 +206,7 @@ export default function TabelPemeliharaanOwner() {
           className="bg-[#7B2CBF] relative mt-1 mb-3 h-[40px] px-3 text-center py-1 w-[300px] rounded-md text-[#E5D5F2] font-abc"
         >
           <div className="absolute h-[20px] text-sm w-[20px] text-white bg-red-500 -right-2 -top-2 rounded-full">
-            5
+            {dataPemeliharaan.filter(item => item.status == 'pending').length}
           </div>
           Menunggu Persetujuan
         </button>
@@ -221,6 +220,7 @@ export default function TabelPemeliharaanOwner() {
       />
       {accPemeliharaan ? (
         <ModalAccPemeliharaanOwner
+          id={idSelected}
           open={accPemeliharaan}
           setOpen={setAccPemeliharaan}
         />

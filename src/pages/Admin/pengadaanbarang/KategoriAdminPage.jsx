@@ -10,7 +10,7 @@ import TopBar from "../../../components/layout/TopBar.jsx";
 import { BACKEND_BASE_URL } from "../../../config/base_url.jsx";
 import { useNavigate } from "react-router-dom";
 
-export default function TambahBarangPage({ userSession }) {
+export default function TambahBarangPage() {
   const [barang, setBarang] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [allKategori, setallKategori] = useState([]);
@@ -185,7 +185,7 @@ export default function TambahBarangPage({ userSession }) {
         <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-        <TopBar userSession={userSession}>{"Pengadaan Barang"}</TopBar>
+        <TopBar>{"Pengadaan Barang"}</TopBar>
         <div className="w-[95%] h-[80px] justify-between flex mx-auto">
           <div className="">
             <button

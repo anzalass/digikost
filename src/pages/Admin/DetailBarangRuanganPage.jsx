@@ -12,8 +12,11 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../config/base_url";
 import EditPemeliharaanModal from "../../components/admin/pemeliharaan/EditPemeliharaanModal";
+import { useSelector } from "react-redux";
 
-export default function DetailBarangRuangan() {
+export default function DetailBarangRuangan({ children }) {
+  const { user } = useSelector((state) => state.user);
+
   const [open, setOpen] = useState(false);
   const [maintenence, setMaintenence] = useState(false);
   const [changeStatus, setChangeStatus] = useState(false);
@@ -226,28 +229,32 @@ export default function DetailBarangRuangan() {
 
       sortable: false,
       renderCell: (params) => {
-        return (
-          <div className="flex">
-            <button
-              onClick={() => hapusPemeliharaan(params.id)}
-              className="mr-4"
-            >
-              <BsTrash3 color="red" size={20} />
-            </button>
-            <button className="">
-              <BiEditAlt
-                color="blue"
-                size={20}
-                onClick={() => {
-                  updateData.id = params.id;
-                  setData(params.row);
-                  setEditMaintenence(true)
-                }
-                }
-              />
-            </button>
-          </div>
-        );
+        if (params.row.idAdmin == user?.id) {
+          return (
+            <div className="flex">
+              <button
+                onClick={() => hapusPemeliharaan(params.id)}
+                className="mr-4"
+              >
+                <BsTrash3 color="red" size={20} />
+              </button>
+              {params.row.status != 'dalam perbaikan' ?
+                <button className="">
+                  <BiEditAlt
+                    color="blue"
+                    size={20}
+                    onClick={() => {
+                      updateData.id = params.id;
+                      setData(params.row);
+                      setEditMaintenence(true)
+                    }
+                    }
+                  />
+                </button> : <></>
+              }
+            </div>
+          );
+        }
       },
     },
   ];
@@ -258,6 +265,7 @@ export default function DetailBarangRuangan() {
     .forEach((a) => {
       rowBarangRuanganPemeliharaan.push({
         id: a.kodePemeliharaan,
+        idAdmin: a.idAdmin,
         tgl: a.created_at,
         nama_barang: a.kodeBarang,
         jumlah: a.jumlah,
@@ -300,6 +308,7 @@ export default function DetailBarangRuangan() {
         <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
           <TopBar>{`Detail Ruangan ${id} `}</TopBar>
           <div className="w-full mt-2 h-[50px] mx-auto "></div>
+          {children}
           <div className="w-[95%] mx-auto">
             <DataGrid
               disableRowSelectionOnClick

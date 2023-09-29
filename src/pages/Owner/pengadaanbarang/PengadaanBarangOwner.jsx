@@ -29,6 +29,7 @@ export default function PengadaanBarangOwner() {
   const [filterBulan, setFilterBulan] = useState("");
   const [filterTahun, setFilterTahun] = useState("");
   const [status, setStatus] = useState("");
+  const [idSelected, setIdSelected] = useState("");
   const [modalAccPengadaan, setModalAccPengadaan] = useState(false);
   const bulan = [
     "Januari",
@@ -159,7 +160,10 @@ export default function PengadaanBarangOwner() {
       renderCell: (params) => {
         return (
           <div
-            onClick={() => setModalAccPengadaan(true)}
+            onClick={() => {
+              setModalAccPengadaan(true);
+              setIdSelected(params.id);
+            }}
             className={`${params.row.status === "pending"
               ? "bg-yellow-400"
               : params.row.status === "acc"
@@ -253,6 +257,7 @@ export default function PengadaanBarangOwner() {
     <>
       {modalAccPengadaan ? (
         <ModalPengadaanOwner
+          id={idSelected}
           open={modalAccPengadaan}
           setOpen={setModalAccPengadaan}
         />
