@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RuangRequest extends FormRequest
+class MataPelajaran extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class RuangRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -21,18 +21,10 @@ class RuangRequest extends FormRequest
      *
      * @return array
      */
-    public function rules():array
+    public function rules()
     {
         return [
-            'kodeRuang' => 'required|string|max:255',
-            'ruang' => 'required|string|max:255',
-        ];
-    }
-
-    public function messages(){
-        return [
-            'kodeRuang.required' => 'kodeRuang Required',
-            'ruang.required' => 'ruang Required'
+            //
         ];
     }
 }

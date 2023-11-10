@@ -82,6 +82,24 @@ class UserController extends BaseController
         ],200);
     }
 
+    public function getGuruPengajar(){
+        $GuruPengajar = User::where('role', 2)->get();
+        if($GuruPengajar){
+            return response()->json([
+                'results' => $GuruPengajar
+            ]);
+        }
+    }
+
+    public function getGuruPiket(){
+        $GuruPiket = User::where('role', 3)->get();
+        if($GuruPiket){
+            return response()->json([
+            'results' => $GuruPiket
+        ]);
+        }
+    }
+
     public function getUserById($id){
         try{   
             $userFind = User::find($id);
@@ -131,30 +149,6 @@ class UserController extends BaseController
         }
     }
 
-    // public function sendResetLinkEmail(UserRequest $request)
-    // {
-    //     try{
-    //         Mail::mailer('smtp')->to("jaung9401@gmail.com")->send('gg');
-    //     }catch(\Exception $e){
-    //         return response()->json([
-    //             'message'=>$e
-    //         ],500);
-    //     }
-    // //    try{
-    // //         $this->validate($request, ['email' => 'required|email']);
-
-    // //         $response = Password::sendResetLink($request->only('email'));
-
-    // //         return $response == Password::RESET_LINK_SENT
-    // //             ? response()->json(['message' => 'Reset link sent to your email.'], 200)
-    // //             : response()->json(['error' => 'Unable to send reset link.'], 400);
-    // //    }catch(\Exception $e){
-    // //     return response()->json([
-    // //         'message'=>$e
-    // //     ],500);
-    // //    }
-    // }
-
     public function logout(){
         $cookie = Cookie::forget('jwt');
 
@@ -167,9 +161,10 @@ class UserController extends BaseController
         try{
             $findUser = User::find($id);
             if($findUser){
-                $validator = Validator::make($request->only(['name', 'noHP']),[
+                $validator = Validator::make($request->only(['name', 'noHP','role']),[
                     'name' => 'required',
-                    'noHP' => 'required|max:13'
+                    'noHP' => 'required|max:13',
+                    'role'=> 'required'
                 ]);
 
                 if($validator->fails()){
@@ -179,6 +174,7 @@ class UserController extends BaseController
                 }else{
                     $findUser->name = $request->name;
                     $findUser->noHP = $request->noHP;
+                    $findUser->role = $request->role;
                     $findUser->save();
                     return response()->json([
                         'message' => "Data User Berhasil Di Update"
