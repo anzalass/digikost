@@ -30,7 +30,7 @@ export default function Aktivitas() {
   });
 
   return (
-    <div className="bg-white w-[95%] mt-3 mx-auto">
+    <div className="bg-white w-[100%] mt-3 mx-auto">
       <div className="w-full justify-between flex p-2 ">
         <div className="">
           <h1 className="font-abc font-[500] text-[18px] my-3  ">

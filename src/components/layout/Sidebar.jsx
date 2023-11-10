@@ -1,39 +1,62 @@
 import { useState } from "react";
 import digiKosLogo from "../../assets/Digikos.svg";
 import { GrHomeRounded, GrLogout } from "react-icons/gr";
-import { ImEnter } from "react-icons/im";
 import { BsPencilSquare } from "react-icons/bs";
-import { PiEnvelopeOpenBold } from "react-icons/pi";
-import { BiSolidUserAccount } from "react-icons/bi";
-import { RxDashboard } from "react-icons/rx";
 
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiMiniClipboardDocumentList } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
+import { BASE_URL } from "../../config/base_url";
 export default function Sidebar({ open, setSidebar, width, setWidth }) {
-  const sidebarMenu = [
-    {
-      title: "Beranda",
-      url: "/",
-      icon: <GrHomeRounded className={` fill-white  my-auto`} />,
-    },
-    {
-      title: "Pengadaan Barang",
-      url: "/tambah-barang",
-      icon: <BsPencilSquare className="my-auto" />,
-    },
-    {
-      title: "Pemeliharaan Barang",
-      url: "/pengeluaran",
-      icon: <ImEnter className="my-auto" />,
-    },
-    {
-      title: "Data Ruangan",
-      url: "/data-ruangan",
-      icon: <HiMiniClipboardDocumentList className="my-auto" />,
-    },
-  ];
+  const { user } = useSelector((state) => state.user);
+  let sidebarMenu = [];
+  if (user.role == 1) {
+    sidebarMenu = [
+      {
+        title: "Beranda",
+        url: "/",
+        icon: <GrHomeRounded className={` fill-white  my-auto`} />,
+      },
+      {
+        title: "Semua Izin",
+        url: "/Izin",
+        icon: <BsPencilSquare className="my-auto" />,
+      },
+    ];
+  } else if (user.role == 2 || user.role == 3 || user.role == 5) {
+    sidebarMenu = [
+      {
+        title: "Beranda",
+        url: "/",
+        icon: <GrHomeRounded className={` fill-white  my-auto`} />,
+      },
+      {
+        title: "Permintaan Izin",
+        url: "/PermintaanIzin",
+        icon: <BsPencilSquare className="my-auto" />,
+      },
+    ];
+  } else if (user.role == 4) {
+    sidebarMenu = [
+      {
+        title: "Beranda",
+        url: "/",
+        icon: <GrHomeRounded className={` fill-white  my-auto`} />,
+      },
+      {
+        title: "Users",
+        url: "/AllUsers",
+        icon: <BsPencilSquare className="my-auto" />,
+      },
+      {
+        title: "Mata Pelajaran",
+        url: "/MataPelajaran",
+        icon: <BsPencilSquare className="my-auto" />,
+      },
+    ];
+  }
+
 
   const logout = async () => {
     try {
@@ -45,7 +68,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
 
       if (res) {
         localStorage.removeItem("token");
-        window.location.reload();
+        window.location.href = `${BASE_URL}`;
       }
     } catch (err) {
       alert(err);
@@ -59,96 +82,58 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
     setMenuClick(3);
   };
   return (
-    <div
-      className={`${
-        !width
-          ? "w-[220px]  md:w-[80px] lg:w-[220px] xl:w-[220px] "
-          : "w-[80px] md:w-[80px] lg:w-[80px] xl:w-[80px]"
-      }  fixed min-h-screen bg-[#fff] transition-all w-[80px] `}
-    >
-      <div className="relative">
-        <GiHamburgerMenu
-          className={`absolute  top-2 ${
-            !width
-              ? "right-2 hidden md:hidden lg:block xl:block "
-              : "right-7 hidden md:hidden lg:block xl:block"
-          }`}
-          size={25}
-          onClick={() => setWidth(!width)}
-        />
-      </div>
-      <div className="ml-[210px]">
-        {/* <button className="" onClick={(e) => open(0)}>
-          x
-        </button> */}
-      </div>
-      <div className="pt-[40px] w-full">
-        <img
-          src={digiKosLogo}
-          className={`${
-            !width
-              ? "hidden sm:hidden  md:hidden lg:hidden xl:hidden "
-              : "hidden  md:hidden lg:hidden xl:hidden "
-          } h-[50px] w-[100px]  mx-auto`}
-          alt=""
-        />
-      </div>
-      <div className="w-full p-3 mt-4 bg-white">
-        <h1
-          className={`${
-            !width
-              ? "hidden sm:hidden  md:hidden lg:block xl:block "
-              : "hidden sm:hidden  md:hidden lg:hidden xl:hidden "
-          } font-abc`}
-        >
-          Main Menu
-        </h1>
-        <div className=" ml-2 mt-4">
-          {sidebarMenu &&
-            sidebarMenu.map((sm, index) => (
-              <Link
-                to={sm.url}
-                key={index}
-                onClick={(e) => {
-                  setMenuClick(1);
-                }}
-                className={`flex mt-2 ${
-                  setSidebar === index + 1
+    <>
+      <GiHamburgerMenu
+        className={`left-3 fixed top-2 z-50`}
+        size={25}
+        onClick={() => setWidth(!width)}
+      />
+      <div
+        className={`fixed h-[100vh] bg-white left-0 z-40 ${width ? "block" : "hidden"
+          } shadow-[rgba(0,_0,_0,_0.4)_0px_30px_90px] transition-all`}
+      >
+        <div className="ml-[210px]"></div>
+        <div className="pt-[40px] w-full">
+          <img
+            src={digiKosLogo}
+            className={`h-[50px] w-[100px]  mx-auto`}
+            alt=""
+          />
+        </div>
+        <div className="w-full p-3 mt-4 bg-white">
+          <h1 className={` font-abc`}>Main Menu</h1>
+          <div className=" ml-2 mt-4">
+            {sidebarMenu &&
+              sidebarMenu.map((sm, index) => (
+                <Link
+                  to={sm.url}
+                  key={index}
+                  onClick={(e) => {
+                    setMenuClick(1);
+                  }}
+                  className={`flex mt-2 ${setSidebar === index + 1
                     ? "bg-[#9556CC] text-white"
                     : "bg-white text-black"
-                }  h-[30px] rounded-md p-1 pl-3`}
-              >
-                {sm.icon}
-                <h1
-                  className={`${
-                    !width
-                      ? "hidden  md:hidden lg:block xl:block "
-                      : "hidden  md:hidden lg:hidden xl:hidden "
-                  } ml-2 font-abc my-auto text-[14px]`}
+                    }  h-[30px] rounded-md p-1 pl-3`}
                 >
-                  {sm.title.length > 16
-                    ? sm.title.slice(0, 15) + ".."
-                    : sm.title}
-                </h1>
-              </Link>
-            ))}
-          <div
-            onClick={logout}
-            className={`flex mt-2 bg-white text-black cursor-pointer h-[30px] rounded-md p-1 pl-3`}
-          >
-            <HiMiniClipboardDocumentList className="my-auto" />,
-            <h1
-              className={`${
-                !width
-                  ? "hidden  md:hidden lg:block xl:block "
-                  : "hidden  md:hidden lg:hidden xl:hidden "
-              } ml-2 font-abc my-auto text-[14px]`}
+                  {sm.icon}
+                  <h1 className={` ml-2 font-abc my-auto text-[14px]`}>
+                    {sm.title.length > 16
+                      ? sm.title.slice(0, 15) + ".."
+                      : sm.title}
+                  </h1>
+                </Link>
+              ))}
+            <div
+              onClick={logout}
+              className={`flex mt-2 bg-white text-black cursor-pointer h-[30px] rounded-md p-1 pl-3`}
             >
-              Logout
-            </h1>
+              <HiMiniClipboardDocumentList className="my-auto" />,
+              <h1 className={`ml-2 font-abc my-auto text-[14px]`}>Logout</h1>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

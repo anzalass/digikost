@@ -1,37 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
-import LoginPage from "./pages/Admin/LoginPage";
-import HomePage from "./pages/Admin/HomePage";
-import PengadaanBarang from "./pages/Admin/PengadaanBarangPage";
-import PengeluaranPage from "./pages/Admin/PemeliharaanPage";
-import DataRuanganPage from "./pages/Admin/DataRuanganPage";
-import DetailBarangRuangan from "./pages/Admin/DetailBarangRuanganPage";
+import React, { useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
 
-import HomePageOwner from "./pages/Owner/HomepageOwner";
-import PengadaanBarangOwner from "./pages/Owner/pengadaanbarang/PengadaanBarangOwner";
-import TambahBarangOwner from "./pages/Owner/pengadaanbarang/TambahBarangOwner";
-import TambahKategoriOwner from "./pages/Owner/pengadaanbarang/TambahKategoriOwner";
-import EditBarangOwner from "./pages/Owner/pengadaanbarang/EditBarangOwner";
-import AccPengadaanBarangOwner from "./pages/Owner/pengadaanbarang/AccPengadaanBarangOwner";
-import PemeliharaanBarangOwner from "./pages/Owner/Pemeliharaanbarang/PemeliharaanBarangOwner";
-import DataRuanganOwnerPage from "./pages/Owner/dataruangan/DataRuanganOwnerPage";
-import TambahRuanganOwner from "./pages/Owner/dataruangan/TambahRuanganOwner";
-import EditDataRuanganOwner from "./pages/Owner/dataruangan/EditDataRuanganOwner";
-import DetailRuanganOwner from "./pages/Owner/detailruangan.jsx/DetailRuanganOwner";
-import DaftarPetugasPage from "./pages/Owner/petugas/DaftarPetugasPage";
-import PendaftaranPetugas from "./pages/Owner/petugas/PendaftaranPetugas";
-import EditUserPage from "./pages/Admin/editprofileadmin/EditProfileAdminPage";
-import EditProfileAdminPage from "./pages/Admin/editprofileadmin/EditProfileAdminPage";
-import UbahPasswordAdminPage from "./pages/Admin/editprofileadmin/UbahPasswordAdminPage";
-import PengadaanBarangAdminPage from "./pages/Admin/pengadaanbarang/PengadaanBarangAdminPage";
-import EditPengadaanAdminPage from "./pages/Admin/pengadaanbarang/EditPengadaanAdminPage";
-import KategoriAdminPage from "./pages/Admin/pengadaanbarang/KategoriAdminPage";
-import EditPetugasOwnerPage from "./pages/Owner/petugas/EditPetugasOwnerPage";
-import EditProfileOwnerPage from "./pages/Owner/profile/EditProfileOwnerPage";
-import PemeliharaanAdminPage from "./pages/Admin/maintenenceadmin/PemeliharaanAdminPage";
 import { store } from "./redux/store";
 import { loadUser } from "./redux/actions/user";
 import { useSelector } from "react-redux";
+import SemuaIzin from "./pages/Siswa/SemuaIzin";
+import DetailIzin from "./pages/Siswa/DetailIzin";
+import PermissionGuruPengajar from "./pages/GuruPiket/PermissionGuruPengajar";
+import PermissionGuruPiket from "./pages/Guru/PermissionGuruPiket";
+import AllUser from "./pages/Admin/User/AllUser";
+import AddUser from "./pages/Admin/User/AddUser";
+import EditUser from "./pages/Admin/User/EditUser";
+import AddMapel from "./pages/Admin/MataPelajaran/AddMapel";
+import MapelSiswa from "./pages/Admin/MataPelajaran/MapelSiswa";
+import EditProfilePage from "./pages/EditProfilePage";
+
 
 function App() {
   const { isLogin, user } = useSelector((state) => state.user);
@@ -51,81 +36,60 @@ function App() {
           user.role === 2 ? (
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/tambah-barang" element={<PengadaanBarang />} />
-              <Route path="/detail-ruangan/:id" element={<DetailBarangRuangan />} />
-              <Route path="/data-ruangan" element={<DataRuanganPage />} />
-              <Route path="/pengeluaran" element={<PengeluaranPage />} />
-              <Route path="/profile" element={<EditProfileAdminPage />} />
-              <Route path="/reset-password" element={<UbahPasswordAdminPage />} />
+              <Route path="/PermintaanIzin" element={<PermissionGuruPengajar />} />
+              <Route path="/Detail/:id" element={<DetailIzin />} />
+              <Route path="/Profile" element={<EditProfilePage />} />
             </Routes>
-          ) : (
-            <Routes>
-              <Route
-                path="/"
-                element={<HomePageOwner />}
-              />
-              <Route
-                path="/owner/pengadaan-barang"
-                element={<PengadaanBarangOwner />}
-              />
-              <Route path="/owner/tambah-barang" element={<TambahBarangOwner />} />
-              <Route path="/owner/kategori" element={<TambahKategoriOwner />} />
-              <Route path="/owner/edit-barang/:id" element={<EditBarangOwner />} />
-              <Route
-                path="/owner/pemeliharaan"
-                element={<PemeliharaanBarangOwner />}
-              />
-              <Route
-                path="/owner/menunggu-acc"
-                element={<AccPengadaanBarangOwner />}
-              />
-              <Route
-                path="/owner/data-ruangan"
-                element={<DataRuanganOwnerPage />}
-              />
-              <Route
-                path="/owner/tambah-ruangan"
-                element={<TambahRuanganOwner />}
-              />
-              <Route
-                path="/owner/edit-ruangan"
-                element={<EditDataRuanganOwner />}
-              />
-              <Route
-                path="/owner/detail-ruangan/:id"
-                element={<DetailRuanganOwner />}
-              />
-              <Route
-                path="/owner/daftar-petugas"
-                element={<PendaftaranPetugas />}
-              />
-              <Route path="/owner/petugas" element={<DaftarPetugasPage />} />
-              <Route
-                path="/owner/edit-petugas/:id"
-                element={<EditPetugasOwnerPage />}
-              />
-              <Route path="/owner/profile" element={<EditProfileOwnerPage />} />
-
-              {/*  REVOLUSI*/}
-              <Route
-                path="/admin/pengadaan"
-                element={<PengadaanBarangAdminPage />}
-              />
-              <Route
-                path="/admin/edit-pengadaan/:id"
-                element={<EditPengadaanAdminPage />}
-              />
-              <Route
-                path="/admin/kategori"
-                element={<KategoriAdminPage />}
-              />
-              <Route
-                path="/admin/pemeliharaan"
-                element={<PemeliharaanAdminPage />}
-              />
-            </Routes>
-          )}
-
+          ) : user.role === 3 ?
+            (
+              <Routes>
+                <Route
+                  path="/"
+                  element={<HomePage />}
+                />
+                <Route path="/Izin" element={<SemuaIzin />} />
+                <Route path="/PermintaanIzin" element={<PermissionGuruPiket />} />
+                <Route path="/Detail/:id" element={<DetailIzin />} />
+                <Route path="/Profile" element={<EditProfilePage />} />
+              </Routes>
+            )
+            : user.role === 4 ?
+              (<Routes>
+                <Route
+                  path="/"
+                  element={<HomePage />}
+                />
+                <Route path="/AllUsers" element={<AllUser />} />
+                <Route path="/AddUser" element={<AddUser />} />
+                <Route path="/EditUser/:id" element={<EditUser />} />
+                <Route path="/MataPelajaran" element={<MapelSiswa />} />
+                <Route path="/AddMapel" element={<AddMapel />} />
+                <Route path="/Profile" element={<EditProfilePage />} />
+              </Routes>) : user.role == 5 ?
+                (
+                  <Routes>
+                    <Route
+                      path="/"
+                      element={<HomePage />}
+                    />
+                    <Route path="/PermintaanIzin" element={<SemuaIzin />} />
+                    <Route path="/Detail/:id" element={<DetailIzin />} />
+                    <Route path="/Profile" element={<EditProfilePage />} />
+                  </Routes>
+                )
+                :
+                (
+                  <Routes>
+                    <Route
+                      path="/"
+                      element={<HomePage />}
+                    />
+                    <Route path="/Izin" element={<SemuaIzin />} />
+                    <Route path="/Detail/:id" element={<DetailIzin />} />
+                    <Route path="/Profile" element={<EditProfilePage />} />
+                  </Routes>
+                )
+        }
       </BrowserRouter>
     </>
   );
