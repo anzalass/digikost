@@ -52,6 +52,7 @@ Route::delete('deleteUser/{id}', [UserController::class, 'deleteUser']);
 //Get User
 Route::get('getGuruPengajar', [UserController::class, 'getGuruPengajar']);
 Route::get('getGuruPiket',[UserController::class, 'getGuruPiket']);
+Route::put('ChangePassword/{idUser}',[UserController::class,'changePassword']);
 
 //Table Izin
 Route::get('getIzin',[IzinController::class, 'index']);

@@ -73,6 +73,34 @@ class UserController extends BaseController
         }
     }
 
+    public function changePassword($idUser,UserRequest $request){
+        $validator = Validator::make(request()->all(),[
+            'password'=>'required',
+            'konfirmPassword'=>'required'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'errors'=> $validator->errors()
+            ],422);
+        }
+
+        $searchUser = User::find($idUser);
+
+        if(!$searchUser){
+            return response()->json([
+                'message'=>'Tidak Ada Data User'
+            ],404);
+        }
+
+        $searchUser->password = Hash::make($request->password);
+        $searchUser->save();
+
+        return response()->json([
+            'message'=>'Password berhasil diubah'
+        ],200);
+    }
+
     public function getUser(){
         $user = User::all();
 
