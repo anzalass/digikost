@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\AktivitasController;
 use App\Http\Controllers\IzinController;
 use App\Http\Controllers\MapelSiswaController;
 use App\Http\Controllers\MataPelajaranController;
@@ -53,6 +55,7 @@ Route::get('getGuruPiket',[UserController::class, 'getGuruPiket']);
 
 //Table Izin
 Route::get('getIzin',[IzinController::class, 'index']);
+Route::get('getIzinKurikulum',[IzinController::class,'AllPermissionKurikulum']);
 Route::get('getIzinPengajar/{id}',[IzinController::class, 'AllPermissionGuruPengajar']);
 Route::get('getIzinPiket/{id}',[IzinController::class, 'AllPermissionGuruPiket']);
 Route::get('getIzinById/{id}',[IzinController::class, 'getIzinById']);
@@ -71,3 +74,8 @@ Route::put('UpdateMataPelajaran',[MataPelajaranController::class, 'EditMataPelaj
 Route::get('getMapelSiswa',[MapelSiswaController::class,'index']);
 Route::post('AddMapelSiswa',[MapelSiswaController::class, 'TambahMapelSiswa']);
 Route::put('UpdateMapelSiswa',[MapelSiswaController::class, 'EditMapelSiswa']);
+
+//Table Aktivitas
+Route::get('getAllAktivitas',[AktivitasController::class, 'index']);
+Route::get('getAktivitasByUser/{idUser}',[AktivitasController::class, 'getByUser']);
+Route::post('AddAktivitas',[AktivitasController::class,'AddAktivitas']);
