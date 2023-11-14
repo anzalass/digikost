@@ -12,15 +12,26 @@ import { BASE_URL, BACKEND_BASE_URL } from "../../config/base_url.jsx";
 
 export default function SemuaIzin() {
   const [Izin, setIzin] = useState([]);
+  const [izinSearch, setIzinSearch] = useState([]);
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  const onChangeSearch = (e) => {
+    if (e.target.value == "") {
+      setIzinSearch(Izin);
+    } else {
+      const filterIzin = Izin.filter((item) => item.idUser == e.target.value || item.guruPengajar == e.target.value || item.guruPiket == e.target.value);
+      setIzinSearch(filterIzin);
+    }
+  }
+
   const fetchData = async () => {
     try {
       const result = await axios.get(`${BACKEND_BASE_URL}/api/getIzin`);
       setIzin(result.data.results);
+      setIzinSearch(result.data.results);
       console.log(result.data.results);
 
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
@@ -47,6 +58,7 @@ export default function SemuaIzin() {
             <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
               <input
                 type="text"
+                onChange={e => onChangeSearch(e)}
                 className="w-full h-full pl-2 rounded-lg"
                 placeholder="Search"
               />
@@ -55,7 +67,7 @@ export default function SemuaIzin() {
         </div>
         <div className="w-[95%] opacity-25 mx-auto mt-0 h-[1px] bg-slate-600"></div>
 
-        {!addIzin ? <TableTambahBarang data={Izin} /> : null}
+        {!addIzin ? <TableTambahBarang data={izinSearch} /> : null}
 
       </div>
     </div>

@@ -8,12 +8,7 @@ import Indikator from "../components/admin/home/Indikator";
 
 export default function HomePage() {
   const [open, setOpen] = useState(false);
-
   const { user } = useSelector((state) => state.user);
-
-  // useEffect(() => {
-  //   console.log("loading : ", loading);
-  // }, [loading]);
 
   return (
     <div>

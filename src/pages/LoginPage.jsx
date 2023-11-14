@@ -60,13 +60,6 @@ export default function LoginPage({ children }) {
     }
   }, [user]);
 
-  // if (user.name != undefined) {
-  //   window.location.href = "/";
-  // }
-
-  // if (redirect) {
-  //   window.location.href = "/";
-  // }
 
   return (
     <div className="w-full h-[100vh] bg-[#fff] block md:flex lg:flex xl:flex">

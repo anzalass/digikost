@@ -69,6 +69,7 @@ export default function EditProfilePage({ children }) {
               type="text"
               name="name"
               value={dataUser.name}
+              disabled={true}
               onChange={e => changeDataHandler(e)}
               className="w-full h-[35px] border-2 pl-2 border-slate-500 rounded-md"
             />
@@ -92,6 +93,7 @@ export default function EditProfilePage({ children }) {
             <input
               type="text"
               name="noHP"
+              disabled={true}
               value={dataUser.noHP}
               onChange={e => changeDataHandler(e)}
               className="w-full h-[35px] border-2 pl-2 border-slate-500 rounded-md"
@@ -99,11 +101,6 @@ export default function EditProfilePage({ children }) {
             {err.noHP ?
               <p>{err.noHP}</p> : null
             }
-          </div>
-          <div className="w-full mt-6">
-            <button className="bg-[#7B2CBF] px-3 py-1 w-[240px] rounded-md text-[#E5D5F2] font-abc">
-              Request Ubah Password
-            </button>
           </div>
           <div className="w-full mt-6 justify-center mb-7 flex items-center">
             <button onClick={UpdateUser} className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc">

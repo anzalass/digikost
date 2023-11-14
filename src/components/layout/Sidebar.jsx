@@ -14,7 +14,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
   if (user.role == 1) {
     sidebarMenu = [
       {
-        title: "Beranda",
+        title: "Berandaaa",
         url: "/",
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },

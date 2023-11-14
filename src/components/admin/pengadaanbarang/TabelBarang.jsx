@@ -23,9 +23,10 @@ export default function TabelBarang({ data, children }) {
   const [izinEdit, setIzinEdit] = useState([]);
   const [mapel, setMapel] = useState([]);
   const [idIzin, setIdIzin] = useState();
+  const [isSelect, setSelect] = useState(true);
   const [guruPengajar, setGuruPengajar] = useState([]);
   const [guruPiket, setGuruPiket] = useState([]);
-  const [kurikulum, setKurikulum] = useState([]);
+  const [AllUser, setAllUser] = useState([]);
   const [filterBulan, setFilterBulan] = useState("");
   const [filterTahun, setFilterTahun] = useState("");
   const [status, setStatus] = useState("");
@@ -85,290 +86,169 @@ export default function TabelBarang({ data, children }) {
 
   useEffect(() => {
     fetchData();
-    console.log(data.length);
   }, []);
 
-  let columns = [];
+  useEffect(() => {
+    console.log("ini data : ", data);
+  }, [data])
 
-  if (user?.role == 5) {
-    columns = [
-      {
-        field: "no",
-        headerName: "No",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 50,
-        flex: 0.5,
+  const columns = [
+    {
+      field: "no",
+      headerName: "No",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 50,
+      flex: 0.5,
+    },
+    {
+      field: "idUser",
+      headerName: "Siswa",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 100,
+      flex: 0.7,
+    },
+    {
+      field: "idMapel",
+      headerName: "Mata Pelajaran",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 150,
+      flex: 0.7,
+    },
+    {
+      field: "guruPengajar",
+      headerName: "Guru Pengajar",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 100,
+      flex: 0.7,
+    },
+    {
+      field: "guruPiket",
+      headerName: "Guru Piket",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 100,
+      flex: 0.7,
+    },
+    {
+      field: "typeIzin",
+      headerName: "Type Izin",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 100,
+      flex: 0.7,
+    },
+    {
+      field: "tanggal",
+      headerName: "Tanggal",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 100,
+      flex: 0.7,
+    },
+    {
+      field: "responGuruPengajar",
+      headerName: "Respon Guru Pengajar",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 100,
+      flex: 0.7,
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <div
+            className={`${params.row.responGuruPengajar === "pending"
+              ? "bg-yellow-400 text-white"
+              : params.row.responGuruPengajar === "Diizinkan"
+                ? "bg-green-500"
+                : "bg-red-600"
+              } h-full text-center pt-3 text-white font-abc w-full `}
+          >
+            {params.row.responGuruPengajar}
+          </div>
+        );
       },
-      {
-        field: "idUser",
-        headerName: "Siswa",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
+    },
+    {
+      field: "responGuruPiket",
+      headerName: "Respon Guru Piket",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 100,
+      flex: 0.7,
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <div
+            className={`${params.row.responGuruPiket === "pending"
+              ? "bg-yellow-400"
+              : params.row.responGuruPiket === "Diizinkan"
+                ? "bg-green-500"
+                : "bg-red-600"
+              } h-full text-center pt-3 text-white font-abc w-full `}
+          >
+            {params.row.responGuruPiket}
+          </div>
+        );
       },
-      {
-        field: "idMapel",
-        headerName: "Mata Pelajaran",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 150,
-        flex: 0.7,
-      },
-      {
-        field: "Kurikulum",
-        headerName: "Kurikulum",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-      },
-      {
-        field: "typeIzin",
-        headerName: "Type Izin",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-      },
-      {
-        field: "tanggal",
-        headerName: "Tanggal",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-      },
-      {
-        field: "responGuruPengajar",
-        headerName: "Respon Kurikulum",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-        sortable: false,
-        renderCell: (params) => {
-          return (
-            <div
-              className={`${params.row.responGuruPengajar === "pending"
-                ? "bg-yellow-400 text-white"
-                : params.row.responGuruPengajar === "Diizinkan"
-                  ? "bg-green-500"
-                  : "bg-red-600"
-                } h-full text-center pt-3 text-white font-abc w-full `}
-            >
-              {params.row.responGuruPengajar}
-            </div>
-          );
-        },
-      },
-      {
-        field: "aksi",
-        headerName: "Aksi",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        flex: 0.7,
-        minWidth: 150,
+    },
+    {
+      field: "aksi",
+      headerName: "Aksi",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      flex: 0.7,
+      minWidth: 150,
 
-        sortable: false,
-        renderCell: (params) => {
-          return (
-            <div className="flex">
-              {
-                params.row.status == 'pending' ?
-                  params.row.idAdmin == user?.id ?
-                    <>
-                      <button className="mr-4" onClick={() => DeletePengadaan(params.id)}>
-                        <BsTrash3 color="red" size={20} />
-                      </button>
-                      <button
-                        className=""
-                        onClick={() => {
-                          editBarangFunc(params.id);
-                        }}
-                      >
-                        <BiEditAlt color="blue" size={20} />
-                      </button>
-                    </>
-                    :
-                    <></>
-                  : <>
-                    <button
-                      className="mr-4"
-                      onClick={() => {
-                        nav('/Detail/' + params.id);
-                      }}
-                    >
-                      <BsEye size={20} />
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <div className="flex">
+            {
+              params.row.status == 'pending' ?
+                params.row.idAdmin == user?.id ?
+                  <>
+                    <button className="mr-4" onClick={() => DeletePengadaan(params.id)}>
+                      <BsTrash3 color="red" size={20} />
                     </button>
-                    {params.row.responGuruPengajar == "pending" && params.row.responGuruPiket == "pending" ? <button
+                    <button
                       className=""
                       onClick={() => {
                         editBarangFunc(params.id);
-                        resetError();
                       }}
                     >
                       <BiEditAlt color="blue" size={20} />
-                    </button> : null}
-                  </>
-              }
-            </div>
-          );
-        },
-      },
-    ];
-  } else {
-    columns = [
-      {
-        field: "no",
-        headerName: "No",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 50,
-        flex: 0.5,
-      },
-      {
-        field: "idUser",
-        headerName: "Siswa",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-      },
-      {
-        field: "idMapel",
-        headerName: "Mata Pelajaran",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 150,
-        flex: 0.7,
-      },
-      {
-        field: "guruPengajar",
-        headerName: "Guru Pengajar",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-      },
-      {
-        field: "guruPiket",
-        headerName: "Guru Piket",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-      },
-      {
-        field: "typeIzin",
-        headerName: "Type Izin",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-      },
-      {
-        field: "tanggal",
-        headerName: "Tanggal",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-      },
-      {
-        field: "responGuruPengajar",
-        headerName: "Respon Guru Pengajar",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-        sortable: false,
-        renderCell: (params) => {
-          return (
-            <div
-              className={`${params.row.responGuruPengajar === "pending"
-                ? "bg-yellow-400 text-white"
-                : params.row.responGuruPengajar === "Diizinkan"
-                  ? "bg-green-500"
-                  : "bg-red-600"
-                } h-full text-center pt-3 text-white font-abc w-full `}
-            >
-              {params.row.responGuruPengajar}
-            </div>
-          );
-        },
-      },
-      {
-        field: "responGuruPiket",
-        headerName: "Respon Guru Piket",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        minWidth: 100,
-        flex: 0.7,
-        sortable: false,
-        renderCell: (params) => {
-          return (
-            <div
-              className={`${params.row.responGuruPiket === "pending"
-                ? "bg-yellow-400"
-                : params.row.responGuruPiket === "Diizinkan"
-                  ? "bg-green-500"
-                  : "bg-red-600"
-                } h-full text-center pt-3 text-white font-abc w-full `}
-            >
-              {params.row.responGuruPiket}
-            </div>
-          );
-        },
-      },
-      {
-        field: "aksi",
-        headerName: "Aksi",
-        headerClassName: "bg-slate-200 text-center font-abc",
-        flex: 0.7,
-        minWidth: 150,
-
-        sortable: false,
-        renderCell: (params) => {
-          return (
-            <div className="flex">
-              {
-                params.row.status == 'pending' ?
-                  params.row.idAdmin == user?.id ?
-                    <>
-                      <button className="mr-4" onClick={() => DeletePengadaan(params.id)}>
-                        <BsTrash3 color="red" size={20} />
-                      </button>
-                      <button
-                        className=""
-                        onClick={() => {
-                          editBarangFunc(params.id);
-                        }}
-                      >
-                        <BiEditAlt color="blue" size={20} />
-                      </button>
-                    </>
-                    :
-                    <></>
-                  : <>
-                    <button
-                      className="mr-4"
-                      onClick={() => {
-                        nav('/Detail/' + params.id);
-                      }}
-                    >
-                      <BsEye size={20} />
                     </button>
-                    {params.row.responGuruPengajar == "pending" && params.row.responGuruPiket == "pending" ? <button
-                      className=""
-                      onClick={() => {
-                        editBarangFunc(params.id);
-                        resetError();
-                      }}
-                    >
-                      <BiEditAlt color="blue" size={20} />
-                    </button> : null}
                   </>
-              }
-            </div>
-          );
-        },
+                  :
+                  <></>
+                : <>
+                  <button
+                    className="mr-4"
+                    onClick={() => {
+                      nav('/Detail/' + params.id);
+                    }}
+                  >
+                    <BsEye size={20} />
+                  </button>
+                  {user?.role == 1 && params.row.responGuruPengajar == "pending" && params.row.responGuruPiket == "pending" ? <button
+                    className=""
+                    onClick={() => {
+                      editBarangFunc(params.id);
+                      resetError();
+                    }}
+                  >
+                    <BiEditAlt color="blue" size={20} />
+                  </button> : null}
+                </>
+            }
+          </div>
+        );
       },
-    ];
-  }
+    },
+  ];
 
   const fetchData = async () => {
     const getMapel = await axios.get(`${BACKEND_BASE_URL}/api/getMataPelajaran`);
     const getGuruPengajar = await axios.get(`${BACKEND_BASE_URL}/api/getGuruPengajar`);
     const getGuruPiket = await axios.get(`${BACKEND_BASE_URL}/api/getGuruPiket`);
-    const getKurikulum = await axios.get(`${BACKEND_BASE_URL}/api/getUser`);;
+    const getAllUser = await axios.get(`${BACKEND_BASE_URL}/api/getUser`);;
 
     setMapel(getMapel.data.results);
-    setKurikulum(getKurikulum.data.results);
+    setAllUser(getAllUser.data.results);
     setGuruPengajar(getGuruPengajar.data.results);
     setGuruPiket(getGuruPiket.data.results);
   };
@@ -501,49 +381,31 @@ export default function TabelBarang({ data, children }) {
             new Date(item.created_at).getFullYear() === Number(filterTahun))
       )
       .forEach((a, index) => {
+        console.log("a : ", a);
         const pushMapel = mapel.filter((item) => item.kodePelajaran == a.idMapel);
         const pushGuruPengajar = guruPengajar.filter((item) => item.id == a.guruPengajar);
         const pushGuruPiket = guruPiket.filter((item) => item.id == a.guruPiket);
-
-        console.log(pushMapel);
-        if (user?.role == 5) {
-          const pushKurikulum = kurikulum.filter((item) => item.id == a.kurikulum);
-          if (pushMapel[0] != undefined && pushGuruPengajar[0] != undefined && pushGuruPiket[0]) {
-            row.push({
-              id: a.id,
-              no: index + 1,
-              idUser: a.idUser,
-              idMapel: pushMapel[0].namaPelajaran,
-              kelas: a.kelas,
-              kurikulum: a.kurikulum,
-              jamMasuk: a.jamMasuk,
-              jamKeluar: a.jamKeluar,
-              keterangan: a.keterangan,
-              typeIzin: a.typeIzin,
-              tanggal: a.created_at,
-              responGuruPengajar: a.responGuruPengajar,
-              responGuruPiket: a.responGuruPiket,
-            });
-          } else {
-            if (pushMapel[0] != undefined && pushGuruPengajar[0] != undefined && pushGuruPiket[0]) {
-              row.push({
-                id: a.id,
-                no: index + 1,
-                idUser: a.idUser,
-                idMapel: pushMapel[0].namaPelajaran,
-                kelas: a.kelas,
-                guruPengajar: pushGuruPengajar[0].name,
-                guruPiket: pushGuruPiket[0].name,
-                jamMasuk: a.jamMasuk,
-                jamKeluar: a.jamKeluar,
-                keterangan: a.keterangan,
-                typeIzin: a.typeIzin,
-                tanggal: a.created_at,
-                responGuruPengajar: a.responGuruPengajar,
-                responGuruPiket: a.responGuruPiket,
-              });
-            }
+        const pushSiswa = AllUser.filter((item) => item.id == a.idUser);
+        if (pushGuruPengajar[0] != undefined && pushGuruPiket[0] != undefined && pushSiswa[0] != undefined) {
+          if (pushMapel[0] == undefined) {
+            pushMapel[0] = { namaPelajaran: a.idMapel };
           }
+          row.push({
+            id: a.id,
+            no: index + 1,
+            idUser: pushSiswa[0].name,
+            idMapel: pushMapel[0].namaPelajaran,
+            kelas: a.kelas,
+            guruPengajar: pushGuruPengajar[0].name,
+            guruPiket: pushGuruPiket[0].name,
+            jamMasuk: a.jamMasuk,
+            jamKeluar: a.jamKeluar,
+            keterangan: a.keterangan,
+            typeIzin: a.typeIzin,
+            tanggal: new Date(a.created_at).toLocaleDateString(),
+            responGuruPengajar: a.responGuruPengajar,
+            responGuruPiket: a.responGuruPiket,
+          });
         }
       });
   };
@@ -569,27 +431,43 @@ export default function TabelBarang({ data, children }) {
                   />
                 </div>
               ) : null}
-              <div className="w-full mt-4">
-                <h1 className="font-abc pb-2 ">Mata Pelajaran</h1>
-                <select
-                  name="idMapel"
-                  onChange={(e) => changeIzinHandler(e)}
-                  id=""
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                >
-                  <option value="">- Select Mata Pelajaran -</option>
 
-                  {mapel.map((item, index) => {
-                    return (
-                      <option key={index} value={`${item.kodePelajaran}`}>
-                        {item.namaPelajaran}
-                      </option>
-                    );
-                  })}
-                </select>
-                {errIzin.idMapel ? (
-                  <p>{errIzin.idMapel}</p>
-                ) : null}
+
+              {isSelect ?
+                <div className="w-full mt-4">
+                  <h1 className="font-abc pb-2 ">Mata Pelajaran</h1>
+                  <select
+                    name="idMapel"
+                    onChange={(e) => changeIzinHandler(e)}
+                    id=""
+                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                  >
+                    <option value="">- Select Mata Pelajaran -</option>
+
+                    {mapel.map((item, index) => {
+                      return (
+                        <option key={index} value={`${item.kodePelajaran}`}>
+                          {item.namaPelajaran}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  {errIzin.idMapel ? (
+                    <p>{errIzin.idMapel}</p>
+                  ) : null}
+                </div>
+                :
+                <div className="w-full mt-4">
+                  <h1 className="font-abc pb-2 ">Mata Pelajaran</h1>
+                  <input type="text" name="idMapel" onChange={e => changeIzinHandler(e)} className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]" />
+                  {errIzin.guruPengajar ? (
+                    <p>{errIzin.guruPengajar}</p>
+                  ) : null}
+                </div>
+              }
+              <div class="flex items-center mt-4 mb-4">
+                <input onChange={() => { izin.idMapel == ""; setSelect(!isSelect) }} id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Input Mata Pelajaran</label>
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2 ">Guru Pengajar</h1>

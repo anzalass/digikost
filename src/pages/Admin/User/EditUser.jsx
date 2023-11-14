@@ -136,6 +136,11 @@ export default function EditUser() {
                             <p>{err.role}</p> : null
                         }
                     </div>
+                    <div className="w-full mt-6">
+                        <button onClick={() => nav(`/ChangePassword/${id}`)} className="bg-[#7B2CBF] px-3 py-1 w-[240px] rounded-md text-[#E5D5F2] font-abc">
+                            Ubah Password
+                        </button>
+                    </div>
                     <div className="w-full mt-6 justify-center mb-7 flex items-center">
                         <button onClick={UpdateUser} className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc">
                             Simpan

@@ -8,14 +8,15 @@ import { loadUser } from "./redux/actions/user";
 import { useSelector } from "react-redux";
 import SemuaIzin from "./pages/Siswa/SemuaIzin";
 import DetailIzin from "./pages/Siswa/DetailIzin";
-import PermissionGuruPengajar from "./pages/GuruPiket/PermissionGuruPengajar";
-import PermissionGuruPiket from "./pages/Guru/PermissionGuruPiket";
+import PermissionGuruPengajar from "./pages/Guru/PermissionGuruPengajar";
+import PermissionGuruPiket from "./pages/GuruPiket/PermissionGuruPiket";
 import AllUser from "./pages/Admin/User/AllUser";
 import AddUser from "./pages/Admin/User/AddUser";
 import EditUser from "./pages/Admin/User/EditUser";
 import AddMapel from "./pages/Admin/MataPelajaran/AddMapel";
 import MapelSiswa from "./pages/Admin/MataPelajaran/MapelSiswa";
 import EditProfilePage from "./pages/EditProfilePage";
+import ChangePassword from "./pages/Admin/User/ChangePassword";
 
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
                 <Route path="/EditUser/:id" element={<EditUser />} />
                 <Route path="/MataPelajaran" element={<MapelSiswa />} />
                 <Route path="/AddMapel" element={<AddMapel />} />
+                <Route path="/ChangePassword/:id" element={<ChangePassword />} />
                 <Route path="/Profile" element={<EditProfilePage />} />
               </Routes>) : user.role == 5 ?
                 (

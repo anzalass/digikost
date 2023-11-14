@@ -232,7 +232,7 @@ export default function DetailIzin() {
                             </div>
                         </div>
                         {user.role == 2 || user.role == 3 ?
-                            (user.role == 3 && izin.responGuruPiket == "pending") || (user.role == 2 && izin.responGuruPengajar == "pending") ?
+                            (user.role == 3 && izin.responGuruPiket == "pending" && izin.responGuruPengajar == "Diizinkan") || (user.role == 2 && izin.responGuruPengajar == "pending") ?
                                 <div className="w-full justify-center mt-12 mb-12 flex items-center">
                                     <button
                                         onClick={(e) => BeriIzin(e)}
