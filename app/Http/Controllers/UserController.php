@@ -49,7 +49,7 @@ class UserController extends BaseController
 
             if($user){
                 try{
-                    Mail::mailer('smtp')->to($user->email)->send(new UserVerification($user));
+                    // Mail::mailer('smtp')->to($user->email)->send(new UserVerification($user));
 
                     return response()->json([
                         'status'=>200,
@@ -115,6 +115,15 @@ class UserController extends BaseController
         if($GuruPengajar){
             return response()->json([
                 'results' => $GuruPengajar
+            ]);
+        }
+    }
+
+        public function getKurikulum(){
+        $Kurikulum = User::where('role', 5)->get();
+        if($Kurikulum){
+            return response()->json([
+                'results' => $Kurikulum
             ]);
         }
     }

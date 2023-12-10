@@ -17,13 +17,12 @@ class Izin extends Model
         'kelas',
         'foto',
         'guruPengajar',
-        'guruPiket',
         'kurikulum',
         'jamKeluar',
         'jamMasuk',
         'keterangan',
         'typeIzin',
         'responGuruPengajar',
-        'responGuruPiket'
+        'responKurikulum'
     ];
 }

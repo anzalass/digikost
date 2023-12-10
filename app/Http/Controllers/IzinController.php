@@ -29,8 +29,35 @@ class IzinController extends Controller
        }    
     }
 
+    public function getIzinByKurikulumId($id){
+        $result = Izin::where('kurikulum', $id)->get();
+        if($result){
+            return response()->json([
+                'results'=> $result
+            ],200);
+        }else{
+            return response()->json([
+                'message' => "Izin tidak ditemukan"
+            ],404);
+        } 
+    }
+
+    public function getIzinGuruById($id){
+        $result = Izin::where("idUser",$id)->get();
+        if($result){
+            return response()->json([
+                'results'=> $result
+            ],200);
+        }else{
+            return response()->json([
+                'message' => "Izin tidak ditemukan"
+            ],404);
+        } 
+    }
+
     public function getIzinById($id){
-        $resultsIzin = Izin::find($id);
+        // $resultsIzin = Izin::find($id);
+        $resultsIzin = Izin::where('id', $id)->get();
         if($resultsIzin){
             return response()->json([
                 'results'=> $resultsIzin
@@ -40,6 +67,28 @@ class IzinController extends Controller
                 'message' => "Izin tidak ditemukan"
             ],404);
         } 
+    }
+
+    public function Batalkan($id, $role){
+        $getRecord = Izin::find($id);
+
+        if(!$getRecord){
+            return response()->json([
+                'message' => "Data Tidak Ditemukan"
+            ],404);
+        }
+
+        $getRecord->statusPengajuan = "Batalkan";
+        if($role == 1){
+            $getRecord->responGuruPengajar = "Dibatalkan";
+        }else if($role == 2){
+            $getRecord->responKurikulum = "Dibatalkan";
+        }
+
+        $getRecord->save();
+        return response()->json([
+            'message'=> "Data berhasil diupdate"
+        ],200);
     }
 
     
@@ -79,7 +128,6 @@ class IzinController extends Controller
                     'idMapel' => 'required',
                     'kelas' => 'required|string',
                     'guruPengajar' => 'required',
-                    'guruPiket'=>'required',
                     'keterangan'=> 'required',
                     'jamMasuk' => 'required',
                     'typeIzin'=> 'required',
@@ -90,7 +138,6 @@ class IzinController extends Controller
                     'idMapel' => 'required',
                     'kelas' => 'required|string',
                     'guruPengajar' => 'required',
-                    'guruPiket'=>'required',
                     'jamKeluar'=> 'required',
                     'jamMasuk'=> 'required',
                     'keterangan'=> 'required',
@@ -102,7 +149,6 @@ class IzinController extends Controller
                     'idMapel' => 'required',
                     'kelas' => 'required|string',
                     'guruPengajar' => 'required',
-                    'guruPiket'=>'required',
                     'jamKeluar'=> 'required',
                     'keterangan'=> 'required',
                     'typeIzin'=> 'required',
@@ -135,7 +181,6 @@ class IzinController extends Controller
 
             $SearchEditById->idMapel = $request->idMapel;
             $SearchEditById->guruPengajar = $request->guruPengajar;
-            $SearchEditById->guruPiket = $request->guruPiket;
             $SearchEditById->keterangan = $request->keterangan;
             $SearchEditById->typeIzin = $request->typeIzin;
 
@@ -164,7 +209,6 @@ class IzinController extends Controller
                     'idMapel' => 'required',
                     'kelas' => 'required|string',
                     'guruPengajar' => 'required|string',
-                    'guruPiket'=>'required|string',
                     'keterangan'=> 'required',
                     'jamMasuk' => 'required',
                     'typeIzin'=> 'required',
@@ -175,7 +219,6 @@ class IzinController extends Controller
                     'idMapel' => 'required',
                     'kelas' => 'required|string',
                     'guruPengajar' => 'required|string',
-                    'guruPiket'=>'required|string',
                     'jamKeluar'=> 'required',
                     'jamMasuk'=> 'required',
                     'keterangan'=> 'required',
@@ -187,7 +230,6 @@ class IzinController extends Controller
                     'idMapel' => 'required',
                     'kelas' => 'required|string',
                     'guruPengajar' => 'required|string',
-                    'guruPiket'=>'required|string',
                     'jamKeluar'=> 'required',
                     'keterangan'=> 'required',
                     'typeIzin'=> 'required',
@@ -207,14 +249,11 @@ class IzinController extends Controller
                     'kelas'=> $request->kelas,
                     'foto' => $request->foto,
                     'guruPengajar'=> $request->guruPengajar,
-                    'guruPiket'=> $request->guruPiket,
                     'jamKeluar'=> $request->jamKeluar,
                     'jamMasuk'=> $request->jamMasuk,
                     'keterangan'=> $request->keterangan,
                     'typeIzin'=> $request->typeIzin,
                     'responGuruPengajar' => "pending",
-                    'responGuruPiket' => "pending",
-                    'statusPengajuan'=> "pending"
                 ]);
             }else{
                 $add = Izin::create([
@@ -222,14 +261,81 @@ class IzinController extends Controller
                     'idMapel'=> $request->idMapel,
                     'kelas'=> $request->kelas,
                     'guruPengajar'=> $request->guruPengajar,
-                    'guruPiket'=> $request->guruPiket,
                     'jamKeluar'=> $request->jamKeluar,
                     'jamMasuk'=> $request->jamMasuk,
                     'keterangan'=> $request->keterangan,
                     'typeIzin'=> $request->typeIzin,
                     'responGuruPengajar' => "pending",
-                    'responGuruPiket' => "pending",
-                    'statusPengajuan'=> "pending"
+                ]);
+            }
+
+            if($add){
+                return response()->json([
+                    "message" => "Izin Berhasil Diajukan"
+                ],200);
+            }
+        }catch(\Exception $e){
+            return response()->json([
+                'message' => $e
+            ],500);
+        }
+    }
+
+        public function tambahIzinGuru(IzinRequest $request){
+        try{
+            if($request->typeIzin == 'Masuk'){
+                $validator = Validator::make($request->all(),[
+                    'idUser' => 'required',
+                    'kurikulum' => 'required',
+                    'keterangan'=> 'required',
+                    'jamMasuk' => 'required',
+                    'typeIzin'=> 'required',
+                ]);
+            }else if($request->typeIzin == 'Keluar'){
+                $validator = Validator::make($request->all(),[
+                    'idUser' => 'required',
+                    'kurikulum' => 'required',
+                    'jamKeluar'=> 'required',
+                    'jamMasuk'=> 'required',
+                    'keterangan'=> 'required',
+                    'typeIzin'=> 'required',
+                ]);
+            }else if($request->typeIzin == 'Pulang'){
+                $validator = Validator::make($request->all(),[
+                    'idUser' => 'required',
+                    'kurikulum' => 'required',
+                    'jamKeluar'=> 'required',
+                    'keterangan'=> 'required',
+                    'typeIzin'=> 'required',
+                ]);
+            }
+
+            if($validator->fails()){
+                return response()->json([
+                    'error'=> $validator->errors()
+                ],422);
+            }
+
+            if($request->foto != null){
+                $add = Izin::create([
+                    'idUser' => $request->idUser,
+                    'foto' => $request->foto,
+                    'kurikulum'=> $request->kurikulum,
+                    'jamKeluar'=> $request->jamKeluar,
+                    'jamMasuk'=> $request->jamMasuk,
+                    'keterangan'=> $request->keterangan,
+                    'typeIzin'=> $request->typeIzin,
+                    'responGuruPengajar' => "pending",
+                ]);
+            }else{
+                $add = Izin::create([
+                    'idUser' => $request->idUser,
+                    'kurikulum'=> $request->kurikulum,
+                    'jamKeluar'=> $request->jamKeluar,
+                    'jamMasuk'=> $request->jamMasuk,
+                    'keterangan'=> $request->keterangan,
+                    'typeIzin'=> $request->typeIzin,
+                    'responGuruPengajar' => "pending",
                 ]);
             }
 
@@ -256,8 +362,8 @@ class IzinController extends Controller
 
         if($role == 2){
             $getRecord->responGuruPengajar = "Diizinkan";
-        }else if($role == 3){
-            $getRecord->responGuruPiket = "Diizinkan";
+        }else if($role == 5){
+            $getRecord->responKurikulum = "Diizinkan";        
         }
 
         $getRecord->save();
@@ -277,8 +383,8 @@ class IzinController extends Controller
 
         if($role == 2){
             $getRecord->responGuruPengajar = "Ditolak";
-        }else if($role == 3){
-            $getRecord->responGuruPiket = "Ditolak";
+        }else if($role == 5){
+            $getRecord->responKurikulum = "Ditolak";
         }
 
         $getRecord->save();

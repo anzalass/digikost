@@ -52,17 +52,25 @@ Route::delete('deleteUser/{id}', [UserController::class, 'deleteUser']);
 //Get User
 Route::get('getGuruPengajar', [UserController::class, 'getGuruPengajar']);
 Route::get('getGuruPiket',[UserController::class, 'getGuruPiket']);
+Route::get('getKurikulum',[UserController::class, 'getKurikulum']);
 Route::put('ChangePassword/{idUser}',[UserController::class,'changePassword']);
 
 //Table Izin
 Route::get('getIzin',[IzinController::class, 'index']);
+Route::get('getIzinByKurikulumId/{id}',[IzinController::class,'getIzinByKurikulumId']);
+Route::get('getIzinGuruById/{id}',[IzinController::class,'getIzinGuruById']);
 Route::get('getIzinKurikulum',[IzinController::class,'AllPermissionKurikulum']);
 Route::get('getIzinPengajar/{id}',[IzinController::class, 'AllPermissionGuruPengajar']);
 Route::get('getIzinPiket/{id}',[IzinController::class, 'AllPermissionGuruPiket']);
 Route::get('getIzinById/{id}',[IzinController::class, 'getIzinById']);
+
 Route::post('requestIzin',[IzinController::class, 'tambahIzin']);
+Route::post('requestIzinGuru',[IzinController::class, 'tambahIzinGuru']);
+
 Route::put('BeriIzin/{id}/{role}',[IzinController::class, 'BeriIzin']);
 Route::put('TolakPengajuan/{id}/{role}',[IzinController::class, 'Tolak']);
+
+Route::put('Batalkan/{id}/{role}',[IzinController::class, 'Batalkan']);
 
 Route::put('EditIzin/{id}',[IzinController::class,'EditIzin']);
 
