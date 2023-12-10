@@ -117,6 +117,7 @@ export default function AddUser() {
                                 >
                                     <option value="">Pilih Role</option>
                                     <option value="4">Admin</option>
+                                    <option value="5">Kurikulum</option>
                                     <option value="1">Siswa</option>
                                     <option value="2">Guru Pengajar</option>
                                     <option value="3">Guru Piket</option>

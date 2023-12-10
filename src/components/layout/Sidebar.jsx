@@ -24,7 +24,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
         icon: <BsPencilSquare className="my-auto" />,
       },
     ];
-  } else if (user.role == 2 || user.role == 3 || user.role == 5) {
+  } else if (user.role == 2) {
     sidebarMenu = [
       {
         title: "Beranda",
@@ -34,6 +34,11 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
       {
         title: "Permintaan Izin",
         url: "/PermintaanIzin",
+        icon: <BsPencilSquare className="my-auto" />,
+      },
+      {
+        title: "Izin Saya",
+        url: "/PermintaanIzinGuru",
         icon: <BsPencilSquare className="my-auto" />,
       },
     ];
@@ -52,6 +57,19 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
       {
         title: "Mata Pelajaran",
         url: "/MataPelajaran",
+        icon: <BsPencilSquare className="my-auto" />,
+      },
+    ];
+  } else if (user.role == 5) {
+    sidebarMenu = [
+      {
+        title: "Beranda",
+        url: "/",
+        icon: <GrHomeRounded className={` fill-white  my-auto`} />,
+      },
+      {
+        title: "Permintaan Izin",
+        url: "/PermintaanIzin",
         icon: <BsPencilSquare className="my-auto" />,
       },
     ];

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BsFillBellFill } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -8,7 +8,14 @@ import { BASE_URL } from "../../config/base_url";
 
 export default function TopBar({ children }) {
   const nav = useNavigate();
+  const [topbarheader, setTopbarHeader] = useState("")
   const { user } = useSelector((state) => state.user);
+
+  const topBarHeader = () => {
+    if (user?.role === 1) {
+      setTopbarHeader("Siswa")
+    }
+  }
 
   useEffect(() => {
     const delay = 2000;
@@ -22,16 +29,20 @@ export default function TopBar({ children }) {
     return () => clearTimeout(timer);
   }, [user]);
 
+  useEffect(() => {
+    console.log(user?.role);
+    console.log(topbarheader);
+    topBarHeader()
+  }, [user])
+
   return (
     <div>
       <div className="w-full h-[80px] flex p-6 lg:justify-between xl:justify-between justify-end">
-        <div className="w-[50%] text-[25px] hidden md:hidden lg:block xl:block font-abc font-[500]">
-          {children}
+        <div className="w-[50%] text-[25px] hidden  md:hidden lg:block xl:block font-abc font-[500]">
+          <h1>{children}</h1>
         </div>
         <div className="w-[50%] flex justify-end  ">
-          <div className="mr-5">
-            <BsFillBellFill size={25} />
-          </div>
+
           <div className="flex">
             <FaUserCircle size={25} />
             <h1

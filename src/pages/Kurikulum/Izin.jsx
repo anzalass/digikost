@@ -12,7 +12,7 @@ import { BASE_URL, BACKEND_BASE_URL } from "../../config/base_url.jsx";
 import TabelIzinGuru from "../../components/admin/pengadaanbarang/TabelIzinGuru.jsx";
 import { useSelector } from "react-redux";
 
-export default function IzinGuru() {
+export default function SemuaIzinGuru() {
     const [Izin, setIzin] = useState([]);
     const { user } = useSelector((state) => state.user);
 
@@ -22,7 +22,7 @@ export default function IzinGuru() {
 
     const fetchData = async () => {
         try {
-            const result = await axios.get(`${BACKEND_BASE_URL}/api/getIzinGuruById/${user.id}`);
+            const result = await axios.get(`${BACKEND_BASE_URL}/api/getIzinByKurikulumId/${user.id}`);
             setIzin(result.data.results);
             console.log(result.data.results);
 
@@ -41,7 +41,7 @@ export default function IzinGuru() {
                 <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
             </div>
             <div className={`w-11/12 mx-auto`}>
-                <TopBar>{"Permintaan Izin Saya"}</TopBar>
+                <TopBar>{"Semua Izin"}</TopBar>
                 <div className="w-[95%] h-[80px] lg:justify-between justify-center xl:justify-between mx-auto flex">
                     <div className="">
 

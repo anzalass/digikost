@@ -6,10 +6,11 @@ import HomePage from "./pages/HomePage";
 import { store } from "./redux/store";
 import { loadUser } from "./redux/actions/user";
 import { useSelector } from "react-redux";
+import SemuaIzinGuru from "./pages/Kurikulum/Izin";
 import SemuaIzin from "./pages/Siswa/SemuaIzin";
+import IzinGuru from "./pages/Guru/Izin";
 import DetailIzin from "./pages/Siswa/DetailIzin";
 import PermissionGuruPengajar from "./pages/Guru/PermissionGuruPengajar";
-import PermissionGuruPiket from "./pages/GuruPiket/PermissionGuruPiket";
 import AllUser from "./pages/Admin/User/AllUser";
 import AddUser from "./pages/Admin/User/AddUser";
 import EditUser from "./pages/Admin/User/EditUser";
@@ -38,22 +39,11 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/PermintaanIzin" element={<PermissionGuruPengajar />} />
+              <Route path="/PermintaanIzinGuru" element={<IzinGuru />} />
               <Route path="/Detail/:id" element={<DetailIzin />} />
               <Route path="/Profile" element={<EditProfilePage />} />
             </Routes>
-          ) : user.role === 3 ?
-            (
-              <Routes>
-                <Route
-                  path="/"
-                  element={<HomePage />}
-                />
-                <Route path="/Izin" element={<SemuaIzin />} />
-                <Route path="/PermintaanIzin" element={<PermissionGuruPiket />} />
-                <Route path="/Detail/:id" element={<DetailIzin />} />
-                <Route path="/Profile" element={<EditProfilePage />} />
-              </Routes>
-            )
+          )
             : user.role === 4 ?
               (<Routes>
                 <Route
@@ -74,7 +64,7 @@ function App() {
                       path="/"
                       element={<HomePage />}
                     />
-                    <Route path="/PermintaanIzin" element={<SemuaIzin />} />
+                    <Route path="/PermintaanIzin" element={<SemuaIzinGuru />} />
                     <Route path="/Detail/:id" element={<DetailIzin />} />
                     <Route path="/Profile" element={<EditProfilePage />} />
                   </Routes>

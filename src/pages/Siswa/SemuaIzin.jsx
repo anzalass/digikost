@@ -44,17 +44,17 @@ export default function SemuaIzin() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="w-full h-[100vh] flex">
+    <div className="w-full min-h-screen flex">
       <div className={``}>
         <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
       </div>
       <div className={`w-11/12 mx-auto`}>
         <TopBar>{"Semua Izin"}</TopBar>
-        <div className="w-[95%] h-[80px] lg:justify-between justify-center xl:justify-between mx-auto flex">
+        <div className="w-[95%] h-[10px] lg:justify-between justify-center xl:justify-between mx-auto flex">
           <div className="">
 
           </div>
-          {addIzin ? null : (
+          {/* {addIzin ? null : (
             <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
               <input
                 type="text"
@@ -63,9 +63,8 @@ export default function SemuaIzin() {
                 placeholder="Search"
               />
             </div>
-          )}
+          )} */}
         </div>
-        <div className="w-[95%] opacity-25 mx-auto mt-0 h-[1px] bg-slate-600"></div>
 
         {!addIzin ? <TableTambahBarang data={izinSearch} /> : null}
 

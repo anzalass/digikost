@@ -76,7 +76,7 @@ export default function EditUser() {
                 <Sidebar setSidebar={5} width={open} setWidth={setOpen} />
             </div>
             <div className={`w-11/12 mx-auto`}>
-                <TopBar>{"Edit Petugas Owner"}</TopBar>
+                <TopBar>{"Edit User"}</TopBar>
                 <div className="w-[94%] mx-auto">
                     <div className="w-full mt-6">
                         <h1 className="font-abc font-[500]">Nama</h1>

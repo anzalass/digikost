@@ -41,17 +41,17 @@ export default function AllUser() {
                 <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
             </div>
             <div className={`w-11/12 mx-auto`}>
-                <TopBar>{"Semua Izin"}</TopBar>
+                <TopBar>{"Semua Pengguna"}</TopBar>
                 <div className="w-[95%] h-[80px] lg:justify-between justify-center xl:justify-between mx-auto flex">
                     <div className="">
                         <button
                             onClick={() => nav("/AddUser")}
                             className="bg-[#7B2CBF] mt-5 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
                         >
-                            Tambah Petugas +
+                            Tambah Pengguna +
                         </button>
                     </div>
-                    {addIzin ? null : (
+                    {/* {addIzin ? null : (
                         <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
                             <input
                                 type="text"
@@ -59,7 +59,7 @@ export default function AllUser() {
                                 placeholder="Search"
                             />
                         </div>
-                    )}
+                    )} */}
                 </div>
                 <div className="w-[95%] opacity-25 mx-auto mt-0 h-[1px] bg-slate-600"></div>
 

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../../layout/Spinner";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { BACKEND_BASE_URL } from "../../../config/base_url";
+import { BACKEND_BASE_URL, BASE_URL } from "../../../config/base_url";
 
 export default function TabelUser({ data, children }) {
     const nav = useNavigate();
@@ -69,6 +69,18 @@ export default function TabelUser({ data, children }) {
         const getMapel = await axios.get(`${BACKEND_BASE_URL}/api/getUser`);
         setAllUser(getMapel.data.results);
     };
+
+    const deletePetugas = async (id) => {
+        try {
+            const res = await axios.delete(`${BACKEND_BASE_URL}/api/deleteUser/${id}`)
+
+            if (res.status == 200) {
+                window.location.reload();
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     const tambahUser = async () => {
         try {

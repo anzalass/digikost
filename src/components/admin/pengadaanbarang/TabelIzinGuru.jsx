@@ -23,8 +23,7 @@ export default function TabelIzinGuru({ data, children }) {
     const [izinEdit, setIzinEdit] = useState([]);
     const [mapel, setMapel] = useState([]);
     const [idIzin, setIdIzin] = useState();
-    const [guruPengajar, setGuruPengajar] = useState([]);
-    const [guruPiket, setGuruPiket] = useState([]);
+    const [kurikulum, setKurikulum] = useState([]);
     const [AllUser, setAllUser] = useState([]);
     const [filterBulan, setFilterBulan] = useState("");
     const [filterTahun, setFilterTahun] = useState("");
@@ -59,28 +58,24 @@ export default function TabelIzinGuru({ data, children }) {
         idUser: user.id,
         idMapel: "",
         kelas: user.kelas,
-        guruPengajar: "",
+        kurikulum: "",
         foto: null,
-        guruPiket: "",
         jamKeluar: "",
         jamMasuk: "",
         keterangan: "",
         typeIzin: "Masuk",
-        responGuruPengajar: "pending",
-        responGuruPiket: "pending"
+        responKurikulum: "pending",
     });
 
     const [errIzin, setErrorIzin] = useState({
         idMapel: "",
         kelas: "",
-        guruPengajar: "",
-        guruPiket: "",
+        kurikulum: "",
         jamKeluar: "",
         jamMasuk: "",
         keterangan: "",
         typeIzin: "",
-        responGuruPengajar: "",
-        responGuruPiket: ""
+        responKurikulum: "",
     });
 
     useEffect(() => {
@@ -89,7 +84,7 @@ export default function TabelIzinGuru({ data, children }) {
 
     let columns = [];
 
-    if (user?.role == 2 || user?.role == 3) {
+    if (user?.role == 2) {
         columns = [
             {
                 field: "no",
@@ -100,20 +95,13 @@ export default function TabelIzinGuru({ data, children }) {
             },
             {
                 field: "idUser",
-                headerName: "Siswa",
+                headerName: "Pengaju",
                 headerClassName: "bg-slate-200 text-center font-abc",
                 minWidth: 100,
                 flex: 0.7,
             },
             {
-                field: "idMapel",
-                headerName: "Mata Pelajaran",
-                headerClassName: "bg-slate-200 text-center font-abc",
-                minWidth: 150,
-                flex: 0.7,
-            },
-            {
-                field: "Kurikulum",
+                field: "kurikulum",
                 headerName: "Kurikulum",
                 headerClassName: "bg-slate-200 text-center font-abc",
                 minWidth: 100,
@@ -134,7 +122,7 @@ export default function TabelIzinGuru({ data, children }) {
                 flex: 0.7,
             },
             {
-                field: "responGuruPengajar",
+                field: "responKurikulum",
                 headerName: "Respon Kurikulum",
                 headerClassName: "bg-slate-200 text-center font-abc",
                 minWidth: 100,
@@ -143,14 +131,14 @@ export default function TabelIzinGuru({ data, children }) {
                 renderCell: (params) => {
                     return (
                         <div
-                            className={`${params.row.responGuruPengajar === "pending"
+                            className={`${params.row.responKurikulum === "pending"
                                 ? "bg-yellow-400 text-white"
-                                : params.row.responGuruPengajar === "Diizinkan"
+                                : params.row.responKurikulum === "Diizinkan"
                                     ? "bg-green-500"
                                     : "bg-red-600"
                                 } h-full text-center pt-3 text-white font-abc w-full `}
                         >
-                            {params.row.responGuruPengajar}
+                            {params.row.responKurikulum}
                         </div>
                     );
                 },
@@ -193,7 +181,7 @@ export default function TabelIzinGuru({ data, children }) {
                                         >
                                             <BsEye size={20} />
                                         </button>
-                                        {params.row.responGuruPengajar == "pending" && params.row.responGuruPiket == "pending" ? <button
+                                        {params.row.responKurikulum == "pending" ? <button
                                             className=""
                                             onClick={() => {
                                                 editBarangFunc(params.id);
@@ -233,20 +221,6 @@ export default function TabelIzinGuru({ data, children }) {
                 flex: 0.7,
             },
             {
-                field: "guruPengajar",
-                headerName: "Guru Pengajar",
-                headerClassName: "bg-slate-200 text-center font-abc",
-                minWidth: 100,
-                flex: 0.7,
-            },
-            {
-                field: "guruPiket",
-                headerName: "Guru Piket",
-                headerClassName: "bg-slate-200 text-center font-abc",
-                minWidth: 100,
-                flex: 0.7,
-            },
-            {
                 field: "typeIzin",
                 headerName: "Type Izin",
                 headerClassName: "bg-slate-200 text-center font-abc",
@@ -261,8 +235,8 @@ export default function TabelIzinGuru({ data, children }) {
                 flex: 0.7,
             },
             {
-                field: "responGuruPengajar",
-                headerName: "Respon Guru Pengajar",
+                field: "kurikulum",
+                headerName: "Respon Kurikulum",
                 headerClassName: "bg-slate-200 text-center font-abc",
                 minWidth: 100,
                 flex: 0.7,
@@ -270,36 +244,14 @@ export default function TabelIzinGuru({ data, children }) {
                 renderCell: (params) => {
                     return (
                         <div
-                            className={`${params.row.responGuruPengajar === "pending"
+                            className={`${params.row.responKurikulum === "pending"
                                 ? "bg-yellow-400 text-white"
-                                : params.row.responGuruPengajar === "Diizinkan"
+                                : params.row.responKurikulum === "Diizinkan"
                                     ? "bg-green-500"
                                     : "bg-red-600"
                                 } h-full text-center pt-3 text-white font-abc w-full `}
                         >
-                            {params.row.responGuruPengajar}
-                        </div>
-                    );
-                },
-            },
-            {
-                field: "responGuruPiket",
-                headerName: "Respon Guru Piket",
-                headerClassName: "bg-slate-200 text-center font-abc",
-                minWidth: 100,
-                flex: 0.7,
-                sortable: false,
-                renderCell: (params) => {
-                    return (
-                        <div
-                            className={`${params.row.responGuruPiket === "pending"
-                                ? "bg-yellow-400"
-                                : params.row.responGuruPiket === "Diizinkan"
-                                    ? "bg-green-500"
-                                    : "bg-red-600"
-                                } h-full text-center pt-3 text-white font-abc w-full `}
-                        >
-                            {params.row.responGuruPiket}
+                            {params.row.responKurikulum}
                         </div>
                     );
                 },
@@ -342,15 +294,6 @@ export default function TabelIzinGuru({ data, children }) {
                                         >
                                             <BsEye size={20} />
                                         </button>
-                                        {params.row.responGuruPengajar == "pending" && params.row.responGuruPiket == "pending" ? <button
-                                            className=""
-                                            onClick={() => {
-                                                editBarangFunc(params.id);
-                                                resetError();
-                                            }}
-                                        >
-                                            <BiEditAlt color="blue" size={20} />
-                                        </button> : null}
                                     </>
                             }
                         </div>
@@ -362,28 +305,24 @@ export default function TabelIzinGuru({ data, children }) {
 
     const fetchData = async () => {
         const getMapel = await axios.get(`${BACKEND_BASE_URL}/api/getMataPelajaran`);
-        const getGuruPengajar = await axios.get(`${BACKEND_BASE_URL}/api/getGuruPengajar`);
-        const getGuruPiket = await axios.get(`${BACKEND_BASE_URL}/api/getGuruPiket`);
+        const getKurikulum = await axios.get(`${BACKEND_BASE_URL}/api/getKurikulum`);
         const getAllUser = await axios.get(`${BACKEND_BASE_URL}/api/getUser`);;
 
         setMapel(getMapel.data.results);
         setAllUser(getAllUser.data.results);
-        setGuruPengajar(getGuruPengajar.data.results);
-        setGuruPiket(getGuruPiket.data.results);
+        setKurikulum(getKurikulum.data.results);
     };
 
     const resetError = () => {
         setErrorIzin({
             idMapel: "",
             kelas: "",
-            guruPengajar: "",
-            guruPiket: "",
+            kurikulum: "",
             jamKeluar: "",
             jamMasuk: "",
             keterangan: "",
             typeIzin: "",
-            responGuruPengajar: "",
-            responGuruPiket: ""
+            responKurikulum: "",
         })
     }
 
@@ -425,7 +364,7 @@ export default function TabelIzinGuru({ data, children }) {
                 izin.foto = res.data.secure_url;
             }
 
-            const response = await axios.post(`${BACKEND_BASE_URL}/api/requestIzin`, izin);
+            const response = await axios.post(`${BACKEND_BASE_URL}/api/requestIzinGuru/`, izin);
 
             if (response.status === 200) {
                 console.log("res : ", response);
@@ -498,17 +437,14 @@ export default function TabelIzinGuru({ data, children }) {
                         new Date(item.created_at).getMonth() === Number(filterBulan)) &&
                     (filterTahun === "" ||
                         new Date(item.created_at).getFullYear() === Number(filterTahun)) &&
-                    ((item.idUser === user?.id))
+                    (user?.role == 5 ? (item.kurikulum === user?.id) : ((item.idUser === user?.id)))
             )
             .forEach((a, index) => {
-                console.log("a : ", a);
                 const pushMapel = mapel.filter((item) => item.kodePelajaran == a.idMapel);
-                const pushGuruPengajar = guruPengajar.filter((item) => item.id == a.guruPengajar);
-                const pushGuruPiket = guruPiket.filter((item) => item.id == a.guruPiket);
                 const pushSiswa = AllUser.filter((item) => item.id == a.idUser);
-                if (user?.role == 2 || user?.role == 3) {
+                if (user?.role == 2 || user?.role == 5) {
                     const pushKurikulum = AllUser.filter((item) => item.id == a.kurikulum);
-                    if (pushMapel[0] != undefined && pushGuruPengajar[0] != undefined && pushGuruPiket[0] != undefined && pushSiswa[0] != undefined && pushKurikulum[0] != undefined) {
+                    if (pushMapel[0] != undefined && pushKurikulum[0] != undefined && pushSiswa[0] != undefined && pushKurikulum[0] != undefined) {
                         row.push({
                             id: a.id,
                             no: index + 1,
@@ -521,27 +457,39 @@ export default function TabelIzinGuru({ data, children }) {
                             keterangan: a.keterangan,
                             typeIzin: a.typeIzin,
                             tanggal: new Date(a.created_at).toLocaleDateString(),
-                            responGuruPengajar: a.responGuruPengajar,
-                            responGuruPiket: a.responGuruPiket,
+                            responKurikulum: a.responKurikulum,
                         });
+                    } else if (pushMapel[0] == undefined && a.kelas == null) {
+                        const pushKurikulum = AllUser.filter((item) => item.id == a.kurikulum);
+                        if (pushKurikulum[0] != undefined) {
+                            row.push({
+                                id: a.id,
+                                no: index + 1,
+                                idUser: pushSiswa[0].name,
+                                kurikulum: pushKurikulum[0].name,
+                                jamMasuk: a.jamMasuk,
+                                jamKeluar: a.jamKeluar,
+                                keterangan: a.keterangan,
+                                typeIzin: a.typeIzin,
+                                tanggal: new Date(a.created_at).toLocaleDateString(),
+                                responKurikulum: a.responKurikulum,
+
+                            });
+                        }
                     }
                 } else {
-                    if (pushMapel[0] != undefined && pushGuruPengajar[0] != undefined && pushGuruPiket[0] != undefined && pushSiswa[0] != undefined) {
+                    if (pushMapel[0] != undefined && pushSiswa[0] != undefined) {
                         row.push({
                             id: a.id,
                             no: index + 1,
                             idUser: pushSiswa[0].name,
                             idMapel: pushMapel[0].namaPelajaran,
                             kelas: a.kelas,
-                            guruPengajar: pushGuruPengajar[0].name,
-                            guruPiket: pushGuruPiket[0].name,
                             jamMasuk: a.jamMasuk,
                             jamKeluar: a.jamKeluar,
                             keterangan: a.keterangan,
                             typeIzin: a.typeIzin,
                             tanggal: new Date(a.created_at).toLocaleDateString(),
-                            responGuruPengajar: a.responGuruPengajar,
-                            responGuruPiket: a.responGuruPiket,
                         });
                     }
                 }
@@ -570,38 +518,16 @@ export default function TabelIzinGuru({ data, children }) {
                                 </div>
                             ) : null}
                             <div className="w-full mt-4">
-                                <h1 className="font-abc pb-2 ">Mata Pelajaran</h1>
+                                <h1 className="font-abc pb-2 ">Kurikulum</h1>
                                 <select
-                                    name="idMapel"
+                                    name="kurikulum"
                                     onChange={(e) => changeIzinHandler(e)}
                                     id=""
                                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                                 >
-                                    <option value="">- Select Mata Pelajaran -</option>
+                                    <option value="">- Select Kurikulum -</option>
 
-                                    {mapel.map((item, index) => {
-                                        return (
-                                            <option key={index} value={`${item.kodePelajaran}`}>
-                                                {item.namaPelajaran}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                                {errIzin.idMapel ? (
-                                    <p>{errIzin.idMapel}</p>
-                                ) : null}
-                            </div>
-                            <div className="w-full mt-4">
-                                <h1 className="font-abc pb-2 ">Guru Pengajar</h1>
-                                <select
-                                    name="guruPengajar"
-                                    onChange={(e) => changeIzinHandler(e)}
-                                    id=""
-                                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                                >
-                                    <option value="">- Select Guru Pengajar -</option>
-
-                                    {guruPengajar.map((item, index) => {
+                                    {kurikulum.map((item, index) => {
                                         return (
                                             <option key={index} value={`${item.id}`}>
                                                 {item.name}
@@ -609,30 +535,8 @@ export default function TabelIzinGuru({ data, children }) {
                                         );
                                     })}
                                 </select>
-                                {errIzin.guruPengajar ? (
-                                    <p>{errIzin.guruPengajar}</p>
-                                ) : null}
-                            </div>
-                            <div className="w-full mt-4">
-                                <h1 className="font-abc pb-2 ">Guru Piket</h1>
-                                <select
-                                    name="guruPiket"
-                                    onChange={(e) => changeIzinHandler(e)}
-                                    id=""
-                                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                                >
-                                    <option value="">- Select Guru Piket -</option>
-
-                                    {guruPiket.map((item, index) => {
-                                        return (
-                                            <option key={index} value={`${item.id}`}>
-                                                {item.name}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                                {errIzin.guruPiket ? (
-                                    <p>{errIzin.guruPiket}</p>
+                                {errIzin.kurikulum ? (
+                                    <p>{errIzin.kurikulum}</p>
                                 ) : null}
                             </div>
                             {isBukti && izin.typeIzin == "Masuk" ?
@@ -802,17 +706,17 @@ export default function TabelIzinGuru({ data, children }) {
                                 ) : null}
                             </div>
                             <div className="w-full mt-4">
-                                <h1 className="font-abc pb-2 ">Guru Pengajar</h1>
+                                <h1 className="font-abc pb-2 ">Kurikulum</h1>
                                 <select
-                                    name="guruPengajar"
+                                    name="kurikulum"
                                     onChange={(e) => changeIzinEditHandler(e)}
                                     id=""
                                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                                 >
-                                    <option value="">- Select Guru Pengajar -</option>
+                                    <option value="">- Select Kurikulum -</option>
 
-                                    {guruPengajar.map((item, index) => {
-                                        if (item.id == izinEdit.guruPengajar) {
+                                    {kurikulum.map((item, index) => {
+                                        if (item.id == izinEdit.kurikulum) {
                                             return (
                                                 <option key={index} value={`${item.id}`} selected>
                                                     {item.name}
@@ -827,38 +731,8 @@ export default function TabelIzinGuru({ data, children }) {
                                         }
                                     })}
                                 </select>
-                                {errIzin.guruPengajar ? (
-                                    <p>{errIzin.guruPengajar}</p>
-                                ) : null}
-                            </div>
-                            <div className="w-full mt-4">
-                                <h1 className="font-abc pb-2 ">Guru Piket</h1>
-                                <select
-                                    name="guruPiket"
-                                    onChange={(e) => changeIzinEditHandler(e)}
-                                    id=""
-                                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                                >
-                                    <option value="">- Select Guru Piket -</option>
-
-                                    {guruPiket.map((item, index) => {
-                                        if (item.id == izinEdit.guruPiket) {
-                                            return (
-                                                <option key={index} value={`${item.id}`} selected>
-                                                    {item.name}
-                                                </option>
-                                            );
-                                        } else {
-                                            return (
-                                                <option key={index} value={`${item.id}`}>
-                                                    {item.name}
-                                                </option>
-                                            );
-                                        }
-                                    })}
-                                </select>
-                                {errIzin.guruPiket ? (
-                                    <p>{errIzin.guruPiket}</p>
+                                {errIzin.kurikulum ? (
+                                    <p>{errIzin.kurikulum}</p>
                                 ) : null}
                             </div>
                             {izinEdit.typeIzin == "Keluar" ?
@@ -975,13 +849,14 @@ export default function TabelIzinGuru({ data, children }) {
                         <div className="bg-white w-[96%] mt-3 mb-[200px]  mx-auto  rounded-lg">
                             <div className="lg:flex xl:flex block justify-between">
                                 <div className="">
-                                    {user.role == 1 ?
+                                    {user.role == 2 ?
                                         <button
                                             onClick={() => setPengadaanBarang(!pengadaanBarang)}
                                             className="bg-[#7B2CBF] mt-1 mb-3 px-3 text-center py-1 xl:w-[200px] lg:w-[200px] w-full md:w-[200px] rounded-md text-[#E5D5F2] font-abc"
                                         >
                                             Ajukan Izin +
-                                        </button> : null
+                                        </button>
+                                        : null
                                     }
                                 </div>
                                 <div className="mt-1 mb-3 px-3">

@@ -43,7 +43,7 @@ export default function MapelSiswa() {
                     >
                         Tambah Pelajaran +
                     </button>
-                    {addIzin ? null : (
+                    {/* {addIzin ? null : (
                         <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
                             <input
                                 type="text"
@@ -51,7 +51,7 @@ export default function MapelSiswa() {
                                 placeholder="Search"
                             />
                         </div>
-                    )}
+                    )} */}
                 </div>
                 <div className="w-[95%] opacity-25 mx-auto mt-0 h-[1px] bg-slate-600"></div>
 
