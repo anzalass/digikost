@@ -130,7 +130,7 @@ export default function EditUser() {
                             {userSelected.role == "4" ? <option value="4" selected>Admin</option> : <option value="4" >Admin</option>}
                             {userSelected.role == "1" ? <option value="1" selected>Siswa</option> : <option value="1" >Siswa</option>}
                             {userSelected.role == "2" ? <option value="2" selected>Guru Pengajar</option> : <option value="2" >Guru Pengajar</option>}
-                            {userSelected.role == "3" ? <option value="3" selected>Guru Piket</option> : <option value="3" >Guru Piket</option>}
+                            {userSelected.role == "3" ? <option value="5" selected>Kurikulum</option> : <option value="3" >Kurikulum</option>}
                         </select>
                         {err.role ?
                             <p>{err.role}</p> : null

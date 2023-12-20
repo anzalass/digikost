@@ -56,8 +56,6 @@ export default function TabelIzinGuru({ data, children }) {
 
     const [izin, setIzin] = useState({
         idUser: user.id,
-        idMapel: "",
-        kelas: user.kelas,
         kurikulum: "",
         foto: null,
         jamKeluar: "",
@@ -68,8 +66,6 @@ export default function TabelIzinGuru({ data, children }) {
     });
 
     const [errIzin, setErrorIzin] = useState({
-        idMapel: "",
-        kelas: "",
         kurikulum: "",
         jamKeluar: "",
         jamMasuk: "",
@@ -382,7 +378,7 @@ export default function TabelIzinGuru({ data, children }) {
             setIdIzin(id);
             setEditBarang(!editBarang);
             const res = await axios.get(`${BACKEND_BASE_URL}/api/getIzinById/${id}`);
-            setIzinEdit(res.data.results);
+            setIzinEdit(res.data.results[0]);
 
         } catch (err) {
             setErrorIzin(err.response.data.error);
@@ -408,17 +404,18 @@ export default function TabelIzinGuru({ data, children }) {
                 );
 
                 izinEdit.foto = res.data.secure_url;
-                const response = await axios.put(`${BACKEND_BASE_URL}/api/EditIzin/${idIzin}`, izinEdit);
+                const response = await axios.put(`${BACKEND_BASE_URL}/api/EditIzinGuru/${idIzin}`, izinEdit);
                 if (response.status === 200) {
                     window.location.reload()
                 }
             } else {
-                const response = await axios.put(`${BACKEND_BASE_URL}/api/EditIzin/${idIzin}`, izinEdit);
+                const response = await axios.put(`${BACKEND_BASE_URL}/api/EditIzinGuru/${idIzin}`, izinEdit);
                 if (response.status === 200) {
                     window.location.reload()
                 }
             }
         } catch (err) {
+            console.log(err);
             setErrorIzin(err.response.data.error);
         }
 
@@ -675,7 +672,7 @@ export default function TabelIzinGuru({ data, children }) {
                                             </div> : null
                                     : null
                             }
-                            <div className="w-full mt-4">
+                            {/* <div className="w-full mt-4">
                                 <h1 className="font-abc pb-2 ">Mata Pelajaran</h1>
                                 <select
                                     name="idMapel"
@@ -704,7 +701,7 @@ export default function TabelIzinGuru({ data, children }) {
                                 {errIzin.idMapel ? (
                                     <p>{errIzin.idMapel}</p>
                                 ) : null}
-                            </div>
+                            </div> */}
                             <div className="w-full mt-4">
                                 <h1 className="font-abc pb-2 ">Kurikulum</h1>
                                 <select
@@ -731,9 +728,9 @@ export default function TabelIzinGuru({ data, children }) {
                                         }
                                     })}
                                 </select>
-                                {errIzin.kurikulum ? (
+                                {/* {errIzin.kurikulum ? (
                                     <p>{errIzin.kurikulum}</p>
-                                ) : null}
+                                ) : null} */}
                             </div>
                             {izinEdit.typeIzin == "Keluar" ?
                                 (

@@ -12,6 +12,7 @@ import DetailPengadaan from "./DetailPengadaan";
 import { useSelector } from "react-redux";
 import { BACKEND_BASE_URL } from "../../../config/base_url";
 import { edit } from "@cloudinary/url-gen/actions/animated";
+import { Checkbox } from "@mui/material";
 
 export default function TabelBarang({ data, children }) {
   const nav = useNavigate();
@@ -29,6 +30,9 @@ export default function TabelBarang({ data, children }) {
   const [filterBulan, setFilterBulan] = useState("");
   const [filterTahun, setFilterTahun] = useState("");
   const [status, setStatus] = useState("");
+
+  let CheckMapel = mapel.filter(item=> item.kodePelajaran == izinEdit.idMapel).length;
+
   const bulan = [
     "Januari",
     "Febuari",
@@ -80,6 +84,7 @@ export default function TabelBarang({ data, children }) {
   });
 
   useEffect(() => {
+    console.log("user session : ", user);
     fetchData();
   }, []);
 
@@ -282,16 +287,23 @@ export default function TabelBarang({ data, children }) {
   }
 
   const editBarangFunc = async (id) => {
+    console.log("testtttttt : ");
     try {
       setIdIzin(id);
       setEditBarang(!editBarang);
       const res = await axios.get(`${BACKEND_BASE_URL}/api/getIzinById/${id}`);
-      setIzinEdit(res.data.results);
-
+      console.log("kesini ya : ",res.data.results[0]);
+      setIzinEdit(res.data.results[0]);
+      CheckMapel = mapel.filter(item=> item.kodePelajaran == res.data.results.idMapel).length;
     } catch (err) {
-      setErrorIzin(err.response.data.error);
+      console.log(err);
+      setErrorIzin(err);
     }
   };
+
+  // useEffect(()=>{
+  //   console.log("ini izin edit : ", izinEdit[0]);
+  // },[izinEdit])
 
   const EditIzin = async () => {
     try {
@@ -423,9 +435,9 @@ export default function TabelBarang({ data, children }) {
                   ) : null}
                 </div>
               }
-              <div class="flex items-center mt-4 mb-4">
-                <input onChange={() => { izin.idMapel == ""; setSelect(!isSelect) }} id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Input Mata Pelajaran</label>
+              <div className="flex items-center mt-4 mb-4">
+                <input onChange={() => { izin.idMapel == ""; setSelect(!isSelect) }} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                <label for="default-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Input Mata Pelajaran</label>
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2 ">Guru Pengajar</h1>
@@ -452,7 +464,6 @@ export default function TabelBarang({ data, children }) {
               {isBukti && izin.typeIzin == "Masuk" ?
                 <div className="w-full mt-4">
                   <label
-                    htmlFor="buktiNota"
                     className="border-2 border-slate-500 px-2 py-1 text-sm font-abc rounded-md"
                   >
                     Pilih Foto
@@ -527,15 +538,15 @@ export default function TabelBarang({ data, children }) {
                           <p>{izin.jamMasuk}</p> : null
                         }
                       </div>
-                      <div class="flex items-center mt-4 mb-4">
-                        <input onChange={() => setIsBukti(!isBukti)} id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                        <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Upload Bukti</label>
+                      <div className="flex items-center mt-4 mb-4">
+                        <input onChange={() => setIsBukti(!isBukti)} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                        <label for="default-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Upload Bukti</label>
                       </div>
                     </>
                   )
               }
               <div className="w-full mt-4">
-                <textarea name="keterangan" required onChange={(e) => changeIzinHandler(e)} id="comment" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-black focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Keterangan"></textarea>
+                <textarea name="keterangan" required onChange={(e) => changeIzinHandler(e)} id="comment" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-black focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Keterangan"></textarea>
               </div>
               {errIzin.keterangan ?
                 <p>{errIzin.keterangan}</p> : null
@@ -587,30 +598,39 @@ export default function TabelBarang({ data, children }) {
               }
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2 ">Mata Pelajaran</h1>
+                {Checkbox == 0? 
+                    <input
+                      type="text"
+                      value={izinEdit.idMapel}
+                      name="idMapel"
+                      onChange={(e) => changeIzinEditHandler(e)}
+                      className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                    />
+                :
                 <select
-                  name="idMapel"
-                  onChange={(e) => changeIzinEditHandler(e)}
-                  id=""
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                >
-                  <option value="">- Select Mata Pelajaran -</option>
+                name="idMapel"
+                onChange={(e) => changeIzinEditHandler(e)}
+                id=""
+                className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+              >
+                {mapel.map((item, index) => {
+                  if (item.kodePelajaran == izinEdit.idMapel) {
+                    return (
+                      <option key={index} value={`${item.kodePelajaran}`} selected>
+                        {item.namaPelajaran}
+                      </option>
+                    );
+                  } else {
+                    return (
+                      <option key={index} value={`${item.kodePelajaran}`}>
+                        {item.namaPelajaran}
+                      </option>
+                    );
+                  }
+                })}
+              </select>
+                }
 
-                  {mapel.map((item, index) => {
-                    if (item.kodePelajaran == izinEdit.idMapel) {
-                      return (
-                        <option key={index} value={`${item.kodePelajaran}`} selected>
-                          {item.namaPelajaran}
-                        </option>
-                      );
-                    } else {
-                      return (
-                        <option key={index} value={`${item.kodePelajaran}`}>
-                          {item.namaPelajaran}
-                        </option>
-                      );
-                    }
-                  })}
-                </select>
                 {errIzin.idMapel ? (
                   <p>{errIzin.idMapel}</p>
                 ) : null}
@@ -623,7 +643,6 @@ export default function TabelBarang({ data, children }) {
                   id=""
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
-                  <option value="">- Select Guru Pengajar -</option>
 
                   {guruPengajar.map((item, index) => {
                     if (item.id == izinEdit.guruPengajar) {
@@ -710,7 +729,6 @@ export default function TabelBarang({ data, children }) {
                     {isBukti && izinEdit.typeIzin == "Masuk" ?
                       <div className="w-full mt-4">
                         <label
-                          htmlFor="buktiNota"
                           className="border-2 border-slate-500 px-2 py-1 text-sm font-abc rounded-md"
                         >
                           Pilih Foto
@@ -724,14 +742,14 @@ export default function TabelBarang({ data, children }) {
                         />
                       </div> : null
                     }
-                    <div class="flex items-center mt-4 mb-4">
-                      <input onChange={() => setIsBukti(!isBukti)} id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                      <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Upload Bukti</label>
+                    <div className="flex items-center mt-4 mb-4">
+                      <input onChange={() => setIsBukti(!isBukti)} id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                      <label for="default-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Upload Bukti</label>
                     </div>
                   </>
               }
               <div className="w-full mt-4">
-                <textarea value={izinEdit.keterangan} name="keterangan" onChange={(e) => changeIzinEditHandler(e)} id="comment" rows="4" class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Keterangan" required></textarea>
+                <textarea value={izinEdit.keterangan} name="keterangan" onChange={(e) => changeIzinEditHandler(e)} id="comment" rows="4" className="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Keterangan" required></textarea>
               </div>
               {errIzin.keterangan ?
                 <p>{errIzin.keterangan}</p> : null

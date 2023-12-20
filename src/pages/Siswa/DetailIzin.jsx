@@ -18,6 +18,7 @@ export default function DetailIzin() {
     console.log(izin);
     const [mapel, setMapel] = useState([]);
     const [guruPengajar, setGuruPengajar] = useState("");
+    const [kurikulum, setKurikulum] = useState("");
     const [pengaju, setPengaju] = useState('');
 
     useEffect(() => {
@@ -29,11 +30,11 @@ export default function DetailIzin() {
         if (izin != undefined && allUser.length != 0) {
             const filterUser = allUser.filter((item) => item.id == izin[0].idUser);
             const filterGuruPengajar = allUser.filter((item) => item.id == izin[0].guruPengajar)
-            console.log("allUser : ", allUser);
-            console.log("Filter User : ", filterUser);
-            console.log("filter guru : ", filterGuruPengajar);
+            const filterKurikulum = allUser.filter((item)=> item.id == izin[0].kurikulum)
+
             setPengaju(filterUser[0]?.name);
             setGuruPengajar(filterGuruPengajar[0]?.name);
+            setKurikulum(filterKurikulum[0]?.name);
         }
     }, [izin])
 
@@ -118,20 +119,7 @@ export default function DetailIzin() {
                                     <h1 className="my-3">{pengaju}</h1>
                                 </div>
                             </div>
-                            <div className="flex w-full ">
-                                <div className="w-[20%]">
-                                    {" "}
-                                    <h1 className="my-3">Kelas</h1>
-                                </div>
-                                <div className="w-[5%]">
-                                    {" "}
-                                    <h1 className="my-3">:</h1>
-                                </div>
-                                <div className="w-[65%]">
-                                    {" "}
-                                    <h1 className="my-3">{izin[0]?.kelas}</h1>
-                                </div>
-                            </div>
+
                             {izin[0]?.typeIzin == 'Keluar' ?
                                 <>
                                     <div className="flex w-full ">
@@ -192,10 +180,45 @@ export default function DetailIzin() {
                                     <h1 className="my-3">{new Date(izin[0]?.created_at).toDateString()}</h1>
                                 </div>
                             </div>
+                            {izin[0].guruPengajar != null?
+                                <>
+                                    <div className="flex w-full ">
+                                        <div className="w-[20%]">
+                                            {" "}
+                                            <h1 className="my-3">Guru Pengajar</h1>
+                                        </div>
+                                        <div className="w-[5%]">
+                                            {" "}
+                                            <h1 className="my-3">:</h1>
+                                        </div>
+                                        <div className="w-[65%]">
+                                            {" "}
+                                            <h1 className="my-3">{
+                                                guruPengajar
+                                            }</h1>
+                                        </div>
+                                    </div>
+                                    <div className="flex w-full ">
+                                        <div className="w-[20%]">
+                                            {" "}
+                                            <h1 className="my-3">Status Guru Pengajar</h1>
+                                        </div>
+                                        <div className="w-[5%]">
+                                            {" "}
+                                            <h1 className="my-3">:</h1>
+                                        </div>
+                                        <div className="w-[65%]">
+                                            {" "}
+                                            <h1 className="my-3">{izin[0]?.responGuruPengajar}</h1>
+                                        </div>
+                                    </div>
+                                </>
+                                :izin[0].kurikulum !=  null?                            
+                        <>
                             <div className="flex w-full ">
                                 <div className="w-[20%]">
                                     {" "}
-                                    <h1 className="my-3">Guru Pengajar</h1>
+                                    <h1 className="my-3">Kurikulum</h1>
                                 </div>
                                 <div className="w-[5%]">
                                     {" "}
@@ -204,14 +227,14 @@ export default function DetailIzin() {
                                 <div className="w-[65%]">
                                     {" "}
                                     <h1 className="my-3">{
-                                        guruPengajar
+                                        kurikulum
                                     }</h1>
                                 </div>
                             </div>
                             <div className="flex w-full ">
                                 <div className="w-[20%]">
                                     {" "}
-                                    <h1 className="my-3">Status Guru Pengajar</h1>
+                                    <h1 className="my-3">Status Kurikulum</h1>
                                 </div>
                                 <div className="w-[5%]">
                                     {" "}
@@ -219,9 +242,12 @@ export default function DetailIzin() {
                                 </div>
                                 <div className="w-[65%]">
                                     {" "}
-                                    <h1 className="my-3">{izin[0]?.responGuruPengajar}</h1>
+                                    <h1 className="my-3">{izin[0]?.responKurikulum}</h1>
                                 </div>
                             </div>
+                        </>
+                        : null  
+                        }
                             <div className="flex w-full ">
                                 <div className="w-[20%]">
                                     {" "}
