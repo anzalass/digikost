@@ -23,6 +23,7 @@ class Izin extends Model
         'keterangan',
         'typeIzin',
         'responGuruPengajar',
-        'responKurikulum'
+        'responKurikulum',
+        'statusPengajuan'
     ];
 }

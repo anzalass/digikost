@@ -73,6 +73,7 @@ Route::put('TolakPengajuan/{id}/{role}',[IzinController::class, 'Tolak']);
 Route::put('Batalkan/{id}/{role}',[IzinController::class, 'Batalkan']);
 
 Route::put('EditIzin/{id}',[IzinController::class,'EditIzin']);
+Route::put('EditIzinGuru/{id}',[IzinController::class,'EditIzinGuru']);
 
 //Table Mata Pelajaran
 Route::get('getMataPelajaran', [MataPelajaranController::class, 'index']);

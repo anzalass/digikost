@@ -119,8 +119,8 @@ class IzinController extends Controller
     }
 
     public function EditIzin(IzinRequest $request, $id){
-        $SearchEditById = Izin::find($id);
-        if($SearchEditById){
+        $getIzinGuru = Izin::find($id);
+        if($getIzinGuru){
             try{
             if($request->typeIzin == 'Masuk'){
                 $validator = Validator::make($request->all(),[
@@ -162,29 +162,29 @@ class IzinController extends Controller
             }
 
             if($request->foto != null){
-            $SearchEditById->foto = $request->foto;
+            $getIzinGuru->foto = $request->foto;
             }
 
             if($request->typeIzin == "Masuk"){
-                $SearchEditById->foto = $request->foto;
-                $SearchEditById->jamKeluar = null;
-                $SearchEditById->jamMasuk = $request->jamMasuk;
+                $getIzinGuru->foto = $request->foto;
+                $getIzinGuru->jamKeluar = null;
+                $getIzinGuru->jamMasuk = $request->jamMasuk;
             }else if($request->typeIzin == "Keluar"){
-                $SearchEditById->foto = null;
-                $SearchEditById->jamKeluar = $request->jamKeluar;
-                $SearchEditById->jamMasuk = $request->jamMasuk;
+                $getIzinGuru->foto = null;
+                $getIzinGuru->jamKeluar = $request->jamKeluar;
+                $getIzinGuru->jamMasuk = $request->jamMasuk;
             }else{
-                $SearchEditById->foto = null;
-                $SearchEditById->jamKeluar = $request->jamKeluar;
-                $SearchEditById->jamMasuk = null;
+                $getIzinGuru->foto = null;
+                $getIzinGuru->jamKeluar = $request->jamKeluar;
+                $getIzinGuru->jamMasuk = null;
             }
 
-            $SearchEditById->idMapel = $request->idMapel;
-            $SearchEditById->guruPengajar = $request->guruPengajar;
-            $SearchEditById->keterangan = $request->keterangan;
-            $SearchEditById->typeIzin = $request->typeIzin;
+            $getIzinGuru->idMapel = $request->idMapel;
+            $getIzinGuru->guruPengajar = $request->guruPengajar;
+            $getIzinGuru->keterangan = $request->keterangan;
+            $getIzinGuru->typeIzin = $request->typeIzin;
 
-            $SearchEditById->save();
+            $getIzinGuru->save();
             return response()->json([
                 'message'=> "Data berhasil diupdate"
             ],200);
@@ -325,7 +325,7 @@ class IzinController extends Controller
                     'jamMasuk'=> $request->jamMasuk,
                     'keterangan'=> $request->keterangan,
                     'typeIzin'=> $request->typeIzin,
-                    'responGuruPengajar' => "pending",
+                    'responKurikulum' => "pending",
                 ]);
             }else{
                 $add = Izin::create([
@@ -335,7 +335,7 @@ class IzinController extends Controller
                     'jamMasuk'=> $request->jamMasuk,
                     'keterangan'=> $request->keterangan,
                     'typeIzin'=> $request->typeIzin,
-                    'responGuruPengajar' => "pending",
+                    'responKurikulum' => "pending",
                 ]);
             }
 
@@ -349,6 +349,79 @@ class IzinController extends Controller
                 'message' => $e
             ],500);
         }
+    }
+
+    public function EditIzinGuru($id, IzinRequest $request){
+        $getIzinGuru = Izin::find($id);
+
+            try{
+                if(!$getIzinGuru){
+                    return response()->json([
+                        "message" => "Data Tidak Ditemukan"
+                    ],404);
+                }
+        
+                if($request->typeIzin == 'Masuk'){
+                    $validator = Validator::make($request->all(),[
+                        'idUser' =>'required',
+                        'kurikulum' =>'required',
+                        'jamMasuk' => 'required',
+                        'keterangan'=> 'required',
+                        'typeIzin'=> 'required',
+                    ]);
+                }else if($request->typeIzin == 'Keluar'){
+                    $validator = Validator::make($request->all(),[
+                        'idUser' =>'required',
+                        'kurikulum' =>'required',
+                        'jamKeluar'=> 'required',
+                        'jamMasuk'=> 'required',
+                        'keterangan'=> 'required',
+                        'typeIzin'=> 'required',
+                    ]);
+                }else if($request->typeIzin == 'Pulang'){
+                    $validator = Validator::make($request->all(),[
+                        'idUser' =>'required',
+                        'kurikulum' =>'required',
+                        'jamKeluar'=> 'required',
+                        'keterangan'=> 'required',
+                        'typeIzin'=> 'required',
+                    ]);
+                }
+        
+                if($request->foto != null){
+                    $getIzinGuru->foto = $request->foto;
+                    }
+        
+                    if($request->typeIzin == "Masuk"){
+                        $getIzinGuru->foto = $request->foto;
+                        $getIzinGuru->jamKeluar = null;
+                        $getIzinGuru->jamMasuk = $request->jamMasuk;
+                    }else if($request->typeIzin == "Keluar"){
+                        $getIzinGuru->foto = null;
+                        $getIzinGuru->jamKeluar = $request->jamKeluar;
+                        $getIzinGuru->jamMasuk = $request->jamMasuk;
+                    }else{
+                        $getIzinGuru->foto = null;
+                        $getIzinGuru->jamKeluar = $request->jamKeluar;
+                        $getIzinGuru->jamMasuk = null;
+                    }
+        
+                    $getIzinGuru->kurikulum = $request->kurikulum;
+                    $getIzinGuru->keterangan = $request->keterangan;
+                    $getIzinGuru->typeIzin = $request->typeIzin;
+        
+                    $getIzinGuru->save();
+
+                return response()->json([
+                    'message'=> "Data berhasil diupdate"
+                ],200);
+    
+        
+            }catch(\Exception $e){
+                return response()->json([
+                    'message'=>$e
+                ],505);
+            }
     }
 
     public function BeriIzin($id,$role){
