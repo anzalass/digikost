@@ -71,8 +71,9 @@ export default function EditBarang({ close, setClose, idBarang }) {
   const fetchData = async () => {
     const getRuang = await axios.get("http://127.0.0.1:8000/api/getRuang");
     const getBarang = await axios.get("http://127.0.0.1:8000/api/getKategori");
-    const getKategori = await axios.get("http://127.0.0.1:8000/api/getKategori");
-
+    const getKategori = await axios.get(
+      "http://127.0.0.1:8000/api/getKategori"
+    );
 
     setKategori(getKategori.data.results);
     setRuang(getRuang.data.results);
@@ -83,8 +84,6 @@ export default function EditBarang({ close, setClose, idBarang }) {
       setBarang(getBarang.data.results);
     }
   };
-
-
 
   const getDataByID = async () => {
     const result = await axios.get(
@@ -149,9 +148,18 @@ export default function EditBarang({ close, setClose, idBarang }) {
                 >
                   {kategori.map((item, index) => {
                     if (item.kodeBarang == data.kodeBarang) {
-                      console.log("item : ", item.kodeBarang, "&& data : ", data.kodeBarang)
+                      console.log(
+                        "item : ",
+                        item.kodeBarang,
+                        "&& data : ",
+                        data.kodeBarang
+                      );
                       return (
-                        <option key={index} value={`${item.kodeBarang}`} selected>
+                        <option
+                          key={index}
+                          value={`${item.kodeBarang}`}
+                          selected
+                        >
                           {item.namaBarang}:{item.kategori}
                         </option>
                       );
@@ -270,13 +278,13 @@ export default function EditBarang({ close, setClose, idBarang }) {
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
                 <button
                   onClick={() => UpdatePengadaan()}
-                  className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc"
+                  className="bg-[#155f95] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc"
                 >
                   Simpan
                 </button>
                 <button
                   onClick={() => setClose(!close)}
-                  className="bg-[#E5D5F2] px-3 py-1 w-[140px] rounded-md ml-2  text-[#7B2CBF] font-abc"
+                  className="bg-[#E5D5F2] px-3 py-1 w-[140px] rounded-md ml-2  text-[#155f95] font-abc"
                 >
                   Batal
                 </button>

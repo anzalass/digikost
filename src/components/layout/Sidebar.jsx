@@ -1,5 +1,5 @@
 import { useState } from "react";
-import digiKosLogo from "../../assets/Digikos.svg";
+import digiKosLogo from "../../assets/20231121_094728_0000_2-removebg-previeww 1.svg";
 import { GrHomeRounded, GrLogout } from "react-icons/gr";
 import { BsPencilSquare } from "react-icons/bs";
 
@@ -14,8 +14,8 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
   if (user.role == 1) {
     sidebarMenu = [
       {
-        title: "Berandaaa",
-        url: "/",
+        title: "Beranda",
+        url: "/home",
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },
       {
@@ -28,7 +28,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
     sidebarMenu = [
       {
         title: "Beranda",
-        url: "/",
+        url: "/home",
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },
       {
@@ -46,7 +46,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
     sidebarMenu = [
       {
         title: "Beranda",
-        url: "/",
+        url: "/home",
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },
       {
@@ -54,17 +54,17 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
         url: "/AllUsers",
         icon: <BsPencilSquare className="my-auto" />,
       },
-      {
-        title: "Mata Pelajaran",
-        url: "/MataPelajaran",
-        icon: <BsPencilSquare className="my-auto" />,
-      },
+      // {
+      //   title: "Mata Pelajaran",
+      //   url: "/MataPelajaran",
+      //   icon: <BsPencilSquare className="my-auto" />,
+      // },
     ];
   } else if (user.role == 5) {
     sidebarMenu = [
       {
         title: "Beranda",
-        url: "/",
+        url: "/home",
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },
       {
@@ -74,7 +74,6 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
       },
     ];
   }
-
 
   const logout = async () => {
     try {
@@ -107,14 +106,15 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
         onClick={() => setWidth(!width)}
       />
       <div
-        className={`fixed h-[100vh] bg-white left-0 z-40 ${width ? "block" : "hidden"
-          } shadow-[rgba(0,_0,_0,_0.4)_0px_30px_90px] transition-all`}
+        className={`fixed h-[100vh] bg-white left-0 z-40 ${
+          width ? "block" : "hidden"
+        } shadow-[rgba(0,_0,_0,_0.4)_0px_30px_90px] transition-all`}
       >
         <div className="ml-[210px]"></div>
-        <div className="pt-[40px] w-full">
+        <div className="mt-[60px] w-full">
           <img
             src={digiKosLogo}
-            className={`h-[50px] w-[100px]  mx-auto`}
+            className={`h-[50px] w-full  mx-auto`}
             alt=""
           />
         </div>
@@ -129,10 +129,11 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
                   onClick={(e) => {
                     setMenuClick(1);
                   }}
-                  className={`flex mt-2 ${setSidebar === index + 1
-                    ? "bg-[#9556CC] text-white"
-                    : "bg-white text-black"
-                    }  h-[30px] rounded-md p-1 pl-3`}
+                  className={`flex mt-2 ${
+                    setSidebar === index + 1
+                      ? "bg-[#155f95] text-white"
+                      : "bg-white text-black"
+                  }  h-[30px] rounded-md p-1 pl-3`}
                 >
                   {sm.icon}
                   <h1 className={` ml-2 font-abc my-auto text-[14px]`}>

@@ -18,7 +18,7 @@ import AddMapel from "./pages/Admin/MataPelajaran/AddMapel";
 import MapelSiswa from "./pages/Admin/MataPelajaran/MapelSiswa";
 import EditProfilePage from "./pages/EditProfilePage";
 import ChangePassword from "./pages/Admin/User/ChangePassword";
-
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const { isLogin, user } = useSelector((state) => state.user);
@@ -31,57 +31,46 @@ function App() {
       <BrowserRouter>
         {user === undefined ? (
           <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
-        )
-          :
-          user.role === 2 ? (
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/PermintaanIzin" element={<PermissionGuruPengajar />} />
-              <Route path="/PermintaanIzinGuru" element={<IzinGuru />} />
-              <Route path="/Detail/:id" element={<DetailIzin />} />
-              <Route path="/Profile" element={<EditProfilePage />} />
-            </Routes>
-          )
-            : user.role === 4 ?
-              (<Routes>
-                <Route
-                  path="/"
-                  element={<HomePage />}
-                />
-                <Route path="/AllUsers" element={<AllUser />} />
-                <Route path="/AddUser" element={<AddUser />} />
-                <Route path="/EditUser/:id" element={<EditUser />} />
-                <Route path="/MataPelajaran" element={<MapelSiswa />} />
-                <Route path="/AddMapel" element={<AddMapel />} />
-                <Route path="/ChangePassword/:id" element={<ChangePassword />} />
-                <Route path="/Profile" element={<EditProfilePage />} />
-              </Routes>) : user.role == 5 ?
-                (
-                  <Routes>
-                    <Route
-                      path="/"
-                      element={<HomePage />}
-                    />
-                    <Route path="/PermintaanIzin" element={<SemuaIzinGuru />} />
-                    <Route path="/Detail/:id" element={<DetailIzin />} />
-                    <Route path="/Profile" element={<EditProfilePage />} />
-                  </Routes>
-                )
-                :
-                (
-                  <Routes>
-                    <Route
-                      path="/"
-                      element={<HomePage />}
-                    />
-                    <Route path="/Izin" element={<SemuaIzin />} />
-                    <Route path="/Detail/:id" element={<DetailIzin />} />
-                    <Route path="/Profile" element={<EditProfilePage />} />
-                  </Routes>
-                )
-        }
+        ) : user.role === 2 ? (
+          <Routes>
+            <Route path="/home" element={<HomePage />} />
+            <Route
+              path="/PermintaanIzin"
+              element={<PermissionGuruPengajar />}
+            />
+            <Route path="/PermintaanIzinGuru" element={<IzinGuru />} />
+            <Route path="/Detail/:id" element={<DetailIzin />} />
+            <Route path="/Profile" element={<EditProfilePage />} />
+          </Routes>
+        ) : user.role === 4 ? (
+          <Routes>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/AllUsers" element={<AllUser />} />
+            <Route path="/AddUser" element={<AddUser />} />
+            <Route path="/EditUser/:id" element={<EditUser />} />
+            <Route path="/MataPelajaran" element={<MapelSiswa />} />
+            <Route path="/AddMapel" element={<AddMapel />} />
+            <Route path="/ChangePassword/:id" element={<ChangePassword />} />
+            <Route path="/Profile" element={<EditProfilePage />} />
+          </Routes>
+        ) : user.role == 5 ? (
+          <Routes>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/PermintaanIzin" element={<SemuaIzinGuru />} />
+            <Route path="/Detail/:id" element={<DetailIzin />} />
+            <Route path="/Profile" element={<EditProfilePage />} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/Izin" element={<SemuaIzin />} />
+            <Route path="/Detail/:id" element={<DetailIzin />} />
+            <Route path="/Profile" element={<EditProfilePage />} />
+          </Routes>
+        )}
       </BrowserRouter>
     </>
   );

@@ -9,28 +9,42 @@ export default function Aktivitas() {
   const { user } = useSelector((state) => state.user);
 
   const fetchAktivitas = async () => {
-    const res = await axios.get(`${BACKEND_BASE_URL}/api/getAktivitasByUser/${user?.id}`);
+    const res = await axios.get(
+      `${BACKEND_BASE_URL}/api/getAktivitasByUser/${user?.id}`
+    );
     setAktivitas(res.request.data.results);
-  }
+  };
 
   useEffect(() => {
     fetchAktivitas();
-  }, [])
+  }, []);
 
   const columns = [
     { field: "id", headerName: "ID", minWidth: 50, flex: 0.2 },
-    { field: 'pembuat', headerName: "Pembuat", minWidth: 150, flex: 0.7 },
+    { field: "pembuat", headerName: "Pembuat", minWidth: 150, flex: 0.7 },
     { field: "tgl", headerName: "Tanggal", minWidth: 150, flex: 0.7 },
     { field: "jam", headerName: "Jam", minWidth: 100, flex: 0.7 },
-    { field: "statusGuruPengajar", headerName: "Guru Pengajar", minWidth: 100, flex: 0.7 },
-    { field: "statusGuruPiket", headerName: "Guru Pengajar", minWidth: 100, flex: 0.7 },
+    {
+      field: "statusGuruPengajar",
+      headerName: "Guru Pengajar",
+      minWidth: 100,
+      flex: 0.7,
+    },
+    {
+      field: "statusGuruPiket",
+      headerName: "Guru Pengajar",
+      minWidth: 100,
+      flex: 0.7,
+    },
     { field: "aktivitas", headerName: "Aktivitas", minWidth: 100, flex: 0.7 },
   ];
 
   const row = [];
 
   aktivitas.forEach(async (a) => {
-    const getIzinById = await axios.get(`${BACKEND_BASE_URL}/api/getIzinById/${a.idIzin}`);
+    const getIzinById = await axios.get(
+      `${BACKEND_BASE_URL}/api/getIzinById/${a.idIzin}`
+    );
     if (getIzinById.status != 404) {
       row.push({
         id: a.id,
@@ -53,7 +67,7 @@ export default function Aktivitas() {
           </h1>
         </div>
         <div className="">
-          <button className="font-abc px-6 rounded-lg text-white text-[14px] py-1  font-[500] bg-[#7B2CBF] my-3  ">
+          <button className="font-abc px-6 rounded-lg text-white text-[14px] py-1  font-[500] bg-[#155f95] my-3  ">
             Refresh Aktivitas
           </button>
         </div>

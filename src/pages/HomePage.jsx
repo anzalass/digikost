@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import TopBar from "../components/layout/TopBar";
 import Aktivitas from "../components/admin/home/Aktivitas";
-import AdminDetailCard from "../components/admin/home/AdminDetailCard"
+import AdminDetailCard from "../components/admin/home/AdminDetailCard";
 import { useSelector } from "react-redux";
 import Indikator from "../components/admin/home/Indikator";
 
@@ -12,21 +12,29 @@ export default function HomePage() {
 
   return (
     <div>
-      <div className="w-full h-screen">
+      <div className="w-full min-h-screen xl:mb-[100px] md:mb-[100px] mb-[500px] lg:mb-[100px]">
         <div className={` `}>
           <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
         </div>
         <div className={`w-11/12 mx-auto`}>
-          <TopBar>{user?.role === 1 ? "Dashboard Siswa" : user?.role === 2 ? "Dashboard Guru" : user?.role === 4 ? "Dashboard Admin" : "Dashboard Kurikulum"}</TopBar>
+          <TopBar>
+            {user?.role === 1
+              ? "Dashboard Siswa"
+              : user?.role === 2
+              ? "Dashboard Guru"
+              : user?.role === 4
+              ? "Dashboard Admin"
+              : "Dashboard Kurikulum"}
+          </TopBar>
           <div className="w-full mt-2 h-[50px] ">
             <div className="">
               <h1 className="text-[10px] font-abc ml-6 ">
-                Selamat datang <span className="font-[500]">, {user?.name} </span>
+                Selamat datang{" "}
+                <span className="font-[500]">, {user?.name} </span>
               </h1>
               <div className="mt-4 w-[95%] opacity-25 mx-auto  h-[1px] bg-slate-600"></div>
             </div>
             <Indikator />
-
           </div>
         </div>
       </div>
